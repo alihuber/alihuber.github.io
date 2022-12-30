@@ -6,42 +6,42 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>Fun with Rails and RabbitMQ Part IV: Basic work queues</title>
-        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
         <meta name="description" content="On our quest to replace Sidekiq with RabbitMQ we already know how to enqueue messages based on various criteria, and already can massively flood..." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <h1><a href="/">alis_blog</a></h1>
                 <nav>
                         <ul>
                                 <li><a
-                                <a href="alihuber.github.io/">Home</a>
+                                <a href="/">Home</a>
                                 </li>
 
-                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                <li><a href="/pages/about.html">About</a>
                                 </li>
 <!--                                                 <li><a
-                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                                href="/category/android.html">Android</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                                href="/category/arduino.html">Arduino</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                                href="/category/bucher.html">Bücher</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                                href="/category/factor.html">Factor</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                                href="/category/it-stuff.html">IT-Stuff</a>
                                                 </li>
  -->
                                         <li><a
-                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        <a href="/categories">Categories </a>
                                         </li>
                                         <li><a
-                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        <a href="/archives">Archives</a>
                                         </li>
                         </ul>
                 </nav>
@@ -50,7 +50,7 @@
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="alihuber.github.io/fun-with-rails-and-rabbitmq-part-iv-basic-work-queues.html" rel="bookmark"
+        <a href="/fun-with-rails-and-rabbitmq-part-iv-basic-work-queues.html" rel="bookmark"
            title="Permalink to Fun with Rails and RabbitMQ Part IV: Basic work queues">Fun with Rails and RabbitMQ Part IV: Basic work queues</a></h1>
     </header>
 
@@ -59,8 +59,8 @@
               Published: Sa 18 April 2015
       </abbr>
       <address class="vcard author">
-              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
-              In <a href="alihuber.github.io/category/rabbitmq.html">RabbitMQ</a>.
+              By                       <a class="url fn" href="/author/ali.html">ali</a>
+              In <a href="/category/rabbitmq.html">RabbitMQ</a>.
       </address>
       <p>On our quest to replace Sidekiq with RabbitMQ we already know how to <a href="http://alihuber.github.com/fun-with-rabbitmq-3">enqueue messages based on various criteria</a>, and already can <a href="http://alihuber.github.com/fun-with-rabbitmq-1">massively flood our little Rails app with messages</a>. There remain some problems, though: We haven't handled what happens if the broker crashes and takes the content of queues with him, or more complex scenarios where messages consisting of plain strings or routing keys with wildcards aren't enough to satisfy our needs. Also, in our previous scenarios all messages were processed immediately, what is not exactly what background jobs are made for.</p>
 <h3>A first look at worker queues</h3>

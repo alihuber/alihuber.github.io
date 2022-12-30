@@ -6,42 +6,42 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>The grand unified singleton class theory</title>
-        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
         <meta name="description" content="One of the hardest things to understand in Ruby (beside groking blocks and syntax like in this LIST_ITEMS_FOR example, which deserves a blog post..." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <h1><a href="/">alis_blog</a></h1>
                 <nav>
                         <ul>
                                 <li><a
-                                <a href="alihuber.github.io/">Home</a>
+                                <a href="/">Home</a>
                                 </li>
 
-                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                <li><a href="/pages/about.html">About</a>
                                 </li>
 <!--                                                 <li><a
-                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                                href="/category/android.html">Android</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                                href="/category/arduino.html">Arduino</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                                href="/category/bucher.html">Bücher</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                                href="/category/factor.html">Factor</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                                href="/category/it-stuff.html">IT-Stuff</a>
                                                 </li>
  -->
                                         <li><a
-                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        <a href="/categories">Categories </a>
                                         </li>
                                         <li><a
-                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        <a href="/archives">Archives</a>
                                         </li>
                         </ul>
                 </nav>
@@ -50,7 +50,7 @@
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="alihuber.github.io/the-grand-unified-singleton-class-theory.html" rel="bookmark"
+        <a href="/the-grand-unified-singleton-class-theory.html" rel="bookmark"
            title="Permalink to The grand unified singleton class theory">The grand unified singleton class theory</a></h1>
     </header>
 
@@ -59,8 +59,8 @@
               Published: Mo 17 September 2012
       </abbr>
       <address class="vcard author">
-              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
-              In <a href="alihuber.github.io/category/ruby.html">Ruby</a>.
+              By                       <a class="url fn" href="/author/ali.html">ali</a>
+              In <a href="/category/ruby.html">Ruby</a>.
       </address>
       <p>One of the hardest things to understand in Ruby (beside groking blocks and syntax like in this <a href="http://viget.com/extend/practical-uses-of-ruby-blocks">LIST_ITEMS_FOR example</a>, which deserves a blog post of its own) is all the fuzz about meta/eigen/singleton classes. I've read dozens of blog posts, the "Metaprogramming Ruby" book, dozens of explanations on stackoverflow and all the information I can get from now 5 (soon to be 6) books on Ruby programming in general. And guess what: My confusion has grown ever since, till today. I think one of the culprits is the changing terminology. If it's unclear what the authors are talking about exactly, it's getting much more confusing for the one who tries to learn about it (especially if you aren't a native speaker). In books before 2011 the concept is called eigenclass (whilst methods of this class are called singleton methods all over), later it switched to singleton class, which allegedly can get confused with the singleton-pattern. But not enough:<br>
 Some (like _why and Yehuda Katz) call it metaclass, <a href="http://www.dyrathror.com/2009/07/ruby-objects-class-objects-and-metaclass-objects/">others</a> introduce their own terminology and call singleton classes "virtual classes" and the superclass of immediate values (like fixnum and symbol) eigenclasses. In two of my books (one uses consistently the term eigenclass, the other book singleton class) the material is quite accordingly, but at the end one book suddenly calls superclasses of singleton classes 'metaclasses'. You get the picture. What I missed was a clear train of thougt for the whole concept and an overview of syntactic pitfalls. This is my attempt to fix this. (For clarity reasons, I'll stick to the term singleton class in this post.)</p>

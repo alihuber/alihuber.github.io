@@ -6,42 +6,42 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>Kurztipp: Rails 4 mit Ruby 2.0.0 auf Windows 7 64-bit</title>
-        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
         <meta name="description" content="Da ich in letzter Zeit fast nur unter Windows entwickle, dachte ich mir ich erstelle eine aktuelle Railsumgebung unter Windows 7. Wie schwer kann..." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <h1><a href="/">alis_blog</a></h1>
                 <nav>
                         <ul>
                                 <li><a
-                                <a href="alihuber.github.io/">Home</a>
+                                <a href="/">Home</a>
                                 </li>
 
-                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                <li><a href="/pages/about.html">About</a>
                                 </li>
 <!--                                                 <li><a
-                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                                href="/category/android.html">Android</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                                href="/category/arduino.html">Arduino</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                                href="/category/bucher.html">Bücher</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                                href="/category/factor.html">Factor</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                                href="/category/it-stuff.html">IT-Stuff</a>
                                                 </li>
  -->
                                         <li><a
-                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        <a href="/categories">Categories </a>
                                         </li>
                                         <li><a
-                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        <a href="/archives">Archives</a>
                                         </li>
                         </ul>
                 </nav>
@@ -50,7 +50,7 @@
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="alihuber.github.io/kurztipp-rails-4-mit-ruby-200-auf-windows-7-64-bit.html" rel="bookmark"
+        <a href="/kurztipp-rails-4-mit-ruby-200-auf-windows-7-64-bit.html" rel="bookmark"
            title="Permalink to Kurztipp: Rails 4 mit Ruby 2.0.0 auf Windows 7 64-bit">Kurztipp: Rails 4 mit Ruby 2.0.0 auf Windows 7 64-bit</a></h1>
     </header>
 
@@ -59,8 +59,8 @@
               Published: Sa 07 September 2013
       </abbr>
       <address class="vcard author">
-              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
-              In <a href="alihuber.github.io/category/rails.html">Rails</a>.
+              By                       <a class="url fn" href="/author/ali.html">ali</a>
+              In <a href="/category/rails.html">Rails</a>.
       </address>
       <p>Da ich in letzter Zeit fast nur unter Windows entwickle, dachte ich mir ich erstelle eine aktuelle Railsumgebung unter Windows 7. Wie schwer kann es schon sein? Leider stellte sich heraus, dass es dabei einige Fallstricke gibt. Die grundlegenden Schritte sind erst mal einfach: Den <a href="http://rubyinstaller.org/downloads/">RubyInstaller</a> herunterladen und installieren. Dann das dazugehörige Development-Kit herunterladen und der <a href="https://github.com/oneclick/rubyinstaller/wiki/Development-Kit">Anleitung</a> folgen, also im entpackten Verzeichnis <code>ruby dk.rb init</code> und <code>ruby dk.rb install</code> ausführen. Danach muss vermutlich erst SQlite3 installiert werden. Um SQlite3 mit Windows zu verwenden, muss man die SQLite3-dlls von <a href="http://www.sqlite.org/download.html">http://www.sqlite.org/download.html</a> herunterladen, die .def und .dll-Dateien nach C:\Windows\system32 kopieren und eventuell neu starten. Wenn man möchte, kann man sich vor der Installation von Rails noch die Optionen install: --no-document und update: --no-document in die gemrc schreiben, die unter Windows 7 in C:\ProgramData einfach angelegt wird. Nach einem <code>gem install rails --platform=ruby</code> sollte <code>rails s</code> im Verzeichnis einer neuen App funktionieren. Falls die Fehlermeldung "Add 'gem sqlite3' to your Gemfile" erscheint (obwohl das Gem natürlich von Anfang an eingetragen ist) gab es einen Fehler mit der Version des Development-Kit und der installierten Version von Ruby. In diesem Fall bringt auch <code>bundle install</code> nichts, SQlite3 wird dann in dieser Auflistung nicht einmal aufgeführt. Die Lösung hierfür ist es, in der Datei Gemfile.lock den Eintrag sqlite3 (1.3.8 x64-mingw32) in sqlite3 (1.3.8) zu ändern. Nach erneuter Ausführung von <code>bundle install</code> sollte sqlite3 aufgelistet werden und <code>rails s</code> die ersehnte "Welcome aboard"-Seite anzeigen.</p>
 <p>Allerdings ist die Verwendung von Ruby 2.0.0 unter 64-bit-Windows generell eher schlecht, weil Nokogiri <a href="https://github.com/sparklemotion/nokogiri/issues/864">derzeit</a> <a href="http://stackoverflow.com/questions/17280884/cant-install-nokogiri-for-ruby-in-windows">wohl</a> <a href="http://stackoverflow.com/questions/17014854/libxml2-missing-for-nokogiri-gem-on-windows-8-x64-with-ruby-1-9-3">nicht</a> funktioniert.</p>

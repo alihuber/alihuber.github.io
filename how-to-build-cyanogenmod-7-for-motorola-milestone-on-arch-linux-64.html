@@ -6,42 +6,42 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>How to build CyanogenMod 7 for Motorola Milestone on Arch Linux 64</title>
-        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
         <meta name="description" content="First of all, you have to activate the multilib-repo in /etc/pacman.conf and install some 32-bit libraries. To be honest, I have forgotten which..." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <h1><a href="/">alis_blog</a></h1>
                 <nav>
                         <ul>
                                 <li><a
-                                <a href="alihuber.github.io/">Home</a>
+                                <a href="/">Home</a>
                                 </li>
 
-                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                <li><a href="/pages/about.html">About</a>
                                 </li>
 <!--                                                 <li class="active" ><a
-                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                                href="/category/android.html">Android</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                                href="/category/arduino.html">Arduino</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                                href="/category/bucher.html">Bücher</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                                href="/category/factor.html">Factor</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                                href="/category/it-stuff.html">IT-Stuff</a>
                                                 </li>
  -->
                                         <li><a
-                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        <a href="/categories">Categories </a>
                                         </li>
                                         <li><a
-                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        <a href="/archives">Archives</a>
                                         </li>
                         </ul>
                 </nav>
@@ -50,7 +50,7 @@
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="alihuber.github.io/how-to-build-cyanogenmod-7-for-motorola-milestone-on-arch-linux-64.html" rel="bookmark"
+        <a href="/how-to-build-cyanogenmod-7-for-motorola-milestone-on-arch-linux-64.html" rel="bookmark"
            title="Permalink to How to build CyanogenMod 7 for Motorola Milestone on Arch Linux 64">How to build CyanogenMod 7 for Motorola Milestone on Arch Linux 64</a></h1>
     </header>
 
@@ -59,8 +59,8 @@
               Published: Mo 11 Juli 2011
       </abbr>
       <address class="vcard author">
-              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
-              In <a href="alihuber.github.io/category/android.html">Android</a>.
+              By                       <a class="url fn" href="/author/ali.html">ali</a>
+              In <a href="/category/android.html">Android</a>.
       </address>
       <p>First of all, you have to activate the <code>multilib</code>-repo in <code>/etc/pacman.conf</code> and install some 32-bit libraries. To be honest, I have forgotten which one exactly because I have a lot more installed than I need for building Android (I also have programs like AdobeAIR running). However, a good starting point of figuring out which packages are needed <a href="http://mysite.verizon.net/ian.pilcher/f13-android-howto.pdf">are</a> <a href="http://fedoraproject.org/wiki/HOWTO_Setup_Android_Development">these</a> <a href="http://fedoraproject.org/wiki/Google_Android">links</a>. These pages/documents have all the other instructions in it, like how to install the AndroidSDK without pacman. Just follow all the instructions, they work fine. The packages for Arch are named the same, except for the <code>-devel</code> suffix, and the 32-bit libraries begin with <code>lib32-</code>. And you need to install <code>jdk</code>, of course. If there are any libs or files missing, they will be pointed out during the build process, so you can install them later. One package you will need for sure is <code>gcc-multilib</code> instead of the normal <code>gcc</code>. You can install it with the metapackage <code>multilib-devel</code>. Remove all the conflicting packages. Another package not on the lists which you will need is <code>schedtool</code>.</p>
 <p>The next step is to get the "<code>repo</code>"-script running. Since Arch switched to Python3 as default it won't work out of the box. For some guys it worked to just alter the <code>python</code> symlink to point to <code>python2</code> instead of <code>python3</code>, or just rename every occurence of <code>python</code> to <code>python2</code> in the repo script, or just alter the shebang-line. But none of these ways worked for me.<br>

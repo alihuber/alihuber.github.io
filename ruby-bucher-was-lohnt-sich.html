@@ -6,42 +6,42 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>Ruby-Bücher: Was lohnt sich?</title>
-        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
         <meta name="description" content="Ich habe heute meine neueste (und letzte) Errungenschaft in Sachen Ruby-Bücher (NICHT Rails-Bücher) durchgearbeitet, und zwar "Eloquent Ruby". Zu..." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <h1><a href="/">alis_blog</a></h1>
                 <nav>
                         <ul>
                                 <li><a
-                                <a href="alihuber.github.io/">Home</a>
+                                <a href="/">Home</a>
                                 </li>
 
-                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                <li><a href="/pages/about.html">About</a>
                                 </li>
 <!--                                                 <li><a
-                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                                href="/category/android.html">Android</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                                href="/category/arduino.html">Arduino</a>
                                                 </li>
                                                 <li class="active" ><a
-                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                                href="/category/bucher.html">Bücher</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                                href="/category/factor.html">Factor</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                                href="/category/it-stuff.html">IT-Stuff</a>
                                                 </li>
  -->
                                         <li><a
-                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        <a href="/categories">Categories </a>
                                         </li>
                                         <li><a
-                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        <a href="/archives">Archives</a>
                                         </li>
                         </ul>
                 </nav>
@@ -50,7 +50,7 @@
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="alihuber.github.io/ruby-bucher-was-lohnt-sich.html" rel="bookmark"
+        <a href="/ruby-bucher-was-lohnt-sich.html" rel="bookmark"
            title="Permalink to Ruby-Bücher: Was lohnt sich?">Ruby-Bücher: Was lohnt sich?</a></h1>
     </header>
 
@@ -59,8 +59,8 @@
               Published: Mo 24 September 2012
       </abbr>
       <address class="vcard author">
-              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
-              In <a href="alihuber.github.io/category/bucher.html">Bücher</a>.
+              By                       <a class="url fn" href="/author/ali.html">ali</a>
+              In <a href="/category/bucher.html">Bücher</a>.
       </address>
       <p>Ich habe heute meine neueste (und letzte) Errungenschaft in Sachen Ruby-Bücher (NICHT Rails-Bücher) durchgearbeitet, und zwar "Eloquent Ruby". Zu Anfangs (siehe einen der älteren Beiträge) habe ich viele Bücher durchgearbeitet, die irgendwie für Anfänger gedacht waren, z.B. "The little book of Ruby", "Programming Ruby - from novice to professional" usw. Diese Bücher hatten ALLE etwas gemeinsam: Sie hörten genau an der Stelle auf, an der es anfing spannend zu werden. Die meisten Bücher handeln die grundlegenden Sprachkonstrukte ab: Zuerst Strings, dann Numerics, dann Klassen, dann control flow, dann wird Vererbung lang und breit erklärt (unter Verwendung von dämlichen Auto/Tiervererbungsbeispielen), dann Module, Arrays, Hashes, dann mehr oder weniger tief Iteratoren und so weiter. In einigen Büchern sogar alles bunt durcheinander. Oder es wird zuerst die Syntax betrachtet, was sind Kommentare, gültige Statements, Operatoren usw. (ein Ansatz, den ich persönlich grauenhaft finde.) Und das war's dann auch. Keine wirklich gute Erklärung oder gar nützliche Beispiele für Blocks, kein Wort über Metaprogrammierung, DSLs, Rubys Objektmodell, Methodenlookup und anderes Zeug, ohne welches man nur wenig kompliziertere Programme einfach nicht versteht. Ein Weg aus der Misere ist "The well-grounded Rubyist", das wirklich gut aufgebaut ist und fast alle Themen erschöpfend behandelt. Aber was dann? Ein must-have ist meiner Meinung nach "Metaprogramming Ruby". Dort sind wirklich alle exotischen Sprachkonstrukte und Möglichkeiten von Ruby schön aufgelistet. Wo steht jetzt aber "Eloquent Ruby"? Immerhin wird es als Buch für Fortgeschrittene beworben, die quasi ihren Ruby-Skills den letzten Schliff geben wollen (nicht dass ich in irgendeiner Weise fortgeschritten wäre). Ums kurz zu machen: Die ersten 17 Kapitel (von 31) kann man sich nach dem lesen von "The well-grounded Rubyist" sparen. Das Buch fängt wirklich bei Null an, welche Einrückungstiefe man wählen sollte, dass für Klassen CamelCase benutzt wird usw. Die nächsten Kapitel geben in viele Themen eine extrem kurze Einführung, etwa in Module und Reguläre Ausdrücke. Aber alles extrem kurz abgegrast, mit vielen ausgelassenen Details - Ich hätte bei dem Titel eher gedacht, darauf liegt der Fokus! Interessanter wird die Geschichte dann mit Kapitel 18, in dem ich das erste wirklich gute Beispiel für die Verwendung von Blocks gefunden habe (und nicht nur triviale Beispiele), und zwar als Execute-Around-Wrapper für einen Logger. Kapitel 19 (Procs und Lambdas) und 20 (Hooks) schwächeln dann wieder. Die Höhepunkte des Buches, Kapitel 21 bis 28 können dann als etwas breitere Einführung in Metaprogrammierung mit method_missing und DSLs gesehen werden, dies wird in "Metaprogramming Ruby" nicht so ausführlich behandelt wie hier. Kapitel 29 bis Schluß sind dann reinste Filler. Es soll noch gesagt sein, dass die Kapitel in diesem Buch alle ca. 10 Seiten lang sind - heutzutage also etwas bessere Blogartikel. Fazit: Die Reihenfolge "The well-grounded Rubyist", danach entweder Kapitel 21 bis 28 von "Eloquent Ruby" oder falls man auch nur mit "Metaprogramming Ruby" klarkommt nur letzteres erscheint mir gerade am besten - hätte ich das nur schon früher gewusst!</p>
 <p>P.S.: Das Grundlagenwerk "The Ruby Programming Language" von Matz selbst eignet sich eher um Dinge nachzuschlagen, oder wenn man etwas auf deutsch haben will.</p>

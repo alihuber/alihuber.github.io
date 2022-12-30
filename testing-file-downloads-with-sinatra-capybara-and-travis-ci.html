@@ -6,42 +6,42 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>Testing file downloads with Sinatra, Capybara and Travis-CI</title>
-        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
         <meta name="description" content="I recently had the problem to test the content of downloaded files in an non-Rails environment. It's a simple Sinatra-app that returns a file via..." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <h1><a href="/">alis_blog</a></h1>
                 <nav>
                         <ul>
                                 <li><a
-                                <a href="alihuber.github.io/">Home</a>
+                                <a href="/">Home</a>
                                 </li>
 
-                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                <li><a href="/pages/about.html">About</a>
                                 </li>
 <!--                                                 <li><a
-                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                                href="/category/android.html">Android</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                                href="/category/arduino.html">Arduino</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                                href="/category/bucher.html">Bücher</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                                href="/category/factor.html">Factor</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                                href="/category/it-stuff.html">IT-Stuff</a>
                                                 </li>
  -->
                                         <li><a
-                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        <a href="/categories">Categories </a>
                                         </li>
                                         <li><a
-                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        <a href="/archives">Archives</a>
                                         </li>
                         </ul>
                 </nav>
@@ -50,7 +50,7 @@
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="alihuber.github.io/testing-file-downloads-with-sinatra-capybara-and-travis-ci.html" rel="bookmark"
+        <a href="/testing-file-downloads-with-sinatra-capybara-and-travis-ci.html" rel="bookmark"
            title="Permalink to Testing file downloads with Sinatra, Capybara and Travis-CI">Testing file downloads with Sinatra, Capybara and Travis-CI</a></h1>
     </header>
 
@@ -59,8 +59,8 @@
               Published: Sa 23 Februar 2013
       </abbr>
       <address class="vcard author">
-              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
-              In <a href="alihuber.github.io/category/ruby.html">Ruby</a>.
+              By                       <a class="url fn" href="/author/ali.html">ali</a>
+              In <a href="/category/ruby.html">Ruby</a>.
       </address>
       <p>I recently had the problem to test the content of downloaded files in an non-Rails environment. It's a simple Sinatra-app that returns a file via a GET-Request and the <code>send_file</code>-helper. My first approach was to check for the response-body after Capybara clicked the 'Download'-button, but I got the same error as <a href="https://groups.google.com/forum/?fromgroups=#!topic/cukes/YTe8_0O_Y0o">this guy</a> or I got the <code>Capybara::NotSupportedByDriverError</code>. It seems you can't test the response body with Capybara nor is the <code>last_response</code>-method of <code>Rack::Test</code> an option. Luckily, I found <a href="http://collectiveidea.com/blog/archives/2012/01/27/testing-file-downloads-with-capybara-and-chromedriver/">this blog post</a>. The gist of it is to use the Chromedriver and a little <code>DownloadHelper</code>-module. But I wasn't using Rails, Cucumber or other fancy stuff, so I had to fine-tune some things first. In a recent update of Capybara, the Chromedriver is somehow removed and I had to install the binary manually: I just downloaded it <a href="http://code.google.com/p/chromedriver/downloads/list">from here</a> and moved it to any directory on my PATH. The reason Chromedriver works best is that once the default download path of Chrome is set like in above blog post, the file gets downloaded automatically without any further user interaction, whilst I was not able to control the Selenium-built-in Firefox to behave that way. The next thing you need is a temporary download location for your files you wish to test be tested. Since I'm not using rails and I don't have a Rails.root, I made a 'tmp'-directory in my Sinatra base directory and set this directory as default download location for the Chromedriver. All you really need of above's blog post <code>DownloadHelper</code>-module is a small method that reads in the downloaded file from your temporary directory and returs the content to be compared to your desired string in your test case (and deletes the file afterwards). You really don't need a full-fledged module for that. You could just have this method:</p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_content</span>

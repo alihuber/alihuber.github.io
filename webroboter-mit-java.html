@@ -6,42 +6,42 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>Webroboter mit Java</title>
-        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
         <meta name="description" content="In der Zeitschrift C't Nr. 4 2010 wurde auf persönliche Webroboter eingegangen. Im Artikel wurden dann Möglichkeiten genannt, wie man mit..." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <h1><a href="/">alis_blog</a></h1>
                 <nav>
                         <ul>
                                 <li><a
-                                <a href="alihuber.github.io/">Home</a>
+                                <a href="/">Home</a>
                                 </li>
 
-                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                <li><a href="/pages/about.html">About</a>
                                 </li>
 <!--                                                 <li><a
-                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                                href="/category/android.html">Android</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                                href="/category/arduino.html">Arduino</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                                href="/category/bucher.html">Bücher</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                                href="/category/factor.html">Factor</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                                href="/category/it-stuff.html">IT-Stuff</a>
                                                 </li>
  -->
                                         <li><a
-                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        <a href="/categories">Categories </a>
                                         </li>
                                         <li><a
-                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        <a href="/archives">Archives</a>
                                         </li>
                         </ul>
                 </nav>
@@ -50,7 +50,7 @@
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="alihuber.github.io/webroboter-mit-java.html" rel="bookmark"
+        <a href="/webroboter-mit-java.html" rel="bookmark"
            title="Permalink to Webroboter mit Java">Webroboter mit Java</a></h1>
     </header>
 
@@ -59,8 +59,8 @@
               Published: Sa 29 Mai 2010
       </abbr>
       <address class="vcard author">
-              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
-              In <a href="alihuber.github.io/category/java.html">Java</a>.
+              By                       <a class="url fn" href="/author/ali.html">ali</a>
+              In <a href="/category/java.html">Java</a>.
       </address>
       <p>In der Zeitschrift C't Nr. 4 2010 wurde auf persönliche Webroboter eingegangen. Im Artikel wurden dann Möglichkeiten genannt, wie man mit JavaScript Kontoauszüge herunterlädt oder mit Perl oder Ruby(-Mechanize und Nokogiri) seine Onlinebankinggeschäfte scripten kann. Mal abgesehen davon, daß ich Nie und Nimmer selbstgeschriebene Scripte auf mein Bankkonto loslassen würde, hat mich am Artikel befremdet daß auf weitere offensichtliche, weniger exotische Möglichkeiten nicht eingegangen wurde. Ich behaupte einfach mal, daß sich das Scripten von sehr viel mehr stumpfsinnigeren Abläufen viel mehr lohnt, und viel einfacher ist wenn man mit einer weiter verbreiteten (Web-)Programmiersprache <em>HUST</em>Java<em>HUST</em> arbeitet. Ich werde mal auf so ein kleines Beispiel eingehen, unter der Benutzung von <a href="http://htmlunit.sourceforge.net">HtmlUnit</a> und <a href="http://getfirebug.com">FireBug</a>.<br>
 Jeder kennt das Problem: Man hat ein paar Foren oder sonstige Websites, in die man sich meistens nur für ein paar Sekunden einloggt, nur um zu sehen ob es eine Änderung gab, z.B. ob ein neuer Beitrag gepostet wurde, ob man eine Message erhalten hat usw. Mein Ziel ist ein kleines Programm für die Kommandozeile, welches mir einfach nur mitteilt: Ja, es gibt (in meinem Fall) neue Forenbeiträge. Nach dem Herunterladen des HTMLUnit-Zipfiles wird der Ordner entpackt und (hier unter NetBeans) die .JAR-Files in die lokalen Bibliotheken eingefügt (Rechtsklick auf den Projektnamen -&gt; Eigenschaften -&gt; Bibliotheken -&gt; Register "Übersetzen" -&gt; JAR/Verzeichnis hinzufügen). Jetzt gehts los: Wir erzeugen einen WebClient:</p>

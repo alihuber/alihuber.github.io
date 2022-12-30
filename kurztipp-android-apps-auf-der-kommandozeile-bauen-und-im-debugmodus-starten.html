@@ -6,42 +6,42 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>Kurztipp: Android Apps auf der Kommandozeile bauen und im Debugmodus starten</title>
-        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
         <meta name="description" content="Der Emulator wird mit emulator -avd <avd-name> gestartet. Welche avds angelegt sind kann unter Ubuntu mit einem Blick in das Verzeichnis..." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <h1><a href="/">alis_blog</a></h1>
                 <nav>
                         <ul>
                                 <li><a
-                                <a href="alihuber.github.io/">Home</a>
+                                <a href="/">Home</a>
                                 </li>
 
-                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                <li><a href="/pages/about.html">About</a>
                                 </li>
 <!--                                                 <li><a
-                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                                href="/category/android.html">Android</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                                href="/category/arduino.html">Arduino</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                                href="/category/bucher.html">Bücher</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                                href="/category/factor.html">Factor</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                                href="/category/it-stuff.html">IT-Stuff</a>
                                                 </li>
  -->
                                         <li><a
-                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        <a href="/categories">Categories </a>
                                         </li>
                                         <li><a
-                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        <a href="/archives">Archives</a>
                                         </li>
                         </ul>
                 </nav>
@@ -50,7 +50,7 @@
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="alihuber.github.io/kurztipp-android-apps-auf-der-kommandozeile-bauen-und-im-debugmodus-starten.html" rel="bookmark"
+        <a href="/kurztipp-android-apps-auf-der-kommandozeile-bauen-und-im-debugmodus-starten.html" rel="bookmark"
            title="Permalink to Kurztipp: Android Apps auf der Kommandozeile bauen und im Debugmodus starten">Kurztipp: Android Apps auf der Kommandozeile bauen und im Debugmodus starten</a></h1>
     </header>
 
@@ -59,8 +59,8 @@
               Published: Mi 23 Oktober 2013
       </abbr>
       <address class="vcard author">
-              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
-              In <a href="alihuber.github.io/category/ubuntu.html">Ubuntu</a>.
+              By                       <a class="url fn" href="/author/ali.html">ali</a>
+              In <a href="/category/ubuntu.html">Ubuntu</a>.
       </address>
       <p>Der Emulator wird mit <code>emulator -avd &lt;avd-name&gt;</code> gestartet. Welche avds angelegt sind kann unter Ubuntu mit einem Blick in das Verzeichnis <code>/home/$USER/.android/avd/</code> gesehen werden. Wenn der Emulator läuft, kann mit <code>adb devices</code> gesehen werden, welche devices aufgelistet sind. Will man eine Logcat-Ausgabe wie unter Eclipse, genügt der Befehl <code>adb logcat</code>. Wenn das Eclipse-Projekt zuvor mit dem Befehl <code>android update project -p .</code> in ein Ant-kompatibles Projekt umgewandelt wurde, kann im Projektverzeichnis mit <code>ant clean debug</code> das Projekt gebaut werden. <code>clean</code> ist hier wichtig, da es sonst zu seltsamen Fehlermeldungen kommt. Das erzeugte .apk wird dann mit <code>adb install /pfad/zur/datei</code> auf dem device installiert. Die App selbst wird mit dem Befehl</p>
 <div class="highlight"><pre><span></span><code>adb shell am start -D -a android.intent.action.MAIN -n com.package.name/com.package.name.MainActivityName

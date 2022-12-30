@@ -6,42 +6,42 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>Arduino plattformunabhängig ansprechen mit pyserial</title>
-        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
         <meta name="description" content="Um Plattformunabhängig dem Arduino (Uno) über die serielle Schnittstelle Nachrichten zu schicken bietet sich ja zunächst der Weg über Java oder..." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <h1><a href="/">alis_blog</a></h1>
                 <nav>
                         <ul>
                                 <li><a
-                                <a href="alihuber.github.io/">Home</a>
+                                <a href="/">Home</a>
                                 </li>
 
-                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                <li><a href="/pages/about.html">About</a>
                                 </li>
 <!--                                                 <li><a
-                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                                href="/category/android.html">Android</a>
                                                 </li>
                                                 <li class="active" ><a
-                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                                href="/category/arduino.html">Arduino</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                                href="/category/bucher.html">Bücher</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                                href="/category/factor.html">Factor</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                                href="/category/it-stuff.html">IT-Stuff</a>
                                                 </li>
  -->
                                         <li><a
-                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        <a href="/categories">Categories </a>
                                         </li>
                                         <li><a
-                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        <a href="/archives">Archives</a>
                                         </li>
                         </ul>
                 </nav>
@@ -50,7 +50,7 @@
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="alihuber.github.io/arduino-plattformunabhangig-ansprechen-mit-pyserial.html" rel="bookmark"
+        <a href="/arduino-plattformunabhangig-ansprechen-mit-pyserial.html" rel="bookmark"
            title="Permalink to Arduino plattformunabhängig ansprechen mit pyserial">Arduino plattformunabhängig ansprechen mit pyserial</a></h1>
     </header>
 
@@ -59,8 +59,8 @@
               Published: Sa 24 November 2012
       </abbr>
       <address class="vcard author">
-              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
-              In <a href="alihuber.github.io/category/arduino.html">Arduino</a>.
+              By                       <a class="url fn" href="/author/ali.html">ali</a>
+              In <a href="/category/arduino.html">Arduino</a>.
       </address>
       <p>Um Plattformunabhängig dem Arduino (Uno) über die serielle Schnittstelle Nachrichten zu schicken bietet sich ja zunächst der Weg über Java oder Processing an. In der aktuellen Dokumentation des Arduino wird der Weg mittels der RXTX-Bibliothek beschrieben. Da ich dies in absehbarer Zeit aber nicht hinbekam (unter anderem weil unter Windows sämtliche beschriebenen Wege die richtigen .dlls als Java-Library einzubinden nicht funktioniert haben) habe ich mich nach einem anderen Weg umgesehen. Der nächste Kandidat war Python, da es auch hier eine gut dokumentierte Bibliothek für serielle Kommunikation gibt: <a href="http://pyserial.sourceforge.net/">pyserial</a> Und so klappt die Verbindung mit (Ubuntu)Linux und Windows 7 (beides 64-Bit):<br>
 Für Windows wird zunächst die Python-Version 2.x (3.x geht laut der pyserial-Dokumentation auch, habe ich aber nicht getestet) in der 32-Bit-Version heruntergeladen und installiert. Bei der 64-Bit-Version gibt es Probleme mit den ctags. Falls der python-Befehl nicht im DOS-Prompt gefunden wird muss noch der Python-Installationsordner dem PATH hinzugefügt werden. Ich wähle dann den Weg der Installation von pyserial über setuptools und pip:<br>

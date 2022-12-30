@@ -6,42 +6,42 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>Rails: Definierte Url-Helper-Methoden zur Laufzeit erfragen</title>
-        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
         <meta name="description" content="Die den durch manuelle Einträge in die routes.rb erzeugten "named routes", die man in Rails 4 jetzt auch im Browser ansehen kann (unter..." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <h1><a href="/">alis_blog</a></h1>
                 <nav>
                         <ul>
                                 <li><a
-                                <a href="alihuber.github.io/">Home</a>
+                                <a href="/">Home</a>
                                 </li>
 
-                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                <li><a href="/pages/about.html">About</a>
                                 </li>
 <!--                                                 <li><a
-                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                                href="/category/android.html">Android</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                                href="/category/arduino.html">Arduino</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                                href="/category/bucher.html">Bücher</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                                href="/category/factor.html">Factor</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                                href="/category/it-stuff.html">IT-Stuff</a>
                                                 </li>
  -->
                                         <li><a
-                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        <a href="/categories">Categories </a>
                                         </li>
                                         <li><a
-                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        <a href="/archives">Archives</a>
                                         </li>
                         </ul>
                 </nav>
@@ -50,7 +50,7 @@
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="alihuber.github.io/rails-definierte-url-helper-methoden-zur-laufzeit-erfragen.html" rel="bookmark"
+        <a href="/rails-definierte-url-helper-methoden-zur-laufzeit-erfragen.html" rel="bookmark"
            title="Permalink to Rails: Definierte Url-Helper-Methoden zur Laufzeit erfragen">Rails: Definierte Url-Helper-Methoden zur Laufzeit erfragen</a></h1>
     </header>
 
@@ -59,8 +59,8 @@
               Published: So 27 Oktober 2013
       </abbr>
       <address class="vcard author">
-              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
-              In <a href="alihuber.github.io/category/rails.html">Rails</a>.
+              By                       <a class="url fn" href="/author/ali.html">ali</a>
+              In <a href="/category/rails.html">Rails</a>.
       </address>
       <p>Die den durch manuelle Einträge in die <code>routes.rb</code> erzeugten "named routes", die man in Rails 4 jetzt auch im Browser ansehen kann (unter http://localhost:3000/rails/info/routes), also z.B. der Form <em>_path und </em>_url werden ja oft als Parameter für <code>link_to</code>-Helpermethoden verwendet, z.B. <code>&lt;%= link_to "About", about_path %&gt;</code>. Nach einer Weile vergisst man fast, dass es sich dabei um Methoden handelt und nicht um Strings. Da Ruby bekanntlich keine Klammern an Methodenaufrufen verlangt wenn die Methode keine Parameter bekommt, lassen sich die Pfade wie Strings verwenden. Aber was ist, wenn zur Laufzeit nur der String bekannt ist? Um es mit den Worten von Michael Hartl's <a href="http://ruby.railstutorial.org/">Rails Tutorial</a> zu fragen: Angenommen ich habe einen RSpec-Test, der nacheinander alle named routes aufrufen und etwas auf dieser Seite testen will:</p>
 <div class="highlight"><pre><span></span><code><span class="n">describe</span> <span class="s1">&#39;Static Pages&#39;</span> <span class="k">do</span>

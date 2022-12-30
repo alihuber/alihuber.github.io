@@ -6,41 +6,41 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>alis_blog - MySQL</title>
-        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <h1><a href="/">alis_blog</a></h1>
                 <nav>
                         <ul>
                                 <li><a
-                                <a href="alihuber.github.io/">Home</a>
+                                <a href="/">Home</a>
                                 </li>
 
-                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                <li><a href="/pages/about.html">About</a>
                                 </li>
 <!--                                                 <li><a
-                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                                href="/category/android.html">Android</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                                href="/category/arduino.html">Arduino</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                                href="/category/bucher.html">Bücher</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                                href="/category/factor.html">Factor</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                                href="/category/it-stuff.html">IT-Stuff</a>
                                                 </li>
  -->
                                         <li><a
-                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        <a href="/categories">Categories </a>
                                         </li>
                                         <li><a
-                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        <a href="/archives">Archives</a>
                                         </li>
                         </ul>
                 </nav>
@@ -48,7 +48,7 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="alihuber.github.io/kurztipp-mysql-kein-zugriff-mit-angelegtem-user.html">Kurztipp: MySQL, kein Zugriff mit angelegtem User</a></h1>
+                    <h1 class="entry-title"><a href="/kurztipp-mysql-kein-zugriff-mit-angelegtem-user.html">Kurztipp: MySQL, kein Zugriff mit angelegtem User</a></h1>
                     Di 26 Februar 2013<p>Für einen Test wollte ich heute eine MySQL-Datenbank anlegen und einen eigens dafür angelegten User von entfernt darauf zugreifen lassen. Also Portweiterleitung eingerichtet und Datenbank nebst User (zum Beispiel mit <a href="http://ewus.de/en/tipp/en/create-mysql-database-and-user">dieser</a> oder <a href="http://www.internist-schmidt-lohfelden.de/ReadMe/Anlegen%20neuer%20Benutzer%20unter%20MySQL.htm">dieser</a> Anleitung) mit der Konsole angelegt. Aber im MySQL-Workbench ist das angelegte Schema mit dem frischen User einfach nicht zu sehen, egal wie man noch an den Rechten schraubt. Und nicht mal über die Konsole auf der Datenbank einloggen kann man sich! Die Lösung steht dann natürlich <a href="http://dev.mysql.com/doc/refman/5.1/de/access-denied.html">hier unten</a>. Im Host-Wert für den neuen User darf kein "Jokerzeichen" wie % stehen, weil es sonst Probleme mit Verbindungen gibt, die von <code>localhost</code> kommen. Und nachdem ich wieder mal viel zu lange rumprobierte und dann einfach gleich die entfernte Verbindung testete lief alles wie geschmiert.</p>                </article>
             </aside><!-- /#featured -->
         <section id="extras" class="body">

@@ -6,41 +6,41 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>alis_blog - Vagrant</title>
-        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <h1><a href="/">alis_blog</a></h1>
                 <nav>
                         <ul>
                                 <li><a
-                                <a href="alihuber.github.io/">Home</a>
+                                <a href="/">Home</a>
                                 </li>
 
-                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                <li><a href="/pages/about.html">About</a>
                                 </li>
 <!--                                                 <li><a
-                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                                href="/category/android.html">Android</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                                href="/category/arduino.html">Arduino</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                                href="/category/bucher.html">Bücher</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                                href="/category/factor.html">Factor</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                                href="/category/it-stuff.html">IT-Stuff</a>
                                                 </li>
  -->
                                         <li><a
-                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        <a href="/categories">Categories </a>
                                         </li>
                                         <li><a
-                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        <a href="/archives">Archives</a>
                                         </li>
                         </ul>
                 </nav>
@@ -48,7 +48,7 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="alihuber.github.io/requesting-external-resources-from-vagrant-boxes.html">Requesting external resources from Vagrant boxes</a></h1>
+                    <h1 class="entry-title"><a href="/requesting-external-resources-from-vagrant-boxes.html">Requesting external resources from Vagrant boxes</a></h1>
                     Sa 20 Februar 2016<p>At my current work setup we use Vagrant to make the setup of our development environments as seamless as possible. The goal was to just enter 'vagrant up' and automate the rest of the development setup for Ruby on Rails applications whilst letting us use our familiar text edtiors on the host machine. We documented how to set up such an environment in this <a href="https://github.com/tilod/coding_guide/wiki/vagrant">coding guide</a>. This allows us to run the servers, tests and all other background services on the virtual machine and syncing the edited application files via unison, keeping our normal workflow.<br>
 However, over time things became more complex. For example, an application running inside the Vagrant VM has to be tested with real browsers (via Selenium) instead of headless ones (due to it's heavy use of JavaScript), and the application is accessing another application's API running on the host machine. So, we had to tweak things a little:<br>
 The first thing to do is to setup the Vagrant box so that it uses static IPs for itself and the host machine, this is the same if VirtualBox is running in bridged mode. The single most important thing you need to know is that there exists a <code>:private_network</code> - option and the host machine will <em>always</em> be accessible via <code>192.168.50.1</code>. So for the guest machine you have to do this:</p>

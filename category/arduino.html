@@ -6,41 +6,41 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>alis_blog - Arduino</title>
-        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <h1><a href="/">alis_blog</a></h1>
                 <nav>
                         <ul>
                                 <li><a
-                                <a href="alihuber.github.io/">Home</a>
+                                <a href="/">Home</a>
                                 </li>
 
-                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                <li><a href="/pages/about.html">About</a>
                                 </li>
 <!--                                                 <li><a
-                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                                href="/category/android.html">Android</a>
                                                 </li>
                                                 <li class="active" ><a
-                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                                href="/category/arduino.html">Arduino</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                                href="/category/bucher.html">Bücher</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                                href="/category/factor.html">Factor</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                                href="/category/it-stuff.html">IT-Stuff</a>
                                                 </li>
  -->
                                         <li><a
-                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        <a href="/categories">Categories </a>
                                         </li>
                                         <li><a
-                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        <a href="/archives">Archives</a>
                                         </li>
                         </ul>
                 </nav>
@@ -48,7 +48,7 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="alihuber.github.io/arduino-strings-mit-i2c-verschicken.html">Arduino: Strings mit I2C verschicken</a></h1>
+                    <h1 class="entry-title"><a href="/arduino-strings-mit-i2c-verschicken.html">Arduino: Strings mit I2C verschicken</a></h1>
                     Mi 26 Dezember 2012<p>Dieses Jahr war ich wohl fleißig und habe (rein rechnerisch) mindestens 1x im Monat gebloggt. Und hier kommt der letzte Beitrag 2012:</p>
 <p>Für ein Projekt im Rahmen der Veranstaltung "Embedded Systems" sollte ein String mit Informationen für eine RGB-LED-Matrix (Uhrzeit und Farbinformationen als Hex-Wert) über den I2C-Bus der Arduino-Mikrocontroller verschickt werden. Da auf der Empfängerseite eventgesteuert gearbeitet wird ist das verschicken mehrerer kleiner Nachrichten nicht praktikabel, da es auch etwas dauert bis die gesendeten Informationen weiterverarbeitet sind. Experimente mit allzu langen Strings waren auch nicht erfolgreich, so dass ein String der Länge 12 verschickt wird. Um den "cplusplussigen" Umgang mit einzelnen Bytes zu vermeiden wird der zu verschickende String zuerst in ein Char-Array gewandelt:</p>
 <div class="highlight"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">outstring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;12150x68FC63&quot;</span><span class="p">;</span><span class="w"></span>
@@ -95,13 +95,13 @@
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="alihuber.github.io/arduino-plattformunabhangig-ansprechen-mit-pyserial.html" rel="bookmark"
+                    <h1><a href="/arduino-plattformunabhangig-ansprechen-mit-pyserial.html" rel="bookmark"
                            title="Permalink to Arduino plattformunabhängig ansprechen mit pyserial">Arduino plattformunabhängig ansprechen mit pyserial</a></h1>
                 </header>
 
                 <div class="entry-content">
                 <p>Um Plattformunabhängig dem Arduino (Uno) über die serielle Schnittstelle Nachrichten zu schicken bietet sich ja zunächst der Weg über Java oder Processing an. In der aktuellen Dokumentation des Arduino wird der Weg mittels der RXTX-Bibliothek beschrieben. Da ich dies in absehbarer Zeit aber nicht hinbekam (unter anderem weil unter Windows …</p>
-                <a class="readmore" href="alihuber.github.io/arduino-plattformunabhangig-ansprechen-mit-pyserial.html">read more</a>
+                <a class="readmore" href="/arduino-plattformunabhangig-ansprechen-mit-pyserial.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->

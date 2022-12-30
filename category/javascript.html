@@ -6,41 +6,41 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>alis_blog - JavaScript</title>
-        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <h1><a href="/">alis_blog</a></h1>
                 <nav>
                         <ul>
                                 <li><a
-                                <a href="alihuber.github.io/">Home</a>
+                                <a href="/">Home</a>
                                 </li>
 
-                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                <li><a href="/pages/about.html">About</a>
                                 </li>
 <!--                                                 <li><a
-                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                                href="/category/android.html">Android</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                                href="/category/arduino.html">Arduino</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                                href="/category/bucher.html">Bücher</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                                href="/category/factor.html">Factor</a>
                                                 </li>
                                                 <li><a
-                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                                href="/category/it-stuff.html">IT-Stuff</a>
                                                 </li>
  -->
                                         <li><a
-                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        <a href="/categories">Categories </a>
                                         </li>
                                         <li><a
-                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        <a href="/archives">Archives</a>
                                         </li>
                         </ul>
                 </nav>
@@ -48,7 +48,7 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="alihuber.github.io/short-tip-tinymce-errors-and-sugarjs.html">Short Tip: TinyMCE errors and Sugar.js</a></h1>
+                    <h1 class="entry-title"><a href="/short-tip-tinymce-errors-and-sugarjs.html">Short Tip: TinyMCE errors and Sugar.js</a></h1>
                     Fr 14 November 2014<p>Just in case you are using TinyMCE in your Rails project and something like this has ever happened to you:</p>
 <p><img alt="tiny.gif" src="http://3.bp.blogspot.com/-4nuMpARqmPA/VGXnqJ00MyI/AAAAAAAAAC4/-VE4FkAteWM/s1600/tiny.gif"></p>
 <p>including both TinyMCE and Sugar.js is the culprit. Somehow Sugar.js's methods which are defined on native JavaScript objects interfere with TinyMCE (which is about 100k LOC, according to <code>cloc</code>, so don't bother debugging). Isolating the cause of the errors shown above did cost me several hours of desperate debugging, because they were not noticed for months, and I had to inspect every change that was made since it was reportedly working.</p>                </article>
