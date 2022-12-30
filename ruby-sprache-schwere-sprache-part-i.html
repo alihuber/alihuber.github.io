@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Ruby Sprache - Schwere Sprache Part I</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="Ruby macht es einem nicht gerade leicht. Selbst Personen wie Peter Cooper, die seit jahrzehnten professionell Ruby einsetzen geben in z.B. "Ruby..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/ruby-sprache-schwere-sprache-part-i.html" rel="bookmark"
+           title="Permalink to Ruby Sprache - Schwere Sprache Part I">Ruby Sprache - Schwere Sprache Part I</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2012-04-10T11:53:00+02:00">
+              Published: Di 10 April 2012
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/ruby.html">Ruby</a>.
+      </address>
+      <p>Ruby macht es einem nicht gerade leicht. Selbst Personen wie <a href="http://peterc.org/">Peter Cooper</a>, die seit jahrzehnten professionell Ruby einsetzen geben in z.B. "Ruby Trick Shots" zu, immer noch über Dinge wie mögliche Syntax zu stolpern von denen sie nicht mal eine Ahnung hatten dass es sie gibt. Selbst die einfachsten Dinge wie z.B. Klassenvariablen werden durch den Umstand, dass Klassen an Sich auch Objekte sind zu einem gewaltigen Verwirrspiel aufgeblasen und erzeugen Henne-Ei-Probleme nebst Knoten im Gehirn. Beim Durcharbeiten von "The Well-Grounded Rubyist" (was ich übrigens vor allen anderen Ruby-Büchern hätte beackern sollen) bin ich auf Seite 157 auf das erste große Verständnisproblem mit Klassenvariablen gestoßen, und das obwohl ich seit gut sieben Monaten fast ausschließlich mit Ruby programmiere. Vielleicht ist ja das damit gemeint, wenn es heißt dass sich Ruby "einfach anwenden und produktiv einsetzen" lässt. Einfach schlecht und so produktiv, dass man von der häßlichkeit des eigenen Codes beschämt drei Monate später am liebsten die Festplatte formatieren möchte. Aber ich schweife ab...</p>
+<p>Klassen sind auch Objekte. Ich kann eine Klasse "fragen", welche Variablen es in einer Instanz von ihr geben wird - obwohl es noch kein Objekt zu der Klasse gibt. Das heißt, es gibt ja ein Objekt. Nur ist das eben die Klasse an sich. Hier spannt einen "The Well-Grounded Rubyist" noch etwas auf die Folter und verspricht, dem Problem "was war zuerst da" später auf den Grund zu gehen.</p>
+<p>Ich kann in irb on-the-fly eine Klasse definieren, im einfachsten Fall</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Leer</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p><code>Leer</code> hat jetzt schon einige Methoden:</p>
+<div class="highlight"><pre><span></span><code><span class="no">Leer</span><span class="o">.</span><span class="n">instance_methods</span><span class="o">.</span><span class="n">size</span>
+</code></pre></div>
+
+<p>ergibt ganze 56, welche direkt von <code>Object</code> geerbt werden (das stimmt eigentlich nicht ganz, weil <code>Object</code> das <code>Kernel</code>-Modul einmixt und so den großteil seiner Methoden bekommt). Ich kann <code>Leer</code> nach seiner Klasse fragen:</p>
+<div class="highlight"><pre><span></span><code><span class="no">Leer</span><span class="o">.</span><span class="n">class</span>
+</code></pre></div>
+
+<p>ergibt <code>Class</code>. Das Objekt "Leer" gehört also zur Klasse "Class". Dass "Leer" wirklich ein Objekt ist zeigt die Nachfrage nach <code>Leer.object_id</code>. Ich kann "Leer" auch nach seinen Instanzmethoden und -variablen fragen. Variablen hat es keine, und die Methoden sind die 56 von oben. Erzeuge ich eine Instanz der Klasse "Leer", kann ich sie nicht nach Instanzmethoden fragen (klar, die sind ja in der Klasse selbst definiert) sondern nach den Methoden direkt, mit <code>.methods</code>. Wie kommen jetzt die Variablen in Spiel?</p>
+<p>In Ruby gibt es zwei Arten von Variablen in einer Klasse. Die einen sind die Klassenvariablen, die anderen sind die Instanzvariablen. Es ist aber auch wichtig, wo diese definiert sind. Anders als in Java, wo sie einfach oben über dem Konstruktor deklariert und später im Konstruktor initialisiert werden, "leben" die Variablen in verschiedenen "Scopes" welche von self zum Zeitpunkt der Deklaration abhängen.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">NichtLeer</span>
+  <span class="vi">@v</span> <span class="o">=</span> <span class="s1">&#39;v&#39;</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p>Hier ist eine Instanzvariable. Diese gehört, da sie außerhalb von jeder Methode definiert wurde zum "Klassenobjekt" <code>NichtLeer</code>. (Getter/Setter gibt es so ja nicht, und initialize ist nur eine weitere Methode, die beim Aufruf von <code>.new</code> automatisch ausgeführt wird.) Mittels <code>NichtLeer.instance_variable_get :@v</code> wird auch tatsächlich "v" ausgegeben. Erzeuge ich nun eine Instanz <code>l</code> von "NichtLeer" ist @v erstmal so nicht zu erreichen. <code>l.instance_variables</code> gibt ein leeres Array zurück. Dabei ist das doch eine Instanzvariable! Ja schon, aber nur von Objekten der Klasse "Class", aber nicht von Objekten der Klasse "NichtLeer"! Bei der Deklaration von Klassenvariablen (die mit dem '@@' vorne dran) verläuft das ganze eigentlich analog.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">NichtLeer2</span>
+  <span class="vc">@@v</span> <span class="o">=</span> <span class="s1">&#39;v&#39;</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p><code>NichtLeer2.instance_variables</code> ist nun ohne Inhalt, dafür gibt es einen Eintrag in <code>NichtLeer2.class_variables</code>. An den Wert von @@v kommt man mittels <code>NichtLeer2.get_class_variable :@@v</code>. Instanzen von "NichtLeer2" haben immer noch keine Instanzvariablen im Array. Diese Klassenvariablen sind an der ganzen Geschichte noch das Java-mäßigste, obwohl man in Verbindung mit Vererbung <a href="http://blog.codegram.com/2011/4/understanding-class-instance-variables-in-ruby">vorsichtig sein sollte</a>. Machen wir das ganze etwas spannender: Jetzt fügen wir eine Methode ein.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Voll</span>
+  <span class="vi">@v</span> <span class="o">=</span> <span class="s1">&#39;v&#39;</span>
+  <span class="k">def</span> <span class="nf">zeige_var</span>
+    <span class="vi">@v</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p>Wird jetzt <code>v = V.new</code> und <code>v.zeige_var</code> ausgeführt, kommt ein <code>nil</code> angeflogen. "Aber ich habe doch meine Variable deklariert!" wird jeder Java-Programmierer jetzt ausrufen. Das stimmt zwar, aber die dynamische Natur von Ruby bezieht sich nicht nur auf die Typisierung. Genau wie oben gehört die erste Variable @v zum Klassenobjekt und nicht zu einem Instanzobjekt. Die Methode zeige_var hat keine Kenntnis über die Instanzvariablen - Die hat nicht mal das instantiiere Objekt der Klasse "Voll" selbst! Es wird zwar ein Objekt mit <code>.new</code> erzeugt, da aber nichts initialisiert wurde, existiert für das Objekt der Klasse "Voll" die Variable noch gar nicht. Der erste gravierende Unterschied zu Java: Variablen existieren erst ab dem Zeitpunkt, zu dem der Interpreter vorbeischaut und sie zuweist.</p>
+<p>Ein zweites Beispiel macht dies deutlicher:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">NochVoller</span>
+  <span class="vi">@v</span> <span class="o">=</span> <span class="s1">&#39;v&#39;</span>
+  <span class="k">def</span> <span class="nf">mache_var</span>
+    <span class="vi">@v</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">zeige_var</span>
+    <span class="vi">@v</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="n">v</span> <span class="o">=</span> <span class="no">NochVoller</span><span class="o">.</span><span class="n">new</span>
+<span class="n">v</span><span class="o">.</span><span class="n">mache_var</span>
+<span class="n">v</span><span class="o">.</span><span class="n">zeige_var</span>
+</code></pre></div>
+
+<p>Wird "zeige_var" ausgeführt, bevor "mache_var" ausgeführt wurde gibt es wieder ein <code>nil</code>. Wo schaut der Interpreter aber eigentlich genau nach, wenn er @var zunächst nicht findet?</p>
+<p>Die Antwort sind die oben erwähnten Scopes von self. self ändert sich jedes mal, wenn eine Klasse/Methode/Modul definiert wird, außerdem gibt es noch das top-level (das ist das Standardlevel in z.B. einer irb-Session oder in einem Klassendefinitionslosen Script). In dem Codeschnipsel von oben ist self zunächst <code>NochVoller</code> - und zwar das berühmt-berüchtigte Klassenobjekt. Das erste @v wird also auf Class-Objekt-Ebene definiert und alle Aussagen von oben treffen zu. Danach geht es mit einer Methodendefinition weiter. Zu Methodendefinitionen ist wichtig zu wissen dass die Methoden zwar definiert werden, ausgeführt aber erst wenn es ein Objekt gibt welches die Methoden überhaupt ausführen kann. Die Methoden sind quasi Verhaltensweisen eines noch unbekanntes Objekts in der Zukunft. Und genau dieses bekommt in "mache_var" ein @v verpasst. Und zwar wenn auf einem schon instantiierten Objekt die Methode aufgerufen wird, in der ein @v einem Speicherstück z.B. <code>#Voller:0x0000000130c518</code> zugewiesen wird. Das ist der zweite gravierende Unterschied zu Java: self kann verschiedene Formen annehmen, und leider ist es nicht immer offensichtlich was gerade abläuft. Ich habe nur an der Oberfläche gekratzt, aber komplexere Beispiele sollten mit der Methode "Schau immer wo @bar deklariert wurde und verfolge die Reihenfolgen der Instantiierungen und Zuweisungen im Code" leichter zu verstehen sein.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

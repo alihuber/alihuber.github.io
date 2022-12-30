@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Kurztipp: .vimrc, .gvimrc und Tabnummern</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="Einer meiner Lieblingsshortcuts unter (g/m)vim ist es, mit gt und gT zwischen Tabs zu springen. Ich arbeite mit extrem vielen offenen Tabs, und..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/kurztipp-vimrc-gvimrc-und-tabnummern.html" rel="bookmark"
+           title="Permalink to Kurztipp: .vimrc, .gvimrc und Tabnummern">Kurztipp: .vimrc, .gvimrc und Tabnummern</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2014-12-29T13:53:00+01:00">
+              Published: Mo 29 Dezember 2014
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/vim.html">Vim</a>.
+      </address>
+      <p>Einer meiner Lieblingsshortcuts unter (g/m)vim ist es, mit <code>gt</code> und <code>gT</code> zwischen Tabs zu springen. Ich arbeite mit extrem vielen offenen Tabs, und mit <code>n gt</code> kann auch direkt auf einen der offenen Tabs gesprungen werden. (Ich tue das sogar mit Chrome und <a href="http://vimium.github.io/">Vimium</a>, das ist aber eine andere Geschichte). Das Einzige was nervt ist die fehlende Anzeige der Tabnummern, ab 10-13 offenen Tabs wird die Sache etwas unübersichtlich. Eine kurze Suche fördert zu Tage, dass mit <code>:set guitablabel=%N\ %f</code> die Tabnummern eingeblendet werden können, was während dem Betrieb auch funktioniert. Also ab in die .vimrc damit. Leider tut sich danach gar nichts, auch die Option in einem <code>if has("gui_running") ... endif</code> zu setzen brachte nichts. Nach noch viel mehr googelei fiel mir auf, dass diese Option nicht in der .vimrc, sondern in der .gvimrc gesetzt werden muss, von deren Existenz ich bisher gar nichts wusste. Alle .vimrc-Einstellungen in die .gvimrc zu packen bringt aber auch nichts, es müssen schon zwei Dateien sein. Einige Erklärungen zur .gvimrc gibt es <a href="http://vimdoc.sourceforge.net/htmldoc/gui.html">hier</a>. Kurz: Einige Einstellungen (wie <code>guitablabel</code>) müssen unbedingt in die .gvimrc, die auch extra nach der .vimrc geladen wird.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

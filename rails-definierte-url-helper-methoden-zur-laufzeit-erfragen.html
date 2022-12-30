@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Rails: Definierte Url-Helper-Methoden zur Laufzeit erfragen</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="Die den durch manuelle Einträge in die routes.rb erzeugten "named routes", die man in Rails 4 jetzt auch im Browser ansehen kann (unter..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/rails-definierte-url-helper-methoden-zur-laufzeit-erfragen.html" rel="bookmark"
+           title="Permalink to Rails: Definierte Url-Helper-Methoden zur Laufzeit erfragen">Rails: Definierte Url-Helper-Methoden zur Laufzeit erfragen</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2013-10-27T17:03:00+01:00">
+              Published: So 27 Oktober 2013
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/rails.html">Rails</a>.
+      </address>
+      <p>Die den durch manuelle Einträge in die <code>routes.rb</code> erzeugten "named routes", die man in Rails 4 jetzt auch im Browser ansehen kann (unter http://localhost:3000/rails/info/routes), also z.B. der Form <em>_path und </em>_url werden ja oft als Parameter für <code>link_to</code>-Helpermethoden verwendet, z.B. <code>&lt;%= link_to "About", about_path %&gt;</code>. Nach einer Weile vergisst man fast, dass es sich dabei um Methoden handelt und nicht um Strings. Da Ruby bekanntlich keine Klammern an Methodenaufrufen verlangt wenn die Methode keine Parameter bekommt, lassen sich die Pfade wie Strings verwenden. Aber was ist, wenn zur Laufzeit nur der String bekannt ist? Um es mit den Worten von Michael Hartl's <a href="http://ruby.railstutorial.org/">Rails Tutorial</a> zu fragen: Angenommen ich habe einen RSpec-Test, der nacheinander alle named routes aufrufen und etwas auf dieser Seite testen will:</p>
+<div class="highlight"><pre><span></span><code><span class="n">describe</span> <span class="s1">&#39;Static Pages&#39;</span> <span class="k">do</span>
+  <span class="n">describe</span> <span class="s2">&quot;titles&quot;</span> <span class="k">do</span>
+    <span class="n">it</span> <span class="s2">&quot;should have the correct title&quot;</span> <span class="k">do</span>
+      <span class="sx">%w[home help about]</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">title</span><span class="o">|</span>
+        <span class="n">visit</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">title</span><span class="si">}</span><span class="s2">_path&quot;</span>
+        <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">have_title</span><span class="p">(</span><span class="s2">&quot;Sample App - </span><span class="si">#{</span><span class="n">title</span><span class="o">.</span><span class="n">capitalize!</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p>Das würde nicht funktionieren. Die <code>visit</code>-Methode verlangt zwar einen String, aber der String "<code>home_path</code>" hat hier überhaupt keine Bedeutung! Einfach zu schreiben <code>visit home_path</code> funktioniert dennoch, da die Helper-Methoden je nach Endung (_path oder _url) einen String zurückgeben. Wie kommt man nun an die richtige Methode bzw. URL? Man könnte zwar im Array die richtigen Pfade angeben, sobald die Sache aber komplexer oder die Pfade unregelmäßiger werden, wird das Ganze schwer zu warten.<br>
+Hier hilft der <a href="http://ridingtheclutch.com/post/1299774075/using-rails-3-route-helpers-outside-of-a">Blogpost</a> von Rob Cameron weiter. Im Modul <code>Rails.application.routes.url_helpers</code> sind alle Pfade als Methoden definiert und unter Ruby 2 tauchen diese als Symbole mit der <code>methods</code>-Methode auf. Dem Modul selbst kann man so mit <code>to_sym</code> und (dem Smalltalk-Erbe sei Dank) <code>send</code> einen String schicken und erhält dann den richtigen Pfad zurück. Die richtige Zeile wäre also <code>visit Rails.application.routes.url_helpers.send(("#{title}_path").to_sym)</code> und die Webseiten werden brav besucht.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

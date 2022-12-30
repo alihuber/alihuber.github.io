@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Factor und GVim</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="Da ich im Rahmen der Vorlesung "Software Engineering komplexer Systeme" in den Genuß des Erlernens einer konkatenativen, stackbasierten..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li class="active" ><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/factor-und-gvim.html" rel="bookmark"
+           title="Permalink to Factor und GVim">Factor und GVim</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2010-04-30T20:08:00+02:00">
+              Published: Fr 30 April 2010
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/factor.html">Factor</a>.
+      </address>
+      <p>Da ich im Rahmen der Vorlesung "Software Engineering komplexer Systeme" in den Genuß des Erlernens einer konkatenativen, stackbasierten Programmiersprache namens <a href="http://www.factorcode.org">Factor</a> komme, stellte sich für mich die Frage wie ich mir das Programmieren in Factor erleichtern kann. Ich hatte die Sprache in den letzten Semesterferien schon einmal kurz ausprobiert, ohne jedoch den genauen Kontext zu kennen. Abgesehen davon, das alles, aber auch alles erstmal ungewohnt war fand ich am schlimmsten, dass es so schwer war die Quelldateien zu editieren.<br>
+Da es jetzt richtig mit Factor losgeht und ich schon seit fast einem Jahr auf der ach-so-steilen Lernkurve des Vim-Editors herumschliddere und nicht mal einen Bruchteil der coolen Funktionen richtig intelligent benutze dachte ich mir dass es wohl am besten wäre, den GVim für das editieren der Factor-Sourcefiles zu verwenden, um auch mit dem GVim besser umgehen zu können.<br>
+Leider sind die Anleitungen zum Einrichten eines Editors in den Factor-Docs widersprüchlich, was mich wieder mal fast zwei Stunden des Herumprobierens gekostet hat.<br>
+Hier nun die Anleitung, wie man Factor beibringt, den GVim als Standardeditor gleich beim Start zu kennen und vor allem das Syntax-Highlighting auch unter Windows zu aktivieren:</p>
+<p><strong>Unixähnliche:</strong><br>
+Die Datei <code>.factor-rc</code> im <code>/home/username/</code>-Verzeichnis erstellen und folgendes einfügen:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">USING:</span><span class="w"> </span><span class="nn">namespaces</span><span class="w"> </span><span class="nn">editors.gvim</span><span class="w"> </span><span class="k">;</span><span class="w"></span>
+<span class="s">&quot;/usr/bin/gvim&quot;</span><span class="w"> </span><span class="no">\ gvim-path</span><span class="w"> </span><span class="nb">set-global</span><span class="w"></span>
+</code></pre></div>
+
+<p>Nun sollte, wenn man im Listener</p>
+<div class="highlight"><pre><span></span><code>wordname<span class="w"> </span>edit<span class="w"></span>
+</code></pre></div>
+
+<p>eingibt automatisch der GVim erscheinen und die entsprechende Datei in der sich das Word befindet schon geladen haben.<br>
+Syntax-Highlighting bekommt man, indem man die Ordner <code>ftdetect</code>, <code>ftplugin</code>, <code>plugin</code> und <code>syntax</code>, welche sich im Factor-Ordner unter <code>/misc/vim</code> befinden in das Verzeichnis <code>/home/username/.vim/</code> kopiert (das Verzeichnis war bei mir bis auf den Ordner "tags" leer).</p>
+<p><strong>WindowsXP:</strong><br>
+Die Datei <code>factor-rc</code> im Verzeichnis <code>C:\Dokumente und Einstellungen\username</code> erstellen und folgendes einfügen:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">USING:</span><span class="w"> </span><span class="nn">namespaces</span><span class="w"> </span><span class="nn">editors.gvim</span><span class="w"> </span><span class="k">;</span><span class="w"></span>
+<span class="s">&quot;C:\\Programme\\Vim\\vim72\\gvim.exe&quot;</span><span class="w"> </span><span class="no">\ gvim-path</span><span class="w"> </span><span class="nb">set-global</span><span class="w"></span>
+</code></pre></div>
+
+<p>Die Ordner für die Vim-Dateien sind im Factor-Ordner an derselben Stelle.<br>
+Den Inhalt der jeweiligen Ordner für das Syntax-Highlighting kopierte ich mir in die jeweiligen Ordner unter <code>C:\Programme\Vim\vimfiles</code> Nun sollte der GVim wie oben integriert sein.</p>
+<p><strong>Windows7:</strong><br>
+Im Grunde alles wie bei WindowsXP nur dass der Pfad für die factor-rc-Datei im Verzeichnis <code>C:\Users\username</code> liegt.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

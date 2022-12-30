@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Ubuntu Studio, PodXT und Ardour</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="Als ich mich dazu entschloß, Gitarrenaufnahmen mit dem Line6 PodXT als Interface und dem freien Recordingprogramm Ardour zu realisieren, hatte ich..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/ubuntu-studio-podxt-und-ardour.html" rel="bookmark"
+           title="Permalink to Ubuntu Studio, PodXT und Ardour">Ubuntu Studio, PodXT und Ardour</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2010-12-29T14:55:00+01:00">
+              Published: Mi 29 Dezember 2010
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/ubuntu.html">Ubuntu</a>.
+      </address>
+      <p>Als ich mich dazu entschloß, Gitarrenaufnahmen mit dem Line6 PodXT als Interface und dem freien Recordingprogramm Ardour zu realisieren, hatte ich mich schon auf stundenlanges konfigurieren und endlose Probleme eingestellt. Aber es kam alles ganz anders.<br>
+Zuerst installierte ich das aktuelle Ubuntu Studio, dann das Paket <code>line6-usb-source</code> aus den Repositories. Als ich dann anfing, mich mit dem JACK-Soundserver zu beschäftigen kam erstmal die Ernüchterung: Der Pod wird nicht angezeigt. Zu meiner Schande muß ich gestehen, daß ich mich nicht and das RTFM-Prinzip gehalten hatte und nun etwas Zeit mit googeln verschwendete. In der <a href="http://www.tanzband-scream.at/line6/driverdocs.pdf">Anleitung</a> steht nämlich wie es gemacht wird:<br>
+Mit <code>aplay -l</code> wird die hw-Nummer des neuen Audiogeräts herausgefunden, und mit <code>jackd -d alsa -d hw:1</code> wird der JACK-Server gestartet und als alsa-Gerät jenes an Adresse 1 benutzt. Voilà: Der Pod fungiert nun als Soundkarte und selbst Systemsounds werden über ihn ausgegeben. Und jetzt kam so was, wie es nur alle Jubeljahre einmal vorkommt:<br>
+Ardour gestartet, neue Spur angelegt, auf "record" gedrückt und: funktioniert. Ganz von allein. Die Kanäle wurden vom JACK-Server automatisch richtig gemappt! Für jemanden, der von Sachen wie VST und Konsorten keine Ahnung hat und Cubase bisher nur als "Auf-Record-Button-Drück-Äffchen" kennt, eine Offenbarung!<br>
+Wird jetzt in anderen Audioprogrammen als Sounddevice ebenfalls der Jack-Server angegeben, lassen sich lustige Dinge anstellen: Es läßt sich super-einfach ein Song abspielen (über den Kopfhörerausgang des Pod), dazu wird mitgeschrammelt, aber nur das gespielte wird von Ardour aufgezeichnet. Genial zum Üben, schnell eingerichtet und alles völlig umsonst!</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

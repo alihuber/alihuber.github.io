@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>alis_blog - Ruby</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="alihuber.github.io/fun-with-paas-dokkufy.html">Fun with PaaS & dokkufy</a></h1>
+                    So 26 Oktober 2014<p>Since I had to work with certain PaaS implementations for the first time a few months ago, I wanted to try out something similar for myself. One very cool way I found are the <a href="https://github.com/progrium/dokku/">dokku shell scripts</a>. Unfortunately, I couldn't get ssh and Git work properly with my local virtual machine, so I switched to the <a href="https://github.com/cbetta/dokkufy">dokkufy gem</a> and it worked like a charm. So, here it is: The fool-proof way to get a local virtual machine to pose as a heroku/cloud foundry replacement, serve a simple rack web application and even map it to an occupied domain name!  </p>
+<p>I did set up a fresh VM (I used VirtualBox) with Ubuntu 14.04 and set the network settings to bridged mode. This will be somewhat tedious every time the IP changes, but it seemed to be the least complicated way. I just named the user of the VM 'dokku'.<br>
+I then installed <code>openssh-server</code> (I also installed <code>ssh-askpass</code>, but in the meantime I'm not certain the scripts actually need it) and made sure I could ssh into the virtual machine.<br>
+On the host machine I did set up a directory with the <a href="https://devcenter.heroku.com/articles/rack">simplest possible rack app from the heroku docs</a>. Then I installed the dokkufy gem and ran the <code>dokkufy server</code> script. It asks for the IP address, hostname and user name (and several times for the password, that's not an error). The IP address was something like 192.168.0.12, and I decided to use ali.io as a domain name, just to realize a bit later that this name is already taken. But as we will see in a moment, that's no big deal since dokku sets the pushed applications to be subdomains of the set domain name and you can manipulate the hosts file.<br>
+Since dokkufy uses dokku, but in a nicer, more interactive way (as described <a href="http://cristianobetta.com/blog/2014/08/05/your-mini-heroku-with-dokku-and-dokkufy">here</a>), it will set up Git, docker and nginx and has to download about 400 mb. After it's finished you should be able to hit 192.168.0.12 (or whatever your VM's IP is) and see the welcome screen from nginx.<br>
+After that I ran <code>git init</code> in the directory of the rack app and committed all the files. Then I ran the <code>dokkufy app</code> command, which asked me again about user name and IP, and did set up Git remotes (the part I couldn't get to work with dokku itself). The output from <code>git push dokku master</code> should look familiar to everyone who has used cloud foundry, and the app will be deployed into a docker container inside the VM (see the links above).<br>
+To reach the app under the set domain name, I had to add the following to the <code>/etc/hosts</code>-file on the host machine: <code>192.168.0.12 hello.ali.io</code> Now http://ali.io gave me the personal page of some guy, but hello.ali.io gave me a 'bad gateway' (111: Connection refused while connecting to upstream)  error. As it turned out, these lines in <code>/etc/nginx/nginx.conf</code> in the VM were missing:</p>
+<div class="highlight"><pre><span></span><code>http <span class="o">{</span>
+  ...
+  server <span class="o">{</span>
+    server_name .ali.io<span class="p">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p>After restarting nginx hello.ali.io gave me the long awaited "Hello World!" message.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="alihuber.github.io/fritzbox-sessions-und-md5-hashes.html" rel="bookmark"
+                           title="Permalink to FRITZ!Box-Sessions und MD5-Hashes">FRITZ!Box-Sessions und MD5-Hashes</a></h1>
+                </header>
+
+                <div class="entry-content">
+                <p>Wie gültige Session-IDs für das Webinterface einer FRITZ!Box erzeugt werden ist eigentlich ziemlich gut in <a href="http://www.avm.de/de/Extern/files/session_id/AVM_Technical_Note_-_Session_ID.pdf">einem der vielen Docs</a> beschrieben. Sogar mit Codebeispielen in C#, wow! Will man die Codebeispiele jedoch auf eine andere Programmiersprache wie Python oder Ruby portieren gibt es eine Überraschung. Der Code</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="nf">GetResponse …</span></code></pre></div>
+                <a class="readmore" href="alihuber.github.io/fritzbox-sessions-und-md5-hashes.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="alihuber.github.io/how-to-get-a-basic-travis-jenkins-ci-clone-in-70-loc-or-less.html" rel="bookmark"
+                           title="Permalink to How to get a basic (Travis | Jenkins)-CI clone in 70 LOC or less">How to get a basic (Travis | Jenkins)-CI clone in 70 LOC or less</a></h1>
+                </header>
+
+                <div class="entry-content">
+                <p>On my frequent trips to Continuous Integration Land I struggled to get a local instance of Travis CI running. It seems the Travis folks are overwhelmed by their own success and support for a use case like that just has no prioriy for them, which is perfectly understandable. I then …</p>
+                <a class="readmore" href="alihuber.github.io/how-to-get-a-basic-travis-jenkins-ci-clone-in-70-loc-or-less.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="alihuber.github.io/testing-file-downloads-with-sinatra-capybara-and-travis-ci.html" rel="bookmark"
+                           title="Permalink to Testing file downloads with Sinatra, Capybara and Travis-CI">Testing file downloads with Sinatra, Capybara and Travis-CI</a></h1>
+                </header>
+
+                <div class="entry-content">
+                <p>I recently had the problem to test the content of downloaded files in an non-Rails environment. It's a simple Sinatra-app that returns a file via a GET-Request and the <code>send_file</code>-helper. My first approach was to check for the response-body after Capybara clicked the 'Download'-button, but I got the same …</p>
+                <a class="readmore" href="alihuber.github.io/testing-file-downloads-with-sinatra-capybara-and-travis-ci.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="alihuber.github.io/the-grand-unified-singleton-class-theory.html" rel="bookmark"
+                           title="Permalink to The grand unified singleton class theory">The grand unified singleton class theory</a></h1>
+                </header>
+
+                <div class="entry-content">
+                <p>One of the hardest things to understand in Ruby (beside groking blocks and syntax like in this <a href="http://viget.com/extend/practical-uses-of-ruby-blocks">LIST_ITEMS_FOR example</a>, which deserves a blog post of its own) is all the fuzz about meta/eigen/singleton classes. I've read dozens of blog posts, the "Metaprogramming Ruby" book, dozens of explanations on …</p>
+                <a class="readmore" href="alihuber.github.io/the-grand-unified-singleton-class-theory.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="alihuber.github.io/methoden-und-blocks-nachtrag-2.html" rel="bookmark"
+                           title="Permalink to Methoden und Blocks - Nachtrag 2">Methoden und Blocks - Nachtrag 2</a></h1>
+                </header>
+
+                <div class="entry-content">
+                <p>Im Post vom 09. Juli über Ruby Blocks und Procs steht schon richtig, dass all diese Verkürzungen mit dem Ampersand ("&amp;") gehen, weil er in Verbindung mit Methodenargumenten ein Wrapper für <code>to_proc</code> ist. Leider kommt es noch sehr auf den Kontext an, was dann tatsächlich konvertiert wird: Ein Block in ein …</p>
+                <a class="readmore" href="alihuber.github.io/methoden-und-blocks-nachtrag-2.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="alihuber.github.io/methoden-und-blocks-nachtrag.html" rel="bookmark"
+                           title="Permalink to Methoden und Blocks - Nachtrag">Methoden und Blocks - Nachtrag</a></h1>
+                </header>
+
+                <div class="entry-content">
+                <p>Ich glaube ich habe für mich den perfekten Weg gefunden, mir die Funktionsweise von Methoden mit Blocks und Procs usw. zu erschliessen. Die größte Hilfe war <a href="http://allaboutruby.wordpress.com/2006/01/20/ruby-blocks-101/">dieser</a> Blogeintrag, in dem der magische Satz stand: Denke über die Methode (m3 weiter unten) wie über eine Methode die drei Argumente bekommt: x …</p>
+                <a class="readmore" href="alihuber.github.io/methoden-und-blocks-nachtrag.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="alihuber.github.io/ruby-sprache-schwere-sprache-part-iii.html" rel="bookmark"
+                           title="Permalink to Ruby Sprache - Schwere Sprache Part III">Ruby Sprache - Schwere Sprache Part III</a></h1>
+                </header>
+
+                <div class="entry-content">
+                <p>Die meiste Verwirrung um Blocks und Procs rührt daher, wie beide zusammenarbeiten. Die Aussage, ALLES in Ruby sei ein Objekt ist einfach nicht wahr: Blocks, Argumentlisten und Funktionen sind keine Objekte, daher ist die gern zitierte Aussage, Ruby sei "objektorientierter" als Python ziemlicher Quatsch, <a href="http://linuxdevcenter.com/pub/a/linux/2001/11/29/ruby.html">so hatte Matz das gar nicht …</a></p>
+                <a class="readmore" href="alihuber.github.io/ruby-sprache-schwere-sprache-part-iii.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="alihuber.github.io/ruby-sprache-schwere-sprache-part-ii.html" rel="bookmark"
+                           title="Permalink to Ruby Sprache - Schwere Sprache Part II">Ruby Sprache - Schwere Sprache Part II</a></h1>
+                </header>
+
+                <div class="entry-content">
+                <p>"The well-grounded Rubyist" hat auch eine sehr gute Einführung in Blocks und Procs. Ich bin zwar selbst noch gefühlt meilenweit davon entfernt, Situationen zu erkennen in denen selbst definierte Methoden die Blocks aufnehmen nützlich sein könnten; vielleicht bin ich zu sehr in der Java-Denke drinnen und werde es wohl nie …</p>
+                <a class="readmore" href="alihuber.github.io/ruby-sprache-schwere-sprache-part-ii.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="alihuber.github.io/ruby-sprache-schwere-sprache-part-i.html" rel="bookmark"
+                           title="Permalink to Ruby Sprache - Schwere Sprache Part I">Ruby Sprache - Schwere Sprache Part I</a></h1>
+                </header>
+
+                <div class="entry-content">
+                <p>Ruby macht es einem nicht gerade leicht. Selbst Personen wie <a href="http://peterc.org/">Peter Cooper</a>, die seit jahrzehnten professionell Ruby einsetzen geben in z.B. "Ruby Trick Shots" zu, immer noch über Dinge wie mögliche Syntax zu stolpern von denen sie nicht mal eine Ahnung hatten dass es sie gibt. Selbst die einfachsten …</p>
+                <a class="readmore" href="alihuber.github.io/ruby-sprache-schwere-sprache-part-i.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+    Page 1 / 2
+        <a href="alihuber.github.io/category/ruby2.html">&raquo;</a>
+        <a href="alihuber.github.io/category/ruby2.html">&#8649;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

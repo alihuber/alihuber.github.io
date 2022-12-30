@@ -1,4 +1,0 @@
-User-agent: *
-Disallow:
-
-Sitemap: https://alihuber.github.io/sitemap.xml

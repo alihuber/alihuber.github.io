@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>alis_blog - Java</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">alis_blog</a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/category/bucher.html">Bücher</a></li>
+                    <li><a href="/category/misc.html">misc</a></li>
+                    <li><a href="/category/python.html">Python</a></li>
+                    <li><a href="/category/review.html">Review</a></li>
+                    <li><a href="/category/unix.html">Unix</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/java-media-framework-und-eclipse.html">Java Media Framework und Eclipse</a></h1>
+                    <p>"Und wie Sie sehen, sehen Sie nichts." Da es so offensichtlich nicht nur mir nach der Installation des JMF + des MP3-Plugins erging beschreibe ich mal wie ich es bei mir zum laufen gebracht habe.<br>
+Direkt nach der Installation konnte Eclipse mit den import-Anweisungen wie z.B.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">javax.Manager._</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">javax.Player._</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+
+<p>nichts anfangen. Auch das Einfügen der JARs in den Buildpath des Projekts welche unter</p>
+<div class="highlight"><pre><span></span><code>C<span class="p">:</span><span class="nl">\Programme\JMF2.1.1e\lib</span>
+</code></pre></div>
+
+<p>liegen brachte nichts.<br>
+Ich habe auf meinem System komischerweise das JDK und noch zusätzlich das JRE installiert (obwohl das JDK allein genügt) und Eclipse erkennt nun unter "Installed JREs" zwei verschiedene JREs obwohl beide im selben Ordner liegen: hat es wohl einiges verspult (typisch!). Ich habe dann die oben gennanten JARs in die Verzeichnisse</p>
+<div class="highlight"><pre><span></span><code>C<span class="p">:</span><span class="nl">\Programme\Java\jre6\lib\ext\</span>
+</code></pre></div>
+
+<p>und</p>
+<div class="highlight"><pre><span></span><code>C<span class="p">:</span><span class="nl">\Programme\Java\jdk1.6.0_18\jre\lib\ext</span>
+</code></pre></div>
+
+<p>kopiert, und noch zusätzlich die JARs aus ersterem Verzeichnis als externe JARs in den Buildpath eingefügt. Auch die JRE System Library habe ich auf die andere geändert, die bei mir "JRE6u18" heißt. Und siehe da:<br>
+Es funktioniert plötzlich. Aber warum weiß ich jetzt noch immer nicht genau...</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://getpelican.com/">Pelican</a></li>
+                            <li><a href="https://www.python.org/">Python.org</a></li>
+                            <li><a href="https://palletsprojects.com/p/jinja/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

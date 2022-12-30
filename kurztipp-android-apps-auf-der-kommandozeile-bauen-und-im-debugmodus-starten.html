@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Kurztipp: Android Apps auf der Kommandozeile bauen und im Debugmodus starten</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="Der Emulator wird mit emulator -avd <avd-name> gestartet. Welche avds angelegt sind kann unter Ubuntu mit einem Blick in das Verzeichnis..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/kurztipp-android-apps-auf-der-kommandozeile-bauen-und-im-debugmodus-starten.html" rel="bookmark"
+           title="Permalink to Kurztipp: Android Apps auf der Kommandozeile bauen und im Debugmodus starten">Kurztipp: Android Apps auf der Kommandozeile bauen und im Debugmodus starten</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2013-10-23T00:16:00+02:00">
+              Published: Mi 23 Oktober 2013
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/ubuntu.html">Ubuntu</a>.
+      </address>
+      <p>Der Emulator wird mit <code>emulator -avd &lt;avd-name&gt;</code> gestartet. Welche avds angelegt sind kann unter Ubuntu mit einem Blick in das Verzeichnis <code>/home/$USER/.android/avd/</code> gesehen werden. Wenn der Emulator läuft, kann mit <code>adb devices</code> gesehen werden, welche devices aufgelistet sind. Will man eine Logcat-Ausgabe wie unter Eclipse, genügt der Befehl <code>adb logcat</code>. Wenn das Eclipse-Projekt zuvor mit dem Befehl <code>android update project -p .</code> in ein Ant-kompatibles Projekt umgewandelt wurde, kann im Projektverzeichnis mit <code>ant clean debug</code> das Projekt gebaut werden. <code>clean</code> ist hier wichtig, da es sonst zu seltsamen Fehlermeldungen kommt. Das erzeugte .apk wird dann mit <code>adb install /pfad/zur/datei</code> auf dem device installiert. Die App selbst wird mit dem Befehl</p>
+<div class="highlight"><pre><span></span><code>adb shell am start -D -a android.intent.action.MAIN -n com.package.name/com.package.name.MainActivityName
+</code></pre></div>
+
+<p>im Debugmodus gestartet.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

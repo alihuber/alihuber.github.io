@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Variablen aus modellosen HTMLForms an Rails-Controller übermitteln</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="Eine Funktionalität über die man als Rails-Anfänger eventuell stolpern könnte ist die Übergabe von Variablen aus HTML-Elementen an Funktionen..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/variablen-aus-modellosen-htmlforms-an-rails-controller-ubermitteln.html" rel="bookmark"
+           title="Permalink to Variablen aus modellosen HTMLForms an Rails-Controller übermitteln">Variablen aus modellosen HTMLForms an Rails-Controller übermitteln</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2012-06-16T20:19:00+02:00">
+              Published: Sa 16 Juni 2012
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/rails.html">Rails</a>.
+      </address>
+      <p>Eine Funktionalität über die man als Rails-Anfänger eventuell stolpern könnte ist die Übergabe von Variablen aus HTML-Elementen an Funktionen eines Controllers, obwohl das Model dazu diese Felder gar nicht hat. Die eigentlich sehr einfache Aufgabe - "Ich hab hier ne Checkbox und nen Button und wenn ich draufklicke soll der Controller den Zustand der Checkbox aus den Params ziehen" - hat mir einige Kopfschmerzen bereitet. Nicht zuletzt weil Rails ja so MVC-zentriert ist und die "normalen" HTML-Forms normalerweise an die Felder eines Models gekoppelt sind. <code>form_for</code> oder gar <code>semantic_form_for</code> unterstützen auf den ersten Blick eben nur genau die Felder eines Models, die Action dazu ist dann der submit-Button welcher ein POST auf die create-Action ausführen wird. Die meisten Tutorials gehen vielleicht noch am Rand auf andere Submitmöglichkeiten wie <code>:method =&gt; "GET"</code> ein und das war's. Die wohl einzig richtige Vorgehensweise ist eine komplett durchgemodelte Applikation und alles andere ist nicht RESTful. Manchmal will man aber einfach zusätzliche Funktionen haben... Und so habe ich es hinbekommen:<br>
+Die Ressource wird wie gehabt in die routes.rb eingetragen, z.B. <code>resources :events</code> Die beispielhaften Events haben bei mir nur zwei eigene Felder - <code>starts_at</code> und <code>ends_at</code>. Angenommen ich wollte jetzt noch einige beliebige Filterregeln haben, die per Klick auf einen Button die derzeitige Ansicht eines Events refreshen. In der show-View steht für das setzen des Datums eines Events wie gehabt folgender HAML-Code (unter Verwendung von formtastic):</p>
+<div class="highlight"><pre><span></span><code><span class="p">=</span> <span class="n">semantic_form_for</span> <span class="vi">@event</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+<span class="w">  </span><span class="p">=</span> <span class="n">f</span><span class="o">.</span><span class="n">text_field</span> <span class="ss">:starts_at</span>
+<span class="w">  </span><span class="p">=</span> <span class="n">f</span><span class="o">.</span><span class="n">text_field</span> <span class="ss">:ends_at</span>
+<span class="w">  </span><span class="p">=</span> <span class="n">f</span><span class="o">.</span><span class="n">actions</span> <span class="ss">:submit</span>
+</code></pre></div>
+
+<p>Dies erzeugt standardmäßig einen PUT-Request und wird den Code in der Update-Methode des Event-Controllers ausführen um die aktuellen Daten des derzeitigen Events zu ändern. Was viele Tutorials/Bücher leider verschweigen ist dass es zu form_for-Elementen/Methoden auch form_tag-Elemente/Methoden gibt, die nicht an ein Model gebunden sein müssen. In der show-View habe ich dann folgenden Code hinzugefügt:</p>
+<div class="highlight"><pre><span></span><code><span class="p">=</span> <span class="n">form_tag</span><span class="p">(</span><span class="s1">&#39;/events/1&#39;</span><span class="p">,</span> <span class="ss">:method</span> <span class="o">=&gt;</span> <span class="s2">&quot;get&quot;</span><span class="p">)</span> <span class="k">do</span>
+<span class="w">  </span><span class="p">=</span> <span class="n">check_box_tag</span> <span class="s1">&#39;tos&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="kp">false</span>
+<span class="w">  </span><span class="p">=</span> <span class="n">submit_tag</span> <span class="s2">&quot;Submit&quot;</span>
+</code></pre></div>
+
+<p>Dies ist ein beispielhafter Schalter der dem Controller übermitteln soll ob die "Terms Of Service" angeklickt wurden. Die form_tag()-Methode kann also auf einer bestimmten URL (hier "/events/1", es gehen aber beliebige) mit einem bestimmten Request definiert werden und führt dann auch die Methode im Controller aus die auf diese URL und diesen HTTP-Request passt, also in diesem Fall "show": Die Seite wird jetzt einfach neu gerendert. Im Parameter-Hash der aber nun so aussieht: <code>{"utf8"=&gt; "✓", "tos"=&gt; "yes", "commit"=&gt; "Submit", "id"=&gt; "1"}</code> sind nun die Daten der Checkbox drin, die mit <code>params[:tos]</code> in der show-Methode im Events-Controller abgefragt werden können, ganz ohne JavaScript-Trickserei.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>YAML-Parserfehler in travis.yml</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="Nach mehrstündigem Kampf mit der .travis.yml lag folgener Fehler ERROR: An error occured while trying to parse your .travis.yml file. Please make..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/yaml-parserfehler-in-travisyml.html" rel="bookmark"
+           title="Permalink to YAML-Parserfehler in travis.yml">YAML-Parserfehler in travis.yml</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2013-07-28T15:53:00+02:00">
+              Published: So 28 Juli 2013
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/travis-ci.html">Travis-CI</a>.
+      </address>
+      <p>Nach mehrstündigem Kampf mit der .travis.yml lag folgener Fehler <code>ERROR: An error occured while trying to parse your .travis.yml file.</code>
+<code>Please make sure that the file is valid YAML.</code> an etwas ziemlich blödem. Und es waren nicht einmal die Tabs, die Travis <a href="http://hexcoder.us/2013/05/26/travis-ci-and-tabs/">nicht so gut</a> findet. Es war ein anderer Fehler, den weder die On- und Offline-<a href="http://lint.travis-ci.org/">Travis-Lints</a> noch diverse YAML-Validatoren fanden. Was ist wohl der Unterschied zwischen</p>
+<p><code>"echo ’Xauth $USERNAME USERNAME’ &amp;gt;&amp;gt; fhhn.conf"</code></p>
+<p>und</p>
+<p><code>"echo 'Xauth $USERNAME PASSWORD' &amp;gt;&amp;gt; fhhn.conf"</code></p>
+<p>Der <a href="http://yaml-online-parser.appspot.com/">WYSIWYG-YAML-nach-JSON-Editor</a> hat es gezeigt: Im ersten nicht funktionierendem String steckt ein typographisch korrekter Apostroph, der leider in so etwas wie \u2019 umgewandelt wird was Travis gar nicht schmeckt. Der gerade Apostroph dagegen wird zum korrekten String.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Ruby Sprache - Schwere Sprache Part II</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content=""The well-grounded Rubyist" hat auch eine sehr gute Einführung in Blocks und Procs. Ich bin zwar selbst noch gefühlt meilenweit davon entfernt,..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/ruby-sprache-schwere-sprache-part-ii.html" rel="bookmark"
+           title="Permalink to Ruby Sprache - Schwere Sprache Part II">Ruby Sprache - Schwere Sprache Part II</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2012-07-07T13:06:00+02:00">
+              Published: Sa 07 Juli 2012
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/ruby.html">Ruby</a>.
+      </address>
+      <p>"The well-grounded Rubyist" hat auch eine sehr gute Einführung in Blocks und Procs. Ich bin zwar selbst noch gefühlt meilenweit davon entfernt, Situationen zu erkennen in denen selbst definierte Methoden die Blocks aufnehmen nützlich sein könnten; vielleicht bin ich zu sehr in der Java-Denke drinnen und werde es wohl nie erkennen.<br>
+Ob eine Methode einen Block bekommen kann, hängt davon ab ob sie "yield" enthält.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">y_meth</span>
+  <span class="k">yield</span>
+<span class="k">end</span>
+<span class="n">y_meth</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s1">&#39;gabba&#39;</span> <span class="p">}</span>
+<span class="c1">#=&gt; gabba</span>
+</code></pre></div>
+
+<p>"yield" kann auch Parameter haben, diese werden in den aufnehmenden Block zwischen Pipe-Characters geschrieben. Alle Regeln für Methodenargumente (Vorbelegung, Sponge-Stern usw.) gelten auch für Blockparameter.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_all</span>
+  <span class="k">yield</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span>
+<span class="k">end</span>
+<span class="n">add_all</span> <span class="k">do</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="o">|</span>
+  <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span>
+<span class="k">end</span>
+<span class="c1">#=&gt; 6</span>
+</code></pre></div>
+
+<p>Der Interpreter springt regelrecht hin und her: Zuerst wird a an add_all übergeben, da dort nur yield steht und a das erste Argument ist, bekommt add_all eine "1" zurück. Was damit gemacht werden soll steht im Block von add_all. Das ist sehr kontraintuitiv, da man es von vielen anderen Programmiersprachen gewohnt ist nur einen Ausführungspfad innerhalb einer Methode zu haben ("man steckt was rein und es kommt was raus"). add_all mit den Parametern für yield kann ja sonstwo definiert sein oder selbst Methodenaufrufe beinhalten, die selbst wieder einen Block benutzen. Oder einen Block in dem yield vorkommt, welcher das geyieldete Element wieder an die ursprüngliche Methode zurückgibt.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Array</span>
+  <span class="k">def</span> <span class="nf">give_back</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="o">[]</span> <span class="c1"># Das erste e kommt von each bzw. give_back, # das zweite wird an den Block von give_back gegeben.</span>
+    <span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="n">acc</span> <span class="o">&lt;&lt;</span> <span class="k">yield</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">}</span>
+    <span class="n">acc</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">].</span><span class="n">give_back</span> <span class="p">{</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="n">e</span><span class="p">\</span><span class="o">*</span><span class="p">\</span><span class="o">*</span><span class="mi">2</span> <span class="p">}</span>
+<span class="c1">#=&gt; [1, 4, 9]</span>
+</code></pre></div>
+
+<p>Dann gehen auch noch mehrere yield-Statements in einer Methode und vieles mehr. Aus genau solchen Gründen sind Blocks für mich größtenteils weiße Flecken in fremdem Sourcecode, weil die Ausdrucksstärke von Ruby wegen solchen Ratespielchen flöten geht.<br>
+Was Blocks jetzt genau mit Procs zu tun haben darauf werde ich ein andermal eingehen.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Kurztipp: Fenster auf bestimmtem Desktop starten</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="Das Erste was ich mache wenn der Rechner hochgefahren ist: Ich starte ein paar Programme welche ich auf verschiedene Desktops verteile. Schneller..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/kurztipp-fenster-auf-bestimmtem-desktop-starten.html" rel="bookmark"
+           title="Permalink to Kurztipp: Fenster auf bestimmtem Desktop starten">Kurztipp: Fenster auf bestimmtem Desktop starten</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2010-09-28T15:10:00+02:00">
+              Published: Di 28 September 2010
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/ubuntu.html">Ubuntu</a>.
+      </address>
+      <p>Das Erste was ich mache wenn der Rechner hochgefahren ist: Ich starte ein paar Programme welche ich auf verschiedene Desktops verteile. Schneller kann man dies mit dem CompizConfig-Einstellungs-Manager erledigen:<br>
+Den Manager starten, auf "Fenster platzieren" klicken. Unter dem Reiter "Fixed Widow Placement" gibt es die Einstellung "Windows with fixed viewport". Wenn man auf "Neu" klickt, kann man mit dem Pluszeichen ein Fenster definieren, welches man platzieren will. Die Einstellungen für Typ und Wert erfährt man mit <code>xprop</code>, einem der unzähligen Hilfsprogramme des X-Window-Systems: <code>xprop</code> in einer Konsole starten: der Mauszeiger ändert sich nun zu einem Kreuz. Klickt man nun in ein beliebiges Fenster, erscheinen auf der Konsole alle möglichen Daten, unter anderem auch <code>WM_CLASS(STRING)</code> (welches der Fensterklassenname ist usw.) die man in die Eingabemaske für das zu platzierende Fenster füllt. Mit den X-Y Schiebereglern wählt man dann den Desktop aus auf welchem das Fenster erscheinen soll: fertig. Falls es nicht gleich funktioniert, einfach mit verschiedenen Einstellungen herumprobieren.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

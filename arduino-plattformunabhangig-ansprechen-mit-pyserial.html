@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Arduino plattformunabhängig ansprechen mit pyserial</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="Um Plattformunabhängig dem Arduino (Uno) über die serielle Schnittstelle Nachrichten zu schicken bietet sich ja zunächst der Weg über Java oder..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li class="active" ><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/arduino-plattformunabhangig-ansprechen-mit-pyserial.html" rel="bookmark"
+           title="Permalink to Arduino plattformunabhängig ansprechen mit pyserial">Arduino plattformunabhängig ansprechen mit pyserial</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2012-11-24T13:08:00+01:00">
+              Published: Sa 24 November 2012
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/arduino.html">Arduino</a>.
+      </address>
+      <p>Um Plattformunabhängig dem Arduino (Uno) über die serielle Schnittstelle Nachrichten zu schicken bietet sich ja zunächst der Weg über Java oder Processing an. In der aktuellen Dokumentation des Arduino wird der Weg mittels der RXTX-Bibliothek beschrieben. Da ich dies in absehbarer Zeit aber nicht hinbekam (unter anderem weil unter Windows sämtliche beschriebenen Wege die richtigen .dlls als Java-Library einzubinden nicht funktioniert haben) habe ich mich nach einem anderen Weg umgesehen. Der nächste Kandidat war Python, da es auch hier eine gut dokumentierte Bibliothek für serielle Kommunikation gibt: <a href="http://pyserial.sourceforge.net/">pyserial</a> Und so klappt die Verbindung mit (Ubuntu)Linux und Windows 7 (beides 64-Bit):<br>
+Für Windows wird zunächst die Python-Version 2.x (3.x geht laut der pyserial-Dokumentation auch, habe ich aber nicht getestet) in der 32-Bit-Version heruntergeladen und installiert. Bei der 64-Bit-Version gibt es Probleme mit den ctags. Falls der python-Befehl nicht im DOS-Prompt gefunden wird muss noch der Python-Installationsordner dem PATH hinzugefügt werden. Ich wähle dann den Weg der Installation von pyserial über setuptools und pip:<br>
+Von <a href="http://pypi.python.org/pypi/setuptools">http://pypi.python.org/pypi/setuptools</a> die ez_setup.py herunterladen und ausführen. Wenn jetzt der Befehl <code>easy_install</code> nicht gefunden wird, muss noch der Unterordner Scripts im Python-Installationsordner zum PATH hinzugefügt werden. Jetzt kann <code>easy_install pip</code> ausgeführt werden, und zum Schluss wird noch mittels <code>pip install pyserial</code> pyserial selbst installiert. Wenn in der python-REPL dann <code>import serial</code> funktioniert, hat die Installation geklappt. Unter Ubuntu muss lediglich das Paket python-serial installiert werden.</p>
+<p>Das Script um auf den gewählten seriellen Port einen String zu verschicken hat dann nur wenige Zeilen:</p>
+<div class="highlight"><pre><span></span><code><span class="n">ser</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="s1">&#39;/dev/ttyUSB0&#39;</span><span class="p">,</span> <span class="mi">9600</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+<p>öffnet z.B. eine serielle Verbindung mit dem Gerät an ttyUSB0 mit 9600 Baud und</p>
+<div class="highlight"><pre><span></span><code><span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Hallo&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>schreibt dann einen String. Ein ganzes Programm zum Einstellen aller Parameter mit GUI hat dann maximal 100 Zeilen.</p>
+<p>Zu beachten ist dann noch, dass unter Windows die Ports mit einem Integer angesprochen werden, der auch noch bei 0 anfängt zu zählen, der Wert für COM3 wäre dann 2. Außerdem können die Ports unter Windows nicht geshared werden, d.h. es ist nicht möglich gleichzeitig das Python-Script und den Serial Monitor der Arduino-Entwicklungsumgebung zu benutzen, da es sonst einen Verbindungsfehler gibt.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

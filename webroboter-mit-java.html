@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Webroboter mit Java</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="In der Zeitschrift C't Nr. 4 2010 wurde auf persönliche Webroboter eingegangen. Im Artikel wurden dann Möglichkeiten genannt, wie man mit..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/webroboter-mit-java.html" rel="bookmark"
+           title="Permalink to Webroboter mit Java">Webroboter mit Java</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2010-05-29T21:54:00+02:00">
+              Published: Sa 29 Mai 2010
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/java.html">Java</a>.
+      </address>
+      <p>In der Zeitschrift C't Nr. 4 2010 wurde auf persönliche Webroboter eingegangen. Im Artikel wurden dann Möglichkeiten genannt, wie man mit JavaScript Kontoauszüge herunterlädt oder mit Perl oder Ruby(-Mechanize und Nokogiri) seine Onlinebankinggeschäfte scripten kann. Mal abgesehen davon, daß ich Nie und Nimmer selbstgeschriebene Scripte auf mein Bankkonto loslassen würde, hat mich am Artikel befremdet daß auf weitere offensichtliche, weniger exotische Möglichkeiten nicht eingegangen wurde. Ich behaupte einfach mal, daß sich das Scripten von sehr viel mehr stumpfsinnigeren Abläufen viel mehr lohnt, und viel einfacher ist wenn man mit einer weiter verbreiteten (Web-)Programmiersprache <em>HUST</em>Java<em>HUST</em> arbeitet. Ich werde mal auf so ein kleines Beispiel eingehen, unter der Benutzung von <a href="http://htmlunit.sourceforge.net">HtmlUnit</a> und <a href="http://getfirebug.com">FireBug</a>.<br>
+Jeder kennt das Problem: Man hat ein paar Foren oder sonstige Websites, in die man sich meistens nur für ein paar Sekunden einloggt, nur um zu sehen ob es eine Änderung gab, z.B. ob ein neuer Beitrag gepostet wurde, ob man eine Message erhalten hat usw. Mein Ziel ist ein kleines Programm für die Kommandozeile, welches mir einfach nur mitteilt: Ja, es gibt (in meinem Fall) neue Forenbeiträge. Nach dem Herunterladen des HTMLUnit-Zipfiles wird der Ordner entpackt und (hier unter NetBeans) die .JAR-Files in die lokalen Bibliotheken eingefügt (Rechtsklick auf den Projektnamen -&gt; Eigenschaften -&gt; Bibliotheken -&gt; Register "Übersetzen" -&gt; JAR/Verzeichnis hinzufügen). Jetzt gehts los: Wir erzeugen einen WebClient:</p>
+<div class="highlight"><pre><span></span><code><span class="n">WebClient</span><span class="w"> </span><span class="n">wb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">WebClient</span><span class="p">();</span><span class="w"></span>
+</code></pre></div>
+
+<p>und eine neue HtmlPage:</p>
+<div class="highlight"><pre><span></span><code><span class="n">HtmlPage</span><span class="w"> </span><span class="n">page</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wb</span><span class="p">.</span><span class="na">getPage</span><span class="p">(</span><span class="s">&quot;http://url.zum.forum&quot;</span><span class="p">);</span><span class="w"></span>
+</code></pre></div>
+
+<p>Über diese Page können wir uns nun die Elemente selektieren, welche wir für das Einloggen brauchen. Die Namen der Elemente bekommt man über FireBug (Rechtsklick -&gt; Element untersuchen). In meinem Fall heißen sie: "username", "password" (die Eingabefelder) und "login" (der Submit-Button).</p>
+<div class="highlight"><pre><span></span><code><span class="n">HtmlTextInput</span><span class="w"> </span><span class="n">login</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HtmlTextInput</span><span class="p">)</span><span class="w"> </span><span class="n">page</span><span class="p">.</span><span class="na">getElementByName</span><span class="p">(</span><span class="s">&quot;login&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">HtmlPasswordInput</span><span class="w"> </span><span class="n">pass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HtmlPasswordInput</span><span class="p">)</span><span class="w"> </span><span class="n">page</span><span class="p">.</span><span class="na">getElementByName</span><span class="p">(</span><span class="s">&quot;password&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">HtmlSubmitInput</span><span class="w"> </span><span class="n">submit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HtmlSumitInput</span><span class="p">)</span><span class="w"> </span><span class="n">page</span><span class="p">.</span><span class="na">getElementByName</span><span class="p">(</span><span class="s">&quot;login&quot;</span><span class="p">);</span><span class="w"></span>
+</code></pre></div>
+
+<p>Jetzt können wir die Daten eingeben:</p>
+<div class="highlight"><pre><span></span><code><span class="n">login</span><span class="p">.</span><span class="na">setValueAttribute</span><span class="p">(</span><span class="s">&quot;mein_username&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">pass</span><span class="p">.</span><span class="na">setValueAttribute</span><span class="p">(</span><span class="s">&quot;mein_passwort&quot;</span><span class="p">);</span><span class="w"></span>
+</code></pre></div>
+
+<p>Wenn wir auf den "submit"-Button drücken, ist das Ergebnis wieder eine HtmlPage.</p>
+<div class="highlight"><pre><span></span><code><span class="n">HtmlPage</span><span class="w"> </span><span class="n">loggedInPage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HtmlPage</span><span class="p">)</span><span class="w"> </span><span class="n">submit</span><span class="p">.</span><span class="na">click</span><span class="p">();</span><span class="w"></span>
+</code></pre></div>
+
+<p>Jetzt, da ich eingeloggt bin, kann ich mich auf die Suche nach Elementen machen, die neue Beiträge anzeigen. Ich will aber keinen HTMLParser oder XPath verwenden, und die Funktion sich neue Beiträge anzeigen zu lassen gibt es bereits. (By the way: es handelt sich um eines dieser unsäglichen phpBB-Foren). Also tue ich das Einfachste: Ich vergleiche Strings. Das ist zwar ein wenig dilettantisch, für meine Zwecke aber ausreichend. Das Menü des Forums hat eine Schaltfläche "Neue Beiträge". Das Forum ist in Tabellen eingeteilt, und die meisten Menüpunkte sind einfach Links auf die Suchfunktion. Also lasse ich mir die neue HtmlPage geben, welche man durch drücken des Links "Neue Beiträge" bekommt, und erzeuge mir einen String mit der Ergebnisseite:</p>
+<div class="highlight"><pre><span></span><code><span class="n">HtmlAnchor</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">loggedInPage</span><span class="p">.</span><span class="na">getAnchorByText</span><span class="p">(</span><span class="s">&quot;Neue Beiträge&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">HtmlPage</span><span class="w"> </span><span class="n">newPosts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HtmlPage</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="na">click</span><span class="p">();</span><span class="w"></span>
+</code></pre></div>
+
+<p>Der HtmlAnchor ist hier ein Wrapper für das HTML-Element "a". Jetzt habe ich die Website, welche mir, falls es keine neuen Posts gibt sowas wie "Es wurden keine passenden Ergebnisse gefunden." ausgibt (weil es ja eine interne Suche war). Die <code>asText()</code>-Methode eines HtmlPage-Objektes gibt Webseiten auch schön formatiert aus, so wie sie in minimalistischen Textbrowsern wie "links" aussehen würden. Da ich aber keine Vorschau auf neue Beiträge will, sondern nur wissen will ob es neue gibt, durchsuche ich einfach den Ergebnisstring:</p>
+<div class="highlight"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">theText</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">newPosts</span><span class="p">.</span><span class="na">asText</span><span class="p">();</span><span class="w"></span>
+<span class="k">if</span><span class="p">(</span><span class="n">theText</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;Es wurden keine passenden Ergebnisse gefunden&quot;</span><span class="p">))</span><span class="w"></span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Nix neues&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="k">else</span><span class="w"></span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Es gibt neue Beiträge!&quot;</span><span class="p">);</span><span class="w"></span>
+</code></pre></div>
+
+<p>Und schon habe ich einen netten kleinen Webroboter, ganz ohne Low-Level-Sachen wie HTTP-GET Anfragen oder zusätzliche Parser. Die Methoden zum Ausloggen funktionieren genauso, obwohl sie in meinem Fall unnötig wären, da man automatisch ausgeloggt wird.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

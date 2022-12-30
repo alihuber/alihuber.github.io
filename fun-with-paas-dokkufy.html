@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Fun with PaaS & dokkufy</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="Since I had to work with certain PaaS implementations for the first time a few months ago, I wanted to try out something similar for myself. One..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/fun-with-paas-dokkufy.html" rel="bookmark"
+           title="Permalink to Fun with PaaS & dokkufy">Fun with PaaS & dokkufy</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2014-10-26T15:00:00+01:00">
+              Published: So 26 Oktober 2014
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/ruby.html">Ruby</a>.
+      </address>
+      <p>Since I had to work with certain PaaS implementations for the first time a few months ago, I wanted to try out something similar for myself. One very cool way I found are the <a href="https://github.com/progrium/dokku/">dokku shell scripts</a>. Unfortunately, I couldn't get ssh and Git work properly with my local virtual machine, so I switched to the <a href="https://github.com/cbetta/dokkufy">dokkufy gem</a> and it worked like a charm. So, here it is: The fool-proof way to get a local virtual machine to pose as a heroku/cloud foundry replacement, serve a simple rack web application and even map it to an occupied domain name!  </p>
+<p>I did set up a fresh VM (I used VirtualBox) with Ubuntu 14.04 and set the network settings to bridged mode. This will be somewhat tedious every time the IP changes, but it seemed to be the least complicated way. I just named the user of the VM 'dokku'.<br>
+I then installed <code>openssh-server</code> (I also installed <code>ssh-askpass</code>, but in the meantime I'm not certain the scripts actually need it) and made sure I could ssh into the virtual machine.<br>
+On the host machine I did set up a directory with the <a href="https://devcenter.heroku.com/articles/rack">simplest possible rack app from the heroku docs</a>. Then I installed the dokkufy gem and ran the <code>dokkufy server</code> script. It asks for the IP address, hostname and user name (and several times for the password, that's not an error). The IP address was something like 192.168.0.12, and I decided to use ali.io as a domain name, just to realize a bit later that this name is already taken. But as we will see in a moment, that's no big deal since dokku sets the pushed applications to be subdomains of the set domain name and you can manipulate the hosts file.<br>
+Since dokkufy uses dokku, but in a nicer, more interactive way (as described <a href="http://cristianobetta.com/blog/2014/08/05/your-mini-heroku-with-dokku-and-dokkufy">here</a>), it will set up Git, docker and nginx and has to download about 400 mb. After it's finished you should be able to hit 192.168.0.12 (or whatever your VM's IP is) and see the welcome screen from nginx.<br>
+After that I ran <code>git init</code> in the directory of the rack app and committed all the files. Then I ran the <code>dokkufy app</code> command, which asked me again about user name and IP, and did set up Git remotes (the part I couldn't get to work with dokku itself). The output from <code>git push dokku master</code> should look familiar to everyone who has used cloud foundry, and the app will be deployed into a docker container inside the VM (see the links above).<br>
+To reach the app under the set domain name, I had to add the following to the <code>/etc/hosts</code>-file on the host machine: <code>192.168.0.12 hello.ali.io</code> Now http://ali.io gave me the personal page of some guy, but hello.ali.io gave me a 'bad gateway' (111: Connection refused while connecting to upstream)  error. As it turned out, these lines in <code>/etc/nginx/nginx.conf</code> in the VM were missing:</p>
+<div class="highlight"><pre><span></span><code>http <span class="o">{</span>
+  ...
+  server <span class="o">{</span>
+    server_name .ali.io<span class="p">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p>After restarting nginx hello.ali.io gave me the long awaited "Hello World!" message.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

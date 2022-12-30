@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>alis_blog - Python</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="alihuber.github.io/pyqt4-und-lambda-funktionen.html">PyQt4 und lambda-Funktionen</a></h1>
+                    Mi 09 März 2011<p>Beim Programmieren von GUIs mit PyQt4 stößt man manchmal auf das Problem, daß man beim connecten von Signalen mit Slots bei einem bestimmten Signal eine Funktion aufrufen möchte, welche Parameter übergeben bekommt. Bei mir sah das z.B. so aus:</p>
+<div class="highlight"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">eintrag</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s1">&#39;triggered()&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeffne_datei_aus_menu</span><span class="p">(</span><span class="n">pfad</span><span class="p">))</span>
+</code></pre></div>
+
+<p>Dumm ist nur, daß man es so nicht hinschreiben kann. Der letzte Parameter in der <code>connect()</code>-Methode kann zwar jedes callbare Objekt sein, durch die C++-Herkunft des Qt-Frameworks muß der Aufruf am Ende aber ohne Klammern geschehen, es steht immer nur der Methodenname ohne Klammern da, z.B.:</p>
+<div class="highlight"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nextButton</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s1">&#39;clicked()&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">zeigeAntwort</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Mit lambda-Funktionen ist es aber trotzdem möglich. Die Struktur eines lambda-Ausdruckes sieht bei Python so aus:</p>
+<div class="highlight"><pre><span></span><code><span class="n">g</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span>
+</code></pre></div>
+
+<p>Diese Deklaration entspricht der Funktion</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+</code></pre></div>
+
+<p>Der Witz ist nun, daß man dem "x", welches der lambda-Funktion übergeben wird wie bei einer normalen Funktion gleich einen Parameter mitgeben kann. In obigem Beispiel, in welchem noch der ungültige Methodenaufruf in der <code>connect()</code>-Methode steht habe ich stattdessen eingefügt:</p>
+<div class="highlight"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">eintrag</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s1">&#39;triggered()&#39;</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">der_pfad</span><span class="o">=</span><span class="n">pfad</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeffne_Datei_aus_menu</span><span class="p">(</span><span class="n">pfad</span><span class="p">))</span>
+</code></pre></div>
+
+<p>(Den aktuellen Dateipfad hole ich mir im realen Programm etwas weiter oben, das Ganze war dazu gedacht ein Dateimenü dynamisch mit Einträgen zu versorgen). Daß man dem "x" bei lamda-Funktionen mit dem Zuweisungsoperator zu Leibe rücken kann habe ich leider nirgendwo in der Doku gefunden, was mich mal wieder einiges an Sucherei gekostet hat.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="alihuber.github.io/python-oder-ruby.html" rel="bookmark"
+                           title="Permalink to Python oder Ruby?">Python oder Ruby?</a></h1>
+                </header>
+
+                <div class="entry-content">
+                <p>Diese Semesterferien tue ich es wirklich. Inspiriert von <a href="http://denkspuren.blogspot.com/2008/02/wie-lerne-ich-eine-programmiersprache.html">diesem</a> Blogeintrag werde ich mir eine neue Programmiersprache beibringen. Nach C, Java, C#, C++ und Factor kommt jetzt also etwas anderes an die Reihe. Eine dynamisch typisierte Scriptsprache soll es sein; meine Wahl fiel auf entweder Ruby oder Python. Die nächsten Wochen …</p>
+                <a class="readmore" href="alihuber.github.io/python-oder-ruby.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

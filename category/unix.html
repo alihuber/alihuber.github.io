@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>alis_blog - Unix</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="alihuber.github.io/kurztipp-standardloginshell-bei-bsd.html">Kurztipp: Standardloginshell bei *BSD</a></h1>
+                    Do 11 März 2010<p>Wenn man beginnt sich in eins der *nixe einzuarbeiten kommt es fast immer vor, dass man für eine eher kleine Änderung unheimlich viel Zeit verplempert weil man noch nicht weiß wie die richtigen Befehle lauten.</p>
+<p>Neulich war ich wieder in so einer Situation und habe dooferweise den Befehl vergessen den ich suchte und mich ca. eine halbe Stunde lang totgegoogelt. Wie bei solchen Dingen üblich, findet man dann die Lösung, freut sich so dermaßen dass man sie endlich gefunden hat, führt sie durch und hat sie fünf Minuten später wieder vergessen und natürlich nirgends aufgeschrieben.<br>
+Aber jetzt habe ich ja einen Ort, wo ich solche Sachen konservieren kann, und sie auch noch anderen zur Verfügung stellen, damit die sich nicht auch noch totgoogeln müssen. Also los:</p>
+<p>Eines der ersten Dinge die man ändert wenn man sich eins der BSD-Unixe aufgespielt hat ist die Änderung der Standardloginshell auf die gute alte Bash, wie man sie unter einem Linux gewohnt ist:</p>
+<p><strong>FreeBSD:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># pkg_add -r bash</span>
+</code></pre></div>
+
+<p><strong>OpenBSD:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># pkg_add -v ftp://ftp.openbsd.org/pub/OpenBSD/4.6/packages/amd64/bash-4.0.24.tgz</span>
+</code></pre></div>
+
+<p><strong>NetBSD:</strong><br>
+Man kann pkg_add wie oben benutzen, bequemer geht es aber wenn die PKG_PATH-Variable gesetzt wird:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># export PKG_PATH=&quot;http://ftp.netbsd.org/pub/pkgsrc/packages/NetBSD/amd64/5.0.1_2009Q4/All&quot;</span>
+</code></pre></div>
+
+<p>Danach funktioniert ein</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># pkg_add -v bash</span>
+</code></pre></div>
+
+<p>Dann ändern wir einfach die Standardhell mit dem chsh -s Befehl, welcher die Standardshell für den jeweiligen User ändert:</p>
+<p><strong>FreeBSD:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># chsh -s /usr/local/bin/bash</span>
+</code></pre></div>
+
+<p><strong>OpenBSD:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># chsh -s /usr/local/bin/bash</span>
+</code></pre></div>
+
+<p><strong>NetBSD:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># chsh -s /usr/pkg/bin/bash</span>
+</code></pre></div>
+
+<p>Für Useraccounts die nicht Root sind funktionierts genauso.</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

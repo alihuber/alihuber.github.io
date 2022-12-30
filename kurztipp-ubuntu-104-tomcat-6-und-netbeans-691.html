@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Kurztipp: Ubuntu 10.4, Tomcat 6 und Netbeans 6.9.1</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="Das Problem, daß NetBeans beim Verwenden des Tomcat nicht gleich so will wie der Benutzer trifft wohl noch mehrere. Nachdem Tomcat installiert..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/kurztipp-ubuntu-104-tomcat-6-und-netbeans-691.html" rel="bookmark"
+           title="Permalink to Kurztipp: Ubuntu 10.4, Tomcat 6 und Netbeans 6.9.1">Kurztipp: Ubuntu 10.4, Tomcat 6 und Netbeans 6.9.1</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2011-01-17T23:45:00+01:00">
+              Published: Mo 17 Januar 2011
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/ubuntu.html">Ubuntu</a>.
+      </address>
+      <p>Das Problem, daß NetBeans beim Verwenden des Tomcat nicht gleich so will wie der Benutzer trifft wohl noch mehrere.<br>
+Nachdem Tomcat installiert wurde findet man durch <code>whereis</code> und Konsorten folgende Verzeichnisse heraus: <code>/usr/share/tomcat6</code> und <code>/etc/tomcat6</code>. NetBeans will bei der Serverregistrierung aber mit beiden nicht funktionieren und sagt entweder daß das Verzeichnis ungültig ist oder die Datei <code>$CATALINA_HOME/server.xml</code> nicht gelesen werden kann. Seltsam ist, daß die Dateien welche wohl in <code>$CATALINA_HOME</code> liegen sollten sich in <code>/usr/share/tomcat6/bin</code> befinden, die Datei <code>server.xml</code> und andere Konfigurationsdateien aber in <code>/etc/tomcat6</code>. Um die Verwirrung komplett zu machen gibt es noch das Verzeichnis <code>/var/lib/tomcat6</code>, welches komischerweise durch <code>whereis</code> nicht angezeigt wird und in dem sich schon mal korrekte Symlinks zu obigem <code>/conf/</code>-Verzeichnis befinden. NetBeans mag diesen Pfad aber auch nicht.<br>
+Die Lösung: Im Verzeichnis <code>/usr/share/tomcat6</code> legt man durch</p>
+<div class="highlight"><pre><span></span><code>sudo ln -s /etc/tomcat6/ conf
+</code></pre></div>
+
+<p>einen Link, so daß NetBeans diesen Pfad akzeptiert und die Sache läuft.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

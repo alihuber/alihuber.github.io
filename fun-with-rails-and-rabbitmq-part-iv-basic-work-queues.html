@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Fun with Rails and RabbitMQ Part IV: Basic work queues</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="On our quest to replace Sidekiq with RabbitMQ we already know how to enqueue messages based on various criteria, and already can massively flood..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/fun-with-rails-and-rabbitmq-part-iv-basic-work-queues.html" rel="bookmark"
+           title="Permalink to Fun with Rails and RabbitMQ Part IV: Basic work queues">Fun with Rails and RabbitMQ Part IV: Basic work queues</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2015-04-18T00:00:00+02:00">
+              Published: Sa 18 April 2015
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/rabbitmq.html">RabbitMQ</a>.
+      </address>
+      <p>On our quest to replace Sidekiq with RabbitMQ we already know how to <a href="http://alihuber.github.com/fun-with-rabbitmq-3">enqueue messages based on various criteria</a>, and already can <a href="http://alihuber.github.com/fun-with-rabbitmq-1">massively flood our little Rails app with messages</a>. There remain some problems, though: We haven't handled what happens if the broker crashes and takes the content of queues with him, or more complex scenarios where messages consisting of plain strings or routing keys with wildcards aren't enough to satisfy our needs. Also, in our previous scenarios all messages were processed immediately, what is not exactly what background jobs are made for.</p>
+<h3>A first look at worker queues</h3>
+<p>Imagine you would want to defer long lasting jobs to background workers. They are put in a queue, are fetched from it when it's teir turn, they run for some time and eventually return some sort of result, may it be a generated file or the result of some expensive computing task. To simulate this behaviour, the two sample programs will do the following: The message is sent from the <a href="http://github.com/alihuber/RabbitMQTestdriver">Java application</a> including the instruction how long the task should take being processed in the <a href="http://github.com/alihuber/rabbitmq_showcase">Rails application</a>. This is solely for demonstration purposes, in a real world scenario you would have no idea how long the work will take, this is why you use background workers in the first place. Again, the Rails app will do nothing more but insert the incoming message into the database, including the passed on duration. The applications present themselves like this:</p>
+<figure>
+  <a href="/images/worker.png"><img src="/images/worker.png"></a>
+</figure>
+
+<figure>
+  <a href="/images/worker_rails.png"><img src="/images/worker_rails.png"></a>
+</figure>
+
+<p>Making the Rails application wait for some time is a no-brainer, we'll just use the classic <code>Kernel#sleep</code> method. But how to control how long it should sleep? From what we know up until now, we could transmit the duration as part of the message body itself, and then somehow parse the incoming message body string. This is kinda cumbersome, and RabbitMQ provides a much better way to send arbitrary data along with the message.</p>
+<h3>Message properties</h3>
+<p>The <code>basicPublish</code> method we were using beforehand had one ununsed argument... until now:  </p>
+<div class="highlight"><pre><span></span><code><span class="n">channel</span><span class="o">.</span><span class="n">basicPublish</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">queueName</span><span class="p">,</span> <span class="n">null</span><span class="p">,</span> <span class="n">message</span><span class="o">.</span><span class="n">getBytes</span><span class="p">());</span>
+</code></pre></div>
+
+<p>Instead of <code>null</code>, we could have sent an <code>AMQP.BasicProperties</code> object (in Java land), in Ruby it's just a <code>Hash</code>-like object. To be honest: We did this implicitly all along. If you look at the three block arguments for processing messages: <code>|delivery_info, properties, body|</code> you'll notice the <code>delivery_info</code> and <code>properties</code> arguments. The <a href="http://rubybunny.info/articles/queues.html#accessing_message_properties_metadata">Bunny documentation about messages</a> includes detailed lists what information and properties are implicitly submitted. For example, some data (including the routing key) is always accessible (for example via <code>delivery_info.routing_key</code>), other arbitrary properties can just be defined as a Hash (or whatever your programming language API arrogates) in the 'headers' property.<br>
+What's really interesting here is that you can use the properties in any way you want. RabbitMQ even builds concepts like RPC around those properties (for example, RPC uses the <code>correlation_id</code>-, <code>message_id</code>- and <code>reply_to</code>-properties, but RPC won't be covered here). To get our little worker scenario running, we could have put the extra 'duration' parameter in the 'headers' property, which is just a Hash with user-defined keys. Or we could use one of the already defined properties (a.k.a 'well-known properties'). I decided to use the <code>type</code> property. There are no constraints on how to use any property for anything, so in my case I just want it to hold the string containing the entered duration from aboe shown Java GUI. Here it is, the new <code>basicPublish</code> method to send a message to the worker queue:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Insert workTime-info as message &quot;type&quot; property.</span><span class="w"></span>
+<span class="c1">// deliveryMode(2) = persistent</span><span class="w"></span>
+<span class="c1">// (java.lang.String exchange, java.lang.String routingKey,</span><span class="w"></span>
+<span class="c1">// AMQP.BasicProperties props, byte[] body)</span><span class="w"></span>
+<span class="n">channel</span><span class="p">.</span><span class="na">basicPublish</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;task_queue&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">AMQP</span><span class="p">.</span><span class="na">BasicProperties</span><span class="p">.</span><span class="na">Builder</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="na">contentType</span><span class="p">(</span><span class="s">&quot;text/plain&quot;</span><span class="p">).</span><span class="na">deliveryMode</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="na">type</span><span class="p">(</span><span class="n">workTime</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="na">build</span><span class="p">(),</span><span class="w"></span>
+<span class="w">        </span><span class="n">message</span><span class="p">.</span><span class="na">getBytes</span><span class="p">());</span><span class="w"></span>
+</code></pre></div>
+
+<p>In Java, you use the <code>AMQPBasicProperties.Builder</code> class to return a configured object. We'll publish the message directly using the direct exchange 'task_queue', which will just insert it into the queue of the same name.<br>
+Looking at above code, you'll notice that there is one other property defined: <code>deliveryMode(2)</code>, and as the comment reveals it, it tells the message to be persistent. This is the next topic we'll have to tackle, so let's continue with durability.</p>
+<h3>RabbitMQ and durability</h3>
+<p>RabbitMQ can cover just about any messaging scenario. But in our case, fire-and-forget-messages are not excatly what we want. We want to be able to persist and re-enqueue messages if something goes wrong, and we don't want to declare anonymous, short-lived queues. For that reason we'll streamline the configuration in our little programs. In <code>config/unicorn.rb</code> we declare the two queues for worker messages like this:</p>
+<div class="highlight"><pre><span></span><code><span class="n">worker_queue_1</span> <span class="o">=</span> <span class="n">rabbitmq_channel</span><span class="o">.</span><span class="n">queue</span><span class="p">(</span><span class="s2">&quot;task_queue&quot;</span><span class="p">,</span> <span class="ss">durable</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
+<span class="n">rabbitmq_channel</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">worker_queue_1</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="ss">manual_ack</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">info</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">body</span><span class="o">|</span>
+  <span class="c1"># simulate work with data from &#39;type&#39; property (number string)</span>
+  <span class="nb">sleep</span> <span class="n">prop</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">to_i</span>
+  <span class="no">WorkerReceiver</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
+  <span class="n">rabbitmq_channel</span><span class="o">.</span><span class="n">ack</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">delivery_tag</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p>We give the queue the name 'task_queue' and set its durability to <code>true</code>. This sets the queue lifespan not to be dependent on consumers subscribed to it, the queue will survive a broker restart and it will be shareable by many consumers - exactly the behaviour we want. Together with the 'persistent' flag on the message we get a queue which won't loose anything, even after the message broker has to restart. As in the first few examples in this blog post series, we use the implicit consumer given by the <code>subscribe</code> method, and as always actually saving records is delegated to a service-like (<code>FooReceiver</code>) object. You can also see how easy we can access the <code>type</code> property of the message which is set by the Java GUI. But what exactly are those <code>ack</code>-thingies appearing all over the place?</p>
+<h3>Message acknowledgement</h3>
+<p>We know how to persist messages and queues, so far so good. But how exactly does the broker decide when it's time to remove messages from the queue? In other words, how does the message broker know when a message's processing is "finished" and it can be safely removed from the queue? This is of utmost importance, especially if we want to deal with long-running background tasks. But not to worry, RabbitMQ got you covered. In above code, you'll see that the <code>subscribe</code> method does get a new parameter (<code>manual_ack</code> set to <code>true</code>) and again a method named <code>ack</code> is called in the block processing the message, right after the simulated long work is done. The <code>manual_ack</code> parameter simply instructs the consumer to insist of a message to be acknowledged. In a multi-consumer scenario, this would mean if the first consumer fails processing the message, the broker would deliver it to another consumer until it's acknowledged. This is exactly what we want. The Rails application defines two consumers for the 'task_queue', and if one consumer is busy working on a longer-lasting job it will automatically redirect it to the other consumer. Together with the configured durablity settings above, undeliverable messages won't be lost, since the broker will leave messages in the queue until at least one consumer is subscribed to the queue and is free to process messages. The second call to <code>ack(info.delivery_tag)</code> eventually tells the channel to acknowledge the message using it's <code>delivery_tag</code> property from the implicit <code>delivery_info</code> metadata. As explained <a href="http://rubybunny.info/articles/queues.html#message_acknowledgements">in the documentation</a>, it's implemented as a channel-specific increasing number, you shouldn't have to deal with it manually.<br>
+The functionality to signal the broker that messages have failed (via the <code>reject</code> method) won't be covered here, since we would have to implement all the logic to handle failed messages and re-enqueuing them ourselves. The next blog post will show a much nicer way for this - just be patient.
+There is one piece of information missing - how does the broker deal with occupied consumers?</p>
+<h3>Message prefetching</h3>
+<p>As you may have noticed on the screenshots and in the code above, there are some hints about round-robin and the <code>prefetch(1)</code> setting. What do they mean?<br>
+If you try out the Java and Rails applications, you can easily provoke a situation like this: You insert a long-lasting message into the 'task_queue', and immediately after that some not-too-long-lasting messages. Of course the broker, sice the longer-lasting message came in first, will order the next free consumer to grab the next message, and again and again until the first broker has sent his acknowledgement and is available again to consume messages.<br>
+And that's what the <code>prefetch</code>-setting is for: You can manipulate the amount of messages each consumer will grab from the queue. It's a simple way to do load-balancing, so to speak. It's a channel-wide setting and only active for consumers which have <code>manual_ack</code> set to <code>true</code>.  </p>
+<p>We've covered a whole lot. You should have a good grasp by now on how the several parts of RabbitMQ work together. The last part of this blog post series will be about one more abstraction layer above RabbitMQ and Bunny and how to get workflows and automatic re-enqueuing running.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

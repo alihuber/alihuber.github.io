@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Kurztipp: MySQL, kein Zugriff mit angelegtem User</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="Für einen Test wollte ich heute eine MySQL-Datenbank anlegen und einen eigens dafür angelegten User von entfernt darauf zugreifen lassen. Also..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/kurztipp-mysql-kein-zugriff-mit-angelegtem-user.html" rel="bookmark"
+           title="Permalink to Kurztipp: MySQL, kein Zugriff mit angelegtem User">Kurztipp: MySQL, kein Zugriff mit angelegtem User</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2013-02-26T22:17:00+01:00">
+              Published: Di 26 Februar 2013
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/mysql.html">MySQL</a>.
+      </address>
+      <p>Für einen Test wollte ich heute eine MySQL-Datenbank anlegen und einen eigens dafür angelegten User von entfernt darauf zugreifen lassen. Also Portweiterleitung eingerichtet und Datenbank nebst User (zum Beispiel mit <a href="http://ewus.de/en/tipp/en/create-mysql-database-and-user">dieser</a> oder <a href="http://www.internist-schmidt-lohfelden.de/ReadMe/Anlegen%20neuer%20Benutzer%20unter%20MySQL.htm">dieser</a> Anleitung) mit der Konsole angelegt. Aber im MySQL-Workbench ist das angelegte Schema mit dem frischen User einfach nicht zu sehen, egal wie man noch an den Rechten schraubt. Und nicht mal über die Konsole auf der Datenbank einloggen kann man sich! Die Lösung steht dann natürlich <a href="http://dev.mysql.com/doc/refman/5.1/de/access-denied.html">hier unten</a>. Im Host-Wert für den neuen User darf kein "Jokerzeichen" wie % stehen, weil es sonst Probleme mit Verbindungen gibt, die von <code>localhost</code> kommen. Und nachdem ich wieder mal viel zu lange rumprobierte und dann einfach gleich die entfernte Verbindung testete lief alles wie geschmiert.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Fun with Rails and RabbitMQ Part I: Introduction</title>
+        <link rel="stylesheet" href="alihuber.github.io/theme/css/main.css" />
+        <meta name="description" content="Intro Working on a Rails application that moves several mission-critical functionalities into background-worker-jobs (like lengthy cron jobs or..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="alihuber.github.io/">alis_blog</a></h1>
+                <nav>
+                        <ul>
+                                <li><a
+                                <a href="alihuber.github.io/">Home</a>
+                                </li>
+
+                                <li><a href="alihuber.github.io/pages/about.html">About</a>
+                                </li>
+<!--                                                 <li><a
+                                                                href="alihuber.github.io/category/android.html">Android</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/arduino.html">Arduino</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/bucher.html">Bücher</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/factor.html">Factor</a>
+                                                </li>
+                                                <li><a
+                                                                href="alihuber.github.io/category/it-stuff.html">IT-Stuff</a>
+                                                </li>
+ -->
+                                        <li><a
+                                        <a href="alihuber.github.io/categories">Categories </a>
+                                        </li>
+                                        <li><a
+                                        <a href="alihuber.github.io/archives">Archives</a>
+                                        </li>
+                        </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="alihuber.github.io/fun-with-rails-and-rabbitmq-part-i-introduction.html" rel="bookmark"
+           title="Permalink to Fun with Rails and RabbitMQ Part I: Introduction">Fun with Rails and RabbitMQ Part I: Introduction</a></h1>
+    </header>
+
+    <div class="entry-content">
+      <abbr class="published" title="2015-04-12T00:00:00+02:00">
+              Published: So 12 April 2015
+      </abbr>
+      <address class="vcard author">
+              By                       <a class="url fn" href="alihuber.github.io/author/ali.html">ali</a>
+              In <a href="alihuber.github.io/category/rabbitmq.html">RabbitMQ</a>.
+      </address>
+      <h3>Intro</h3>
+<p>Working on a Rails application that moves several mission-critical functionalities into background-worker-jobs (like lengthy cron jobs or generating PDFs), one basic approach would be to use one of the many simple background queue libraries that are available, and the first address nowadays would be Sidekiq. However, as <a href="http://www.pablocantero.com/blog/2015/03/14/sidekiq-redis-vs-shoryuken-aws-sqs/">this blog post</a> has it nicely, the free version of Sidekiq could not be suitable when you are depending on 'no matter what' persisted jobs, and the evaluated third-party gems for batch- or interdependent jobs with Sidekiq were not applicable, to say the least.<br>
+A presentation at our local Ruby user group had the focus on RabbitMQ as a more reliable, highly performant worker queue. Since RabbitMQ is a message broker for the AMQP protocol, a first dive into the RabbitMQ documentation and available AMQP libraries for Rails is just overwhelming. There are two gems (<a href="http://rubybunny.info">Bunny</a> and <a href="http://rubyamqp.info">AMQP</a>) that seem to do the exact same thing, the docs seem just duplicated and there is no overall "recipe" for just getting minimal queue functionality into a standard Rails application. Not to mention the somewhat 'comprehensive' nature of the AMQP protocol itself:</p>
+<figure>
+  <a href="/images/mindmap.jpg"><img src="/images/mindmap.jpg"></a>
+</figure>
+
+<p>Not too, complex, huh?  </p>
+<p>To ease things up and have a not-so-steep learning curve I decided to 'conquer' the complexity of AMQP by implementing small parts of needed functionality as features of little toy applications, namely a Java program as message producer "<a href="https://github.com/alihuber/RabbitMQTestdriver">RabbitMQTestdriver</a>" and an accompanying Rails application "<a href="https://github.com/alihuber/rabbitmq_showcase">rabbitmq_showcase</a>" which consumes and presents the messages RabbitMQ was processing. You should have a quick look at the GitHub repos right now to get an overall idea of what I was trying to accomplish.
+On the quest to replace Sidekiq with RabbitMQ I had to dig into several topics, I learned a few lessons and produced some code. I will present my findings and programs as a series of blog posts, starting with this one about setting up RabbitMQ. Further blog posts will cover how to get basic messaging between the Java program and the Rails app running, how RabbitMQ deals with filtering messages by criteria, how to get a basic worker queue running, and finally how to implement interdependent workflows, error queues and deferred message queueing using Sneakers.io.</p>
+<h3>Getting started</h3>
+<p>To make things even more interesting (and to get ahead of later headaches) I did set up a virtual machine running Ubuntu 14.04.2, because running RabbitMQ on the local machine with the standard-user guest/guest and vhost=/ settings is just lame. As a bonus I see the real implications of my tinkering as if would be on a real remote machine. (Also, I set up the Rails app to use Unicorn as development server as the app would be configured in a production setting, but more about that later).
+As usual, I run the VM in bridged mode to be reachable with an 192.168.0.x IP in my local network, and installing RabbitMQ as apt package works just fine. Since the guest/guest user can only connect to the broker via localhost, I use the rabbitmqctl command to manage users and permissions. I add a new user and set his permissions to be a "manager":</p>
+<div class="highlight"><pre><span></span><code>sudo rabbitmqctl add_user ubuntu ubuntu
+rabbitmqctl set_permissions -p <span class="nb">test</span> ubuntu <span class="s2">&quot;.*&quot;</span> <span class="s2">&quot;.*&quot;</span> <span class="s2">&quot;.*&quot;</span>
+rabbitmqctl set_user_tags ubuntu management
+</code></pre></div>
+
+<p>If not already activated, the management-plugin should be enabled to access the nice RabbitMQ management GUI:</p>
+<div class="highlight"><pre><span></span><code>rabbitmq-plugins <span class="nb">enable</span> rabbitmq_management
+</code></pre></div>
+
+<p>The "ubuntu" user should now be able to log in on http://VM-IP:15672.<br>
+RabbitMQ features complete separate "environments" called virtual hosts. Each virtual host has his own set of queues etc. living inside it, and the virtual hosts won't interfere with each other. I created a new virtual host called "test" which will be used with the sample applications:</p>
+<div class="highlight"><pre><span></span><code>rabbitmqctl add_vhost <span class="nb">test</span>
+</code></pre></div>
+
+<p>To be able to move messages beween queues, the "shovel"-plugin has to be enabled:</p>
+<div class="highlight"><pre><span></span><code>rabbitmq-plugins <span class="nb">enable</span> rabbitmq_shovel
+</code></pre></div>
+
+<p>That's all for the introduction, the next blog post will cover first steps with the "Bunny" gem and basic message producing/consuming.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                                <li><a href="https://bergeversetzen.blogspot.com">Berge versetzen</a></li>
+                                <li><a href="https://chartmann.com">chartmann.com</a></li>
+                                <li><a href="https://klautesblog.blogspot.com">klaute's blog</a></li>
+                                <li><a href="https://denkspuren.blogspot.com">denkspuren</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                        Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of
+                        <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a
+                                href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing
+                                Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+
+</html>
