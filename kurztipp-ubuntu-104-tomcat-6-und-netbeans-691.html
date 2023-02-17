@@ -56,7 +56,7 @@
 
     <div class="entry-content">
       <abbr class="published" title="2011-01-17T23:45:00+01:00">
-              Published: Mo 17 Januar 2011
+              Published: Mon 17 January 2011
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
@@ -65,7 +65,7 @@
       <p>Das Problem, daß NetBeans beim Verwenden des Tomcat nicht gleich so will wie der Benutzer trifft wohl noch mehrere.<br>
 Nachdem Tomcat installiert wurde findet man durch <code>whereis</code> und Konsorten folgende Verzeichnisse heraus: <code>/usr/share/tomcat6</code> und <code>/etc/tomcat6</code>. NetBeans will bei der Serverregistrierung aber mit beiden nicht funktionieren und sagt entweder daß das Verzeichnis ungültig ist oder die Datei <code>$CATALINA_HOME/server.xml</code> nicht gelesen werden kann. Seltsam ist, daß die Dateien welche wohl in <code>$CATALINA_HOME</code> liegen sollten sich in <code>/usr/share/tomcat6/bin</code> befinden, die Datei <code>server.xml</code> und andere Konfigurationsdateien aber in <code>/etc/tomcat6</code>. Um die Verwirrung komplett zu machen gibt es noch das Verzeichnis <code>/var/lib/tomcat6</code>, welches komischerweise durch <code>whereis</code> nicht angezeigt wird und in dem sich schon mal korrekte Symlinks zu obigem <code>/conf/</code>-Verzeichnis befinden. NetBeans mag diesen Pfad aber auch nicht.<br>
 Die Lösung: Im Verzeichnis <code>/usr/share/tomcat6</code> legt man durch</p>
-<div class="highlight"><pre><span></span><code>sudo ln -s /etc/tomcat6/ conf
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>/etc/tomcat6/<span class="w"> </span>conf
 </code></pre></div>
 
 <p>einen Link, so daß NetBeans diesen Pfad akzeptiert und die Sache läuft.</p>

@@ -49,18 +49,18 @@
             <aside id="featured" class="body">
                 <article>
                     <h1 class="entry-title"><a href="/fun-with-paas-dokkufy.html">Fun with PaaS & dokkufy</a></h1>
-                    So 26 Oktober 2014<p>Since I had to work with certain PaaS implementations for the first time a few months ago, I wanted to try out something similar for myself. One very cool way I found are the <a href="https://github.com/progrium/dokku/">dokku shell scripts</a>. Unfortunately, I couldn't get ssh and Git work properly with my local virtual machine, so I switched to the <a href="https://github.com/cbetta/dokkufy">dokkufy gem</a> and it worked like a charm. So, here it is: The fool-proof way to get a local virtual machine to pose as a heroku/cloud foundry replacement, serve a simple rack web application and even map it to an occupied domain name!  </p>
+                    Sun 26 October 2014<p>Since I had to work with certain PaaS implementations for the first time a few months ago, I wanted to try out something similar for myself. One very cool way I found are the <a href="https://github.com/progrium/dokku/">dokku shell scripts</a>. Unfortunately, I couldn't get ssh and Git work properly with my local virtual machine, so I switched to the <a href="https://github.com/cbetta/dokkufy">dokkufy gem</a> and it worked like a charm. So, here it is: The fool-proof way to get a local virtual machine to pose as a heroku/cloud foundry replacement, serve a simple rack web application and even map it to an occupied domain name!  </p>
 <p>I did set up a fresh VM (I used VirtualBox) with Ubuntu 14.04 and set the network settings to bridged mode. This will be somewhat tedious every time the IP changes, but it seemed to be the least complicated way. I just named the user of the VM 'dokku'.<br>
 I then installed <code>openssh-server</code> (I also installed <code>ssh-askpass</code>, but in the meantime I'm not certain the scripts actually need it) and made sure I could ssh into the virtual machine.<br>
 On the host machine I did set up a directory with the <a href="https://devcenter.heroku.com/articles/rack">simplest possible rack app from the heroku docs</a>. Then I installed the dokkufy gem and ran the <code>dokkufy server</code> script. It asks for the IP address, hostname and user name (and several times for the password, that's not an error). The IP address was something like 192.168.0.12, and I decided to use ali.io as a domain name, just to realize a bit later that this name is already taken. But as we will see in a moment, that's no big deal since dokku sets the pushed applications to be subdomains of the set domain name and you can manipulate the hosts file.<br>
 Since dokkufy uses dokku, but in a nicer, more interactive way (as described <a href="http://cristianobetta.com/blog/2014/08/05/your-mini-heroku-with-dokku-and-dokkufy">here</a>), it will set up Git, docker and nginx and has to download about 400 mb. After it's finished you should be able to hit 192.168.0.12 (or whatever your VM's IP is) and see the welcome screen from nginx.<br>
 After that I ran <code>git init</code> in the directory of the rack app and committed all the files. Then I ran the <code>dokkufy app</code> command, which asked me again about user name and IP, and did set up Git remotes (the part I couldn't get to work with dokku itself). The output from <code>git push dokku master</code> should look familiar to everyone who has used cloud foundry, and the app will be deployed into a docker container inside the VM (see the links above).<br>
 To reach the app under the set domain name, I had to add the following to the <code>/etc/hosts</code>-file on the host machine: <code>192.168.0.12 hello.ali.io</code> Now http://ali.io gave me the personal page of some guy, but hello.ali.io gave me a 'bad gateway' (111: Connection refused while connecting to upstream)  error. As it turned out, these lines in <code>/etc/nginx/nginx.conf</code> in the VM were missing:</p>
-<div class="highlight"><pre><span></span><code>http <span class="o">{</span>
-  ...
-  server <span class="o">{</span>
-    server_name .ali.io<span class="p">;</span>
-  <span class="o">}</span>
+<div class="highlight"><pre><span></span><code>http<span class="w"> </span><span class="o">{</span>
+<span class="w">  </span>...
+<span class="w">  </span>server<span class="w"> </span><span class="o">{</span>
+<span class="w">    </span>server_name<span class="w"> </span>.ali.io<span class="p">;</span>
+<span class="w">  </span><span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div>
 

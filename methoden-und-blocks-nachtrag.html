@@ -56,7 +56,7 @@
 
     <div class="entry-content">
       <abbr class="published" title="2012-08-02T22:17:00+02:00">
-              Published: Do 02 August 2012
+              Published: Thu 02 August 2012
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
@@ -64,112 +64,112 @@
       </address>
       <p>Ich glaube ich habe für mich den perfekten Weg gefunden, mir die Funktionsweise von Methoden mit Blocks und Procs usw. zu erschliessen. Die größte Hilfe war <a href="http://allaboutruby.wordpress.com/2006/01/20/ruby-blocks-101/">dieser</a> Blogeintrag, in dem der magische Satz stand: Denke über die Methode (m3 weiter unten) wie über eine Methode die drei Argumente bekommt: x, y und beliebigen Ruby-Code. Dann wird klar, wie all die Methoden wie map, cycle usw. grundsätzlich aufgebaut sind. Wenn die Grundlagen bis m5 unten gepackt wurden, wird auch klarer, was Procs sollen. Vor allem, wenn man JavaScript kennt. Andere gute Quellen waren <a href="http://www.skorks.com/2009/09/using-ruby-blocks-and-rolling-your-own-iterators/">diese</a> <a href="http://www.robertsosinski.com/2008/12/21/understanding-ruby-blocks-procs-and-lambdas/">alten</a> Blogposts. Aber genug der Vorrede: Hier ist der Weg zur Erleuchtung:</p>
 <p>1). Einfachster Fall: Der Block wird ignoriert.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">m1</span>
-  <span class="nb">puts</span> <span class="s2">&quot;hello&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">m1</span>
+<span class="w">  </span><span class="nb">puts</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span>
 <span class="k">end</span>
-<span class="n">m1</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;world&quot;</span> <span class="p">}</span> <span class="c1"># &quot;hello&quot;</span>
+<span class="n">m1</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nb">puts</span><span class="w"> </span><span class="s2">&quot;world&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1"># &quot;hello&quot;</span>
 </code></pre></div>
 
 <p>2). yield tut nichts und fügt einfach den Code ein.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">m2</span>
-  <span class="k">yield</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">m2</span>
+<span class="w">  </span><span class="k">yield</span>
 <span class="k">end</span>
-<span class="n">m2</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;hello world&quot;</span> <span class="p">}</span> <span class="c1"># &quot;hello world&quot;</span>
+<span class="n">m2</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nb">puts</span><span class="w"> </span><span class="s2">&quot;hello world&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1"># &quot;hello world&quot;</span>
 </code></pre></div>
 
 <p>3). yield gibt Parameter raus bzw. Blockparameter rein.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">m3</span>
-  <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
-  <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
-  <span class="k">yield</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">m3</span>
+<span class="w">  </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">  </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">  </span><span class="k">yield</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span>
 <span class="k">end</span>
-<span class="n">m3</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="p">}</span> <span class="c1"># 3</span>
+<span class="n">m3</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">|</span><span class="w"> </span><span class="nb">puts</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1"># 3</span>
 </code></pre></div>
 
 <p>Merksatz: m3 ist wie eine Funktion die zwei Argumente und beliebigen Ruby-Code aufnimmt. yield steht an der Stelle, an der der Code ausgeführt wird. Mit block_given? kann man die Ausführung von yield steuern.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">m3choose</span>
-  <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
-  <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
-  <span class="k">if</span> <span class="nb">block_given?</span>
-    <span class="k">yield</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span>
-  <span class="k">else</span>
-    <span class="nb">puts</span> <span class="s2">&quot;zonk&quot;</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">m3choose</span>
+<span class="w">  </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">  </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nb">block_given?</span>
+<span class="w">    </span><span class="k">yield</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span>
+<span class="w">  </span><span class="k">else</span>
+<span class="w">    </span><span class="nb">puts</span><span class="w"> </span><span class="s2">&quot;zonk&quot;</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
-<span class="n">m3choose</span> <span class="c1"># zonk</span>
-<span class="n">m3choose</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span> <span class="p">}</span> <span class="c1"># 4</span>
+<span class="n">m3choose</span><span class="w"> </span><span class="c1"># zonk</span>
+<span class="n">m3choose</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">|</span><span class="w"> </span><span class="nb">puts</span><span class="w"> </span><span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1"># 4</span>
 </code></pre></div>
 
 <p>4). Methode hat Parameter und yield.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">m4</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-  <span class="k">yield</span> <span class="n">n</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">m4</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="w">  </span><span class="k">yield</span><span class="w"> </span><span class="n">n</span>
 <span class="k">end</span>
-<span class="n">m4</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">x</span> <span class="p">}</span>
+<span class="n">m4</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">x</span><span class="o">|</span><span class="w"> </span><span class="nb">puts</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 
 <p>Komplizierter:</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">m5</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-  <span class="n">n</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
-    <span class="k">yield</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">m5</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="w">  </span><span class="n">n</span><span class="o">.</span><span class="n">times</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="k">yield</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
-<span class="n">a</span> <span class="o">=</span> <span class="sx">%w[a b c]</span>
-<span class="n">m5</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="c1"># argument des yield von m4</span>
-  <span class="n">a</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="c1"># argument des yield von each</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">e</span><span class="p">;</span> <span class="nb">puts</span> <span class="n">x</span>
-  <span class="k">end</span>
-<span class="k">end</span> <span class="c1"># siehe Array#cycle</span>
+<span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">%w[a b c]</span>
+<span class="n">m5</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">x</span><span class="o">|</span><span class="w"> </span><span class="c1"># argument des yield von m4</span>
+<span class="w">  </span><span class="n">a</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">e</span><span class="o">|</span><span class="w"> </span><span class="c1"># argument des yield von each</span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">;</span><span class="w"> </span><span class="nb">puts</span><span class="w"> </span><span class="n">x</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="k">end</span><span class="w"> </span><span class="c1"># siehe Array#cycle</span>
 </code></pre></div>
 
 <p>5). yield-Parameter wie normale Parameter.</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Array</span>
-  <span class="k">def</span> <span class="nf">reverse_iterate</span>
-    <span class="n">current_index</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>
-    <span class="k">while</span> <span class="n">current_index</span> <span class="o">&gt;=</span> <span class="mi">0</span>
-      <span class="k">yield</span> <span class="nb">self</span><span class="o">[</span><span class="n">current_index</span><span class="o">]</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">,</span> <span class="n">current_index</span><span class="p">,</span> <span class="s1">&#39;Index&#39;</span>
-      <span class="n">current_index</span> <span class="o">-=</span> <span class="mi">1</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Array</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">reverse_iterate</span>
+<span class="w">    </span><span class="n">current_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="o">.</span><span class="n">size</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="n">current_index</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">      </span><span class="k">yield</span><span class="w"> </span><span class="nb">self</span><span class="o">[</span><span class="n">current_index</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Value&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">current_index</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Index&#39;</span>
+<span class="w">      </span><span class="n">current_index</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
 <span class="c1"># Der Sponge-Operator tut wie sonst auch:</span>
-<span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="o">].</span><span class="n">reverse_iterate</span> <span class="k">do</span> <span class="o">|</span><span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="n">others</span><span class="o">|</span>
-  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">others</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2"> = </span><span class="si">#{</span><span class="n">value</span><span class="si">}</span><span class="s2">, </span><span class="si">#{</span><span class="n">others</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="si">}</span><span class="s2"> = </span><span class="si">#{</span><span class="n">others</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="o">[</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">].</span><span class="n">reverse_iterate</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">others</span><span class="o">|</span>
+<span class="w">  </span><span class="nb">puts</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">others</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2"> = </span><span class="si">#{</span><span class="n">value</span><span class="si">}</span><span class="s2">, </span><span class="si">#{</span><span class="n">others</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="si">}</span><span class="s2"> = </span><span class="si">#{</span><span class="n">others</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="k">end</span>
 </code></pre></div>
 
 <p>6). Andere Möglichkeit, einen Block aufzurufen: Ampersand-Operator, ählich wie oben.</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Array</span>
-  <span class="k">def</span> <span class="nf">iterate!</span><span class="p">(</span><span class="o">&amp;</span><span class="n">code</span><span class="p">)</span>
-    <span class="nb">self</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="o">|</span>
-      <span class="nb">self</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Array</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">iterate!</span><span class="p">(</span><span class="o">&amp;</span><span class="n">code</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">self</span><span class="o">.</span><span class="n">each_with_index</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="o">|</span>
+<span class="w">      </span><span class="nb">self</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">code</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
-<span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="o">].</span><span class="n">iterate!</span> <span class="p">{</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">n</span> <span class="o">**</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">].</span><span class="n">iterate!</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">n</span><span class="o">|</span><span class="w"> </span><span class="nb">puts</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 
 <p>7). Der Parameter, der ein Block werden wird kann dann einfach an eine andere Methode im Body geschickt werden, und die Werte bleiben erhalten = closure</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">methode_mit_block</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-  <span class="n">andere_methode</span> <span class="n">block</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">methode_mit_block</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+<span class="w">  </span><span class="n">andere_methode</span><span class="w"> </span><span class="n">block</span>
 <span class="k">end</span>
 <span class="c1"># Var wird ein Block</span>
-<span class="k">def</span> <span class="nf">andere_methode</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
-  <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span>
-  <span class="n">var</span><span class="o">.</span><span class="n">call</span> <span class="n">x</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">andere_methode</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+<span class="w">  </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span>
+<span class="w">  </span><span class="n">var</span><span class="o">.</span><span class="n">call</span><span class="w"> </span><span class="n">x</span>
 <span class="k">end</span>
-<span class="n">methode_mit_block</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">&quot;Ich bin Block nummer </span><span class="si">#{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span>
+<span class="n">methode_mit_block</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">i</span><span class="o">|</span><span class="w"> </span><span class="nb">puts</span><span class="w"> </span><span class="s2">&quot;Ich bin Block nummer </span><span class="si">#{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 
 <p>8). Proc-Objekte benutzen und als First-Class-Members zuweisen.</p>
-<div class="highlight"><pre><span></span><code><span class="n">add</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="p">}</span>
-<span class="k">class</span> <span class="nc">Array</span>
-  <span class="k">def</span> <span class="nf">hand_2_over</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
-    <span class="nb">self</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span>
-      <span class="n">code</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">slice!</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="n">add</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Proc</span><span class="o">.</span><span class="n">new</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="o">|</span><span class="w"> </span><span class="nb">puts</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">}</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Array</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">hand_2_over</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">self</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">n</span><span class="o">|</span>
+<span class="w">      </span><span class="n">code</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">slice!</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
-<span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="o">].</span><span class="n">hand_2_over</span> <span class="n">add</span> <span class="c1"># 3, 7</span>
+<span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">].</span><span class="n">hand_2_over</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="c1"># 3, 7</span>
 </code></pre></div>
 
 <p>Das letzte Beispiel zeigt auch sehr gut, was mir an Ruby extrem nicht gefällt. Ohne IDE-Unterstützung und Dokumentation ist es fast ungmöglich zu sagen, wo "add" definiert ist, von wem es stammt (eingebaut oder irgendwo selbst definiert) oder geschweige denn was es tun wird.</p>

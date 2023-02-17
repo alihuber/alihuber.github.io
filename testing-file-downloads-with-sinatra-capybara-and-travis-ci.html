@@ -56,22 +56,22 @@
 
     <div class="entry-content">
       <abbr class="published" title="2013-02-23T18:10:00+01:00">
-              Published: Sa 23 Februar 2013
+              Published: Sat 23 February 2013
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
               In <a href="/category/ruby.html">Ruby</a>.
       </address>
       <p>I recently had the problem to test the content of downloaded files in an non-Rails environment. It's a simple Sinatra-app that returns a file via a GET-Request and the <code>send_file</code>-helper. My first approach was to check for the response-body after Capybara clicked the 'Download'-button, but I got the same error as <a href="https://groups.google.com/forum/?fromgroups=#!topic/cukes/YTe8_0O_Y0o">this guy</a> or I got the <code>Capybara::NotSupportedByDriverError</code>. It seems you can't test the response body with Capybara nor is the <code>last_response</code>-method of <code>Rack::Test</code> an option. Luckily, I found <a href="http://collectiveidea.com/blog/archives/2012/01/27/testing-file-downloads-with-capybara-and-chromedriver/">this blog post</a>. The gist of it is to use the Chromedriver and a little <code>DownloadHelper</code>-module. But I wasn't using Rails, Cucumber or other fancy stuff, so I had to fine-tune some things first. In a recent update of Capybara, the Chromedriver is somehow removed and I had to install the binary manually: I just downloaded it <a href="http://code.google.com/p/chromedriver/downloads/list">from here</a> and moved it to any directory on my PATH. The reason Chromedriver works best is that once the default download path of Chrome is set like in above blog post, the file gets downloaded automatically without any further user interaction, whilst I was not able to control the Selenium-built-in Firefox to behave that way. The next thing you need is a temporary download location for your files you wish to test be tested. Since I'm not using rails and I don't have a Rails.root, I made a 'tmp'-directory in my Sinatra base directory and set this directory as default download location for the Chromedriver. All you really need of above's blog post <code>DownloadHelper</code>-module is a small method that reads in the downloaded file from your temporary directory and returs the content to be compared to your desired string in your test case (and deletes the file afterwards). You really don't need a full-fledged module for that. You could just have this method:</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_content</span>
-  <span class="nb">sleep</span> <span class="mi">2</span>
-  <span class="n">file</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="no">Dir</span><span class="o">.</span><span class="n">pwd</span> <span class="o">+</span> <span class="s2">&quot;/tmp/*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
-  <span class="n">content</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span>
-  <span class="n">file</span><span class="o">.</span><span class="n">close</span>
-  <span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="no">Dir</span><span class="o">.</span><span class="n">pwd</span> <span class="o">+</span> <span class="s2">&quot;/tmp/*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
-    <span class="no">File</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-  <span class="k">end</span>
-  <span class="n">content</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_content</span>
+<span class="w">  </span><span class="nb">sleep</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">  </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="no">Dir</span><span class="o">.</span><span class="n">pwd</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;/tmp/*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="n">content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file</span><span class="o">.</span><span class="n">read</span>
+<span class="w">  </span><span class="n">file</span><span class="o">.</span><span class="n">close</span>
+<span class="w">  </span><span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="no">Dir</span><span class="o">.</span><span class="n">pwd</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;/tmp/*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">file</span><span class="o">|</span>
+<span class="w">    </span><span class="no">File</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="w">  </span><span class="n">content</span>
 <span class="k">end</span>
 </code></pre></div>
 

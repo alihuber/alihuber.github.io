@@ -49,16 +49,16 @@
             <aside id="featured" class="body">
                 <article>
                     <h1 class="entry-title"><a href="/ubuntu-1204-und-postgresql-91-wo-landen-die-logdateien.html">Ubuntu 12.04 und PostgreSQL 9.1: Wo landen die Logdateien?</a></h1>
-                    Do 24 Oktober 2013<p>Auf den ersten Blick verteilt sich eine Installation von PostgreSQL auf viele verschiedene Ordner. Ein <code>locate postgres</code> brachte bei mir 762 Zeilen zum Vorschein. Nachdem ich alle nicht relevanten Einträge beseitigt hatte (und das waren viele, weil auch Konfigurationen und Bibliotheken aus RubyGems und Python-Paketen in der Liste landen) blieben noch diese Installationsorte übrig:</p>
+                    Thu 24 October 2013<p>Auf den ersten Blick verteilt sich eine Installation von PostgreSQL auf viele verschiedene Ordner. Ein <code>locate postgres</code> brachte bei mir 762 Zeilen zum Vorschein. Nachdem ich alle nicht relevanten Einträge beseitigt hatte (und das waren viele, weil auch Konfigurationen und Bibliotheken aus RubyGems und Python-Paketen in der Liste landen) blieben noch diese Installationsorte übrig:</p>
 <p>(1) <code>/etc/postgresql</code>
 (2) <code>/usr/share/postgresql</code>
 (3) <code>/var/lib/postgresql</code>
 (4) <code>/usr/lib/postgresql</code></p>
 <p>In (1) landen Konfigurationsdateien wie <code>pg_hba.conf</code> und die <code>postgresql.conf</code>. In (2) landen die Konfigurationsdateien wie sie sowieso schon in (1) angelegt wurden als Samples, außerdem liegen hier die .sql-Dateien der Extensions, die man-pages der Onlinehilfe des Interpreters und Zeitzonendaten. In (3) ist das Verzeichnis, in der <code>postgresql.conf</code> als <code>data_directory</code> angegeben ist und in dem die eigentlichen Datenbanken gespeichert werden. In (4) liegen dann noch die Binaries und Libraries.</p>
 <p>Das Verwirrende ist wie mit Logs umgegangen wird: wenn in der <code>postgresql.conf</code> in (1) die Logs mit</p>
-<div class="highlight"><pre><span></span><code><span class="nv">log_destination</span>   <span class="o">=</span> <span class="s1">&#39;stderr&#39;</span>
-<span class="nv">logging_collector</span> <span class="o">=</span> on
-<span class="nv">log_directory</span>     <span class="o">=</span> <span class="s1">&#39;pg_log&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="nv">log_destination</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;stderr&#39;</span>
+<span class="nv">logging_collector</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>on
+<span class="nv">log_directory</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;pg_log&#39;</span>
 </code></pre></div>
 
 <p>aktiviert werden, wird das Verzeichnis pg_log in (4) erzeugt, und es landen nur die Nachrichten mit dem in der <code>postgresql.conf</code> festgelegten Loglevel in der Datei. Die Logs des Daemons an sich befinden sich wie gehabt in <code>/var/log/postgresql</code>.</p>                </article>

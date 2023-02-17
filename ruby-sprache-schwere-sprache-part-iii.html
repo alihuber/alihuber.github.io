@@ -56,59 +56,59 @@
 
     <div class="entry-content">
       <abbr class="published" title="2012-07-09T20:47:00+02:00">
-              Published: Mo 09 Juli 2012
+              Published: Mon 09 July 2012
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
               In <a href="/category/ruby.html">Ruby</a>.
       </address>
       <p>Die meiste Verwirrung um Blocks und Procs rührt daher, wie beide zusammenarbeiten. Die Aussage, ALLES in Ruby sei ein Objekt ist einfach nicht wahr: Blocks, Argumentlisten und Funktionen sind keine Objekte, daher ist die gern zitierte Aussage, Ruby sei "objektorientierter" als Python ziemlicher Quatsch, <a href="http://linuxdevcenter.com/pub/a/linux/2001/11/29/ruby.html">so hatte Matz das gar nicht gemeint</a>. Blocks sind aber dazu fähig, ein Proc zu erzeugen. Und die sind wiederum diesmal wirklich Objekte. Der Unterschied zwischen Blocks und Procs ist folgender:</p>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">].</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">10</span> <span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">].</span><span class="n">each</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">x</span><span class="o">|</span><span class="w"> </span><span class="nb">puts</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 
 <p>Der Codeblock oben ist wie gesagt, kein Objekt. Er gehört zur Syntax des Methodenaufrufs. Eine Analogie wäre eine Argumentliste:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">puts</span> <span class="n">say_hello</span><span class="p">(</span><span class="s1">&#39;hi&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nb">puts</span><span class="w"> </span><span class="n">say_hello</span><span class="p">(</span><span class="s1">&#39;hi&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 <p>Das Argument ist ein Objekt, die Argumentliste selbst aber nicht. Genauso wie der Block oben: Der Empfänger von each ist ein Objekt, der Block selbst ist aber kein Objekt. Eine Instanz eines Proc ist aber ein Objekt und kann in Methodenargumenten auftauchen. Viel Konfusion entsteht, weil die Syntax der Erzeugung von Procs so ähnlich wie die eines Blocks hinter einem Methodenaufruf ist:</p>
-<div class="highlight"><pre><span></span><code><span class="n">pr</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s1">&#39;Im Block eines Proc!&#39;</span> <span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="n">pr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Proc</span><span class="o">.</span><span class="n">new</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nb">puts</span><span class="w"> </span><span class="s1">&#39;Im Block eines Proc!&#39;</span><span class="w"> </span><span class="p">}</span>
 <span class="c1"># Procs werden aufgerufen, indem sie gecallt werden:</span>
 <span class="n">pr</span><span class="o">.</span><span class="n">call</span>
 </code></pre></div>
 
 <p>Das ist so wie die Zuweisung einer Methode an eine Variable in JavaScript, und alles weitere sind lediglich Erweiterungen dieser Funktionalität: Methodenargumente, Zuweisung an Variablen, die Verwendung in Arrays... Das Funktioniert alles, weil Procs Objekte sind und Blocks nicht.</p>
 <p>Der Witz ist nun, dass Blocks in Procs umgewandelt werden können und umgekehrt.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">capture_block</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Ich hab den Block erwischt, er ist jetzt ein Proc!&quot;</span>
-  <span class="n">block</span><span class="o">.</span><span class="n">call</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">capture_block</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+<span class="w">  </span><span class="nb">puts</span><span class="w"> </span><span class="s2">&quot;Ich hab den Block erwischt, er ist jetzt ein Proc!&quot;</span>
+<span class="w">  </span><span class="n">block</span><span class="o">.</span><span class="n">call</span>
 <span class="k">end</span>
-<span class="n">capture_block</span> <span class="p">{</span> <span class="s2">&quot;Das wird ein Proc!&quot;</span> <span class="p">}</span>
+<span class="n">capture_block</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;Das wird ein Proc!&quot;</span><span class="w"> </span><span class="p">}</span>
 <span class="c1">#=&gt; &quot;Ich hab den Block erwischt, er ist jetzt ein Proc!&quot;</span>
 <span class="c1">#=&gt; &quot;Das wird ein Proc!&quot;</span>
 </code></pre></div>
 
 <p>Anders herum:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">p</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;Das wird ein Block&quot;</span> <span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="nb">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Proc</span><span class="o">.</span><span class="n">new</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nb">puts</span><span class="w"> </span><span class="s2">&quot;Das wird ein Block&quot;</span><span class="w"> </span><span class="p">}</span>
 <span class="n">capture_block</span><span class="p">(</span><span class="o">&amp;</span><span class="nb">p</span><span class="p">)</span>
 </code></pre></div>
 
 <p>Die Aussage in meinem letzten Blogeintrag, dass es auf yield ankommt ob eine Methode einen Block bekommen kann, ist so dann nicht ganz richtig weil das Argument oben ja auch ein Block wird. Dies funktioniert alles, weil das "&amp;" ein Wrapper für <code>to_proc</code> ist. Die <code>to_proc</code>-Methode erlaubt einige lustige Dinge: Wenn in einer Klasse <code>to_proc</code> definiert wird, wird bei einem Aufruf "&amp;Klassenname" der Code des Procs ausgeführt. Hier mal ein sinnloses Beispiel:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">A</span>
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">to_proc</span>
-    <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;AAH!&quot;</span> <span class="p">}</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">A</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nc">self</span><span class="o">.</span><span class="nf">to_proc</span>
+<span class="w">    </span><span class="no">Proc</span><span class="o">.</span><span class="n">new</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nb">puts</span><span class="w"> </span><span class="s2">&quot;AAH!&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
-<span class="o">[</span><span class="kp">nil</span><span class="p">,</span> <span class="kp">nil</span><span class="o">].</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="p">)</span>
+<span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="w"> </span><span class="kp">nil</span><span class="o">].</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="p">)</span>
 <span class="c1">#=&gt; AAH!</span>
 <span class="c1">#=&gt; AAH!</span>
 </code></pre></div>
 
 <p>Die (schön?) kurze Schreibweise, in der man die normale Blocksyntax durch die mit Symbol und Ampersand ersetzt funktioniert, weil Symbols auch eine <code>to_proc</code>-Methode haben:</p>
-<div class="highlight"><pre><span></span><code><span class="sx">%w{otto odol}</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:reverse!</span><span class="p">)</span> <span class="c1">#=&gt; [&quot;otto&quot;, &quot;lodo&quot;]</span>
+<div class="highlight"><pre><span></span><code><span class="sx">%w{otto odol}</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:reverse!</span><span class="p">)</span><span class="w"> </span><span class="c1">#=&gt; [&quot;otto&quot;, &quot;lodo&quot;]</span>
 </code></pre></div>
 
 <p><code>:reverse</code> wird als Symbol an jedes Element gesendet, wo es als Message interpretiert wird. Das obige ist gleichbedeutend mit:</p>
-<div class="highlight"><pre><span></span><code><span class="sx">%w{otto odol}</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span><span class="o">.</span><span class="n">reverse!</span> <span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="sx">%w{otto odol}</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">i</span><span class="o">|</span><span class="w"> </span><span class="n">i</span><span class="o">.</span><span class="n">reverse!</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
     </div><!-- /.entry-content -->
 

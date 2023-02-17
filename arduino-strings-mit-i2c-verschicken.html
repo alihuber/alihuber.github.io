@@ -56,7 +56,7 @@
 
     <div class="entry-content">
       <abbr class="published" title="2012-12-26T18:18:00+01:00">
-              Published: Mi 26 Dezember 2012
+              Published: Wed 26 December 2012
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
@@ -64,41 +64,41 @@
       </address>
       <p>Dieses Jahr war ich wohl fleißig und habe (rein rechnerisch) mindestens 1x im Monat gebloggt. Und hier kommt der letzte Beitrag 2012:</p>
 <p>Für ein Projekt im Rahmen der Veranstaltung "Embedded Systems" sollte ein String mit Informationen für eine RGB-LED-Matrix (Uhrzeit und Farbinformationen als Hex-Wert) über den I2C-Bus der Arduino-Mikrocontroller verschickt werden. Da auf der Empfängerseite eventgesteuert gearbeitet wird ist das verschicken mehrerer kleiner Nachrichten nicht praktikabel, da es auch etwas dauert bis die gesendeten Informationen weiterverarbeitet sind. Experimente mit allzu langen Strings waren auch nicht erfolgreich, so dass ein String der Länge 12 verschickt wird. Um den "cplusplussigen" Umgang mit einzelnen Bytes zu vermeiden wird der zu verschickende String zuerst in ein Char-Array gewandelt:</p>
-<div class="highlight"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">outstring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;12150x68FC63&quot;</span><span class="p">;</span><span class="w"></span>
-<span class="kt">char</span><span class="w"> </span><span class="n">outAry</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
-<span class="n">outstring</span><span class="p">.</span><span class="n">toCharArray</span><span class="p">(</span><span class="n">outAry</span><span class="p">,</span><span class="w"> </span><span class="mi">13</span><span class="p">);</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">outstring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;12150x68FC63&quot;</span><span class="p">;</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">outAry</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">};</span>
+<span class="n">outstring</span><span class="p">.</span><span class="n">toCharArray</span><span class="p">(</span><span class="n">outAry</span><span class="p">,</span><span class="w"> </span><span class="mi">13</span><span class="p">);</span>
 </code></pre></div>
 
 <p>Das Array und die Größenangabe des Buffers sind eins größer, da noch ein Terminierungszeichen angehängt wird. Dann wird das Array mit Hilfe der Wire-Bibliothek verschickt:</p>
-<div class="highlight"><pre><span></span><code><span class="n">Wire</span><span class="p">.</span><span class="n">beginTransmission</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
-<span class="n">Wire</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">outAry</span><span class="p">);</span><span class="w"></span>
-<span class="n">Wire</span><span class="p">.</span><span class="n">endTransmission</span><span class="p">();</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="n">Wire</span><span class="p">.</span><span class="n">beginTransmission</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="n">Wire</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">outAry</span><span class="p">);</span>
+<span class="n">Wire</span><span class="p">.</span><span class="n">endTransmission</span><span class="p">();</span>
 </code></pre></div>
 
 <p>In der Methode</p>
-<div class="highlight"><pre><span></span><code><span class="n">receiveEvent</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">lengthBytes</span><span class="p">)</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="n">receiveEvent</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">lengthBytes</span><span class="p">)</span>
 </code></pre></div>
 
 <p>des Empfängers, die mit</p>
-<div class="highlight"><pre><span></span><code><span class="n">Wire</span><span class="p">.</span><span class="n">onReceive</span><span class="p">(</span><span class="n">receiveEvent</span><span class="p">);</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="n">Wire</span><span class="p">.</span><span class="n">onReceive</span><span class="p">(</span><span class="n">receiveEvent</span><span class="p">);</span>
 </code></pre></div>
 
 <p>deklariert wurde und die ankommenden Bytes verarbeitet wird der String dann wieder ausgepackt indem die einzelnen Bytes gelesen, gecastet und an ein String-Objekt konkateniert werden:</p>
-<div class="highlight"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">inString</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span><span class="w"></span>
-<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">Wire</span><span class="p">.</span><span class="n">available</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="n">inString</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="kt">char</span><span class="p">(</span><span class="n">Wire</span><span class="p">.</span><span class="n">read</span><span class="p">());</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">inString</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">Wire</span><span class="p">.</span><span class="n">available</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">inString</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="kt">char</span><span class="p">(</span><span class="n">Wire</span><span class="p">.</span><span class="n">read</span><span class="p">());</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>Die <code>available()</code>-Methode macht bei langen Strings Probleme, und da im Projekt im Sekundentakt gearbeitet wird wurde wie oben beschrieben deshalb ein kürzerer String gewählt. Soll jetzt z.B. die Farbinformation, die jetzt ja als ausgeschriebener Hexwert vorliegt wieder in die richtige Zahl gewandelt werden, wird der String wieder in ein Array gepackt:</p>
-<div class="highlight"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">colorStr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inString</span><span class="p">.</span><span class="n">substring</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
-<span class="kt">char</span><span class="w"> </span><span class="n">colorAry</span><span class="p">[</span><span class="mi">9</span><span class="p">];</span><span class="w"></span>
-<span class="n">colorStr</span><span class="p">.</span><span class="n">toCharArray</span><span class="p">(</span><span class="n">colorAry</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">);</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">colorStr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inString</span><span class="p">.</span><span class="n">substring</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">colorAry</span><span class="p">[</span><span class="mi">9</span><span class="p">];</span>
+<span class="n">colorStr</span><span class="p">.</span><span class="n">toCharArray</span><span class="p">(</span><span class="n">colorAry</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">);</span>
 </code></pre></div>
 
 <p>Auch hier ist wieder darauf zu achten, dass das Array eins größer ist. Die Zahl kann dann mit der String-to-Long-Methode gecastet werden, die auch die Basis als Parameter bekommen kann:</p>
-<div class="highlight"><pre><span></span><code><span class="kt">uint32_t</span><span class="w"> </span><span class="n">color</span><span class="p">;</span><span class="w"></span>
-<span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strtol</span><span class="p">(</span><span class="n">colorAry</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">);</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="kt">uint32_t</span><span class="w"> </span><span class="n">color</span><span class="p">;</span>
+<span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strtol</span><span class="p">(</span><span class="n">colorAry</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">);</span>
 </code></pre></div>
     </div><!-- /.entry-content -->
 

@@ -56,7 +56,7 @@
 
     <div class="entry-content">
       <abbr class="published" title="2015-04-12T00:00:00+02:00">
-              Published: So 12 April 2015
+              Published: Sun 12 April 2015
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
@@ -75,22 +75,22 @@ On the quest to replace Sidekiq with RabbitMQ I had to dig into several topics, 
 <h3>Getting started</h3>
 <p>To make things even more interesting (and to get ahead of later headaches) I did set up a virtual machine running Ubuntu 14.04.2, because running RabbitMQ on the local machine with the standard-user guest/guest and vhost=/ settings is just lame. As a bonus I see the real implications of my tinkering as if would be on a real remote machine. (Also, I set up the Rails app to use Unicorn as development server as the app would be configured in a production setting, but more about that later).
 As usual, I run the VM in bridged mode to be reachable with an 192.168.0.x IP in my local network, and installing RabbitMQ as apt package works just fine. Since the guest/guest user can only connect to the broker via localhost, I use the rabbitmqctl command to manage users and permissions. I add a new user and set his permissions to be a "manager":</p>
-<div class="highlight"><pre><span></span><code>sudo rabbitmqctl add_user ubuntu ubuntu
-rabbitmqctl set_permissions -p <span class="nb">test</span> ubuntu <span class="s2">&quot;.*&quot;</span> <span class="s2">&quot;.*&quot;</span> <span class="s2">&quot;.*&quot;</span>
-rabbitmqctl set_user_tags ubuntu management
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>rabbitmqctl<span class="w"> </span>add_user<span class="w"> </span>ubuntu<span class="w"> </span>ubuntu
+rabbitmqctl<span class="w"> </span>set_permissions<span class="w"> </span>-p<span class="w"> </span><span class="nb">test</span><span class="w"> </span>ubuntu<span class="w"> </span><span class="s2">&quot;.*&quot;</span><span class="w"> </span><span class="s2">&quot;.*&quot;</span><span class="w"> </span><span class="s2">&quot;.*&quot;</span>
+rabbitmqctl<span class="w"> </span>set_user_tags<span class="w"> </span>ubuntu<span class="w"> </span>management
 </code></pre></div>
 
 <p>If not already activated, the management-plugin should be enabled to access the nice RabbitMQ management GUI:</p>
-<div class="highlight"><pre><span></span><code>rabbitmq-plugins <span class="nb">enable</span> rabbitmq_management
+<div class="highlight"><pre><span></span><code>rabbitmq-plugins<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>rabbitmq_management
 </code></pre></div>
 
 <p>The "ubuntu" user should now be able to log in on http://VM-IP:15672.<br>
 RabbitMQ features complete separate "environments" called virtual hosts. Each virtual host has his own set of queues etc. living inside it, and the virtual hosts won't interfere with each other. I created a new virtual host called "test" which will be used with the sample applications:</p>
-<div class="highlight"><pre><span></span><code>rabbitmqctl add_vhost <span class="nb">test</span>
+<div class="highlight"><pre><span></span><code>rabbitmqctl<span class="w"> </span>add_vhost<span class="w"> </span><span class="nb">test</span>
 </code></pre></div>
 
 <p>To be able to move messages beween queues, the "shovel"-plugin has to be enabled:</p>
-<div class="highlight"><pre><span></span><code>rabbitmq-plugins <span class="nb">enable</span> rabbitmq_shovel
+<div class="highlight"><pre><span></span><code>rabbitmq-plugins<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>rabbitmq_shovel
 </code></pre></div>
 
 <p>That's all for the introduction, the next blog post will cover first steps with the "Bunny" gem and basic message producing/consuming.</p>

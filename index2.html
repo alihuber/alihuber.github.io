@@ -50,6 +50,18 @@
                     <ol id="posts-list" class="hfeed" start="9">
             <li><article class="hentry">
                 <header>
+                    <h1><a href="/short-tip-firefox-stopped-reloading-rails-assets.html" rel="bookmark"
+                           title="Permalink to Short Tip: Firefox stopped reloading Rails assets">Short Tip: Firefox stopped reloading Rails assets</a></h1>
+                </header>
+
+                <div class="entry-content">
+                <p>I just updated Firefox from version 33.0 to 33.0.2, and all of a sudden it stopped serving assets correctly. I changed some CSS file, and despite a hard refresh (cmd + shift + r) the changes were not loaded correctly during development. I found the solution <a href="http://forums.mozillazine.org/viewtopic.php?f=9&amp;t=381118&amp;start=0">here</a>, somehow the …</p>
+                <a class="readmore" href="/short-tip-firefox-stopped-reloading-rails-assets.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
                     <h1><a href="/fun-with-paas-dokkufy.html" rel="bookmark"
                            title="Permalink to Fun with PaaS & dokkufy">Fun with PaaS & dokkufy</a></h1>
                 </header>
@@ -155,18 +167,6 @@
                 <div class="entry-content">
                 <p>Für einen Test wollte ich heute eine MySQL-Datenbank anlegen und einen eigens dafür angelegten User von entfernt darauf zugreifen lassen. Also Portweiterleitung eingerichtet und Datenbank nebst User (zum Beispiel mit <a href="http://ewus.de/en/tipp/en/create-mysql-database-and-user">dieser</a> oder <a href="http://www.internist-schmidt-lohfelden.de/ReadMe/Anlegen%20neuer%20Benutzer%20unter%20MySQL.htm">dieser</a> Anleitung) mit der Konsole angelegt. Aber im MySQL-Workbench ist das angelegte Schema mit dem frischen User einfach …</p>
                 <a class="readmore" href="/kurztipp-mysql-kein-zugriff-mit-angelegtem-user.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/testing-file-downloads-with-sinatra-capybara-and-travis-ci.html" rel="bookmark"
-                           title="Permalink to Testing file downloads with Sinatra, Capybara and Travis-CI">Testing file downloads with Sinatra, Capybara and Travis-CI</a></h1>
-                </header>
-
-                <div class="entry-content">
-                <p>I recently had the problem to test the content of downloaded files in an non-Rails environment. It's a simple Sinatra-app that returns a file via a GET-Request and the <code>send_file</code>-helper. My first approach was to check for the response-body after Capybara clicked the 'Download'-button, but I got the same …</p>
-                <a class="readmore" href="/testing-file-downloads-with-sinatra-capybara-and-travis-ci.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->

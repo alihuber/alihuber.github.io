@@ -56,14 +56,14 @@
 
     <div class="entry-content">
       <abbr class="published" title="2013-10-23T00:16:00+02:00">
-              Published: Mi 23 Oktober 2013
+              Published: Wed 23 October 2013
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
               In <a href="/category/ubuntu.html">Ubuntu</a>.
       </address>
       <p>Der Emulator wird mit <code>emulator -avd &lt;avd-name&gt;</code> gestartet. Welche avds angelegt sind kann unter Ubuntu mit einem Blick in das Verzeichnis <code>/home/$USER/.android/avd/</code> gesehen werden. Wenn der Emulator läuft, kann mit <code>adb devices</code> gesehen werden, welche devices aufgelistet sind. Will man eine Logcat-Ausgabe wie unter Eclipse, genügt der Befehl <code>adb logcat</code>. Wenn das Eclipse-Projekt zuvor mit dem Befehl <code>android update project -p .</code> in ein Ant-kompatibles Projekt umgewandelt wurde, kann im Projektverzeichnis mit <code>ant clean debug</code> das Projekt gebaut werden. <code>clean</code> ist hier wichtig, da es sonst zu seltsamen Fehlermeldungen kommt. Das erzeugte .apk wird dann mit <code>adb install /pfad/zur/datei</code> auf dem device installiert. Die App selbst wird mit dem Befehl</p>
-<div class="highlight"><pre><span></span><code>adb shell am start -D -a android.intent.action.MAIN -n com.package.name/com.package.name.MainActivityName
+<div class="highlight"><pre><span></span><code>adb<span class="w"> </span>shell<span class="w"> </span>am<span class="w"> </span>start<span class="w"> </span>-D<span class="w"> </span>-a<span class="w"> </span>android.intent.action.MAIN<span class="w"> </span>-n<span class="w"> </span>com.package.name/com.package.name.MainActivityName
 </code></pre></div>
 
 <p>im Debugmodus gestartet.</p>

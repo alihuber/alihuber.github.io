@@ -56,7 +56,7 @@
 
     <div class="entry-content">
       <abbr class="published" title="2014-10-26T15:00:00+01:00">
-              Published: So 26 Oktober 2014
+              Published: Sun 26 October 2014
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
@@ -69,11 +69,11 @@ On the host machine I did set up a directory with the <a href="https://devcenter
 Since dokkufy uses dokku, but in a nicer, more interactive way (as described <a href="http://cristianobetta.com/blog/2014/08/05/your-mini-heroku-with-dokku-and-dokkufy">here</a>), it will set up Git, docker and nginx and has to download about 400 mb. After it's finished you should be able to hit 192.168.0.12 (or whatever your VM's IP is) and see the welcome screen from nginx.<br>
 After that I ran <code>git init</code> in the directory of the rack app and committed all the files. Then I ran the <code>dokkufy app</code> command, which asked me again about user name and IP, and did set up Git remotes (the part I couldn't get to work with dokku itself). The output from <code>git push dokku master</code> should look familiar to everyone who has used cloud foundry, and the app will be deployed into a docker container inside the VM (see the links above).<br>
 To reach the app under the set domain name, I had to add the following to the <code>/etc/hosts</code>-file on the host machine: <code>192.168.0.12 hello.ali.io</code> Now http://ali.io gave me the personal page of some guy, but hello.ali.io gave me a 'bad gateway' (111: Connection refused while connecting to upstream)  error. As it turned out, these lines in <code>/etc/nginx/nginx.conf</code> in the VM were missing:</p>
-<div class="highlight"><pre><span></span><code>http <span class="o">{</span>
-  ...
-  server <span class="o">{</span>
-    server_name .ali.io<span class="p">;</span>
-  <span class="o">}</span>
+<div class="highlight"><pre><span></span><code>http<span class="w"> </span><span class="o">{</span>
+<span class="w">  </span>...
+<span class="w">  </span>server<span class="w"> </span><span class="o">{</span>
+<span class="w">    </span>server_name<span class="w"> </span>.ali.io<span class="p">;</span>
+<span class="w">  </span><span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div>
 

@@ -56,7 +56,7 @@
 
     <div class="entry-content">
       <abbr class="published" title="2016-02-20T00:00:00+01:00">
-              Published: Sa 20 Februar 2016
+              Published: Sat 20 February 2016
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
@@ -65,32 +65,32 @@
       <p>At my current work setup we use Vagrant to make the setup of our development environments as seamless as possible. The goal was to just enter 'vagrant up' and automate the rest of the development setup for Ruby on Rails applications whilst letting us use our familiar text edtiors on the host machine. We documented how to set up such an environment in this <a href="https://github.com/tilod/coding_guide/wiki/vagrant">coding guide</a>. This allows us to run the servers, tests and all other background services on the virtual machine and syncing the edited application files via unison, keeping our normal workflow.<br>
 However, over time things became more complex. For example, an application running inside the Vagrant VM has to be tested with real browsers (via Selenium) instead of headless ones (due to it's heavy use of JavaScript), and the application is accessing another application's API running on the host machine. So, we had to tweak things a little:<br>
 The first thing to do is to setup the Vagrant box so that it uses static IPs for itself and the host machine, this is the same if VirtualBox is running in bridged mode. The single most important thing you need to know is that there exists a <code>:private_network</code> - option and the host machine will <em>always</em> be accessible via <code>192.168.50.1</code>. So for the guest machine you have to do this:</p>
-<div class="highlight"><pre><span></span><code><span class="no">Vagrant</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
-  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="s1">&#39;ubuntu/trusty64&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="no">Vagrant</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">config</span><span class="o">|</span>
+<span class="w">  </span><span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ubuntu/trusty64&#39;</span>
 
-  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="ss">:private_network</span><span class="p">,</span> <span class="ss">ip</span><span class="p">:</span> <span class="s2">&quot;192.168.50.4&quot;</span>
-  <span class="c1"># …</span>
+<span class="w">  </span><span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span><span class="w"> </span><span class="ss">:private_network</span><span class="p">,</span><span class="w"> </span><span class="ss">ip</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;192.168.50.4&quot;</span>
+<span class="w">  </span><span class="c1"># …</span>
 <span class="k">end</span>
 </code></pre></div>
 
 <p>Now the VM will be reachable under the given IP. Of course you have to enter all hostnames in the <code>etc/hosts/</code> - file inside the guest machine. Following the conventions of the coding guide, this is done in the Bash script that bootstraps the Vagrant box, for example in <code>bootstrap_server.bash</code>:  </p>
 <div class="highlight"><pre><span></span><code><span class="o">[</span>…<span class="o">]</span>
-<span class="nb">echo</span> <span class="s1">&#39;192.168.50.4 localhost&#39;</span> &gt;&gt; /etc/hosts
-<span class="nb">echo</span> <span class="s1">&#39;192.168.50.1 api_responder&#39;</span> &gt;&gt; /etc/hosts
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;192.168.50.4 localhost&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/hosts
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;192.168.50.1 api_responder&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/hosts
 <span class="o">[</span>…<span class="o">]</span>
 </code></pre></div>
 
 <p>Now the Vagrant box knows where to find the respective applications.<br>
 The nice part about this is that you can now have any service or API required by the tested app running on the host machine, and it will be found. For example, for using an Selenium server on the host machine out of the Vagrant box you can set up your Capybara tests like this (in your <code>test/spec_helper.rb</code>):  </p>
 <div class="highlight"><pre><span></span><code><span class="o">[</span><span class="err">…</span><span class="o">]</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://192.168.50.1:4444/wd/hub&quot;</span>
-<span class="no">Capybara</span><span class="o">.</span><span class="n">register_driver</span> <span class="ss">:selenium_chrome</span> <span class="k">do</span> <span class="o">|</span><span class="n">app</span><span class="o">|</span>
-  <span class="n">capabilities</span> <span class="o">=</span> <span class="no">Selenium</span><span class="o">::</span><span class="no">WebDriver</span><span class="o">::</span><span class="no">Remote</span><span class="o">::</span><span class="no">Capabilities</span><span class="o">.</span><span class="n">chrome</span>
-  <span class="no">Capybara</span><span class="o">::</span><span class="no">Selenium</span><span class="o">::</span><span class="no">Driver</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="ss">:browser</span> <span class="o">=&gt;</span> <span class="ss">:remote</span><span class="p">,</span> <span class="ss">:url</span> <span class="o">=&gt;</span> <span class="n">url</span><span class="p">,</span>
-                                <span class="ss">:desired_capabilities</span> <span class="o">=&gt;</span> <span class="n">capabilities</span><span class="p">)</span>
+<span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;http://192.168.50.1:4444/wd/hub&quot;</span>
+<span class="no">Capybara</span><span class="o">.</span><span class="n">register_driver</span><span class="w"> </span><span class="ss">:selenium_chrome</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">app</span><span class="o">|</span>
+<span class="w">  </span><span class="n">capabilities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Selenium</span><span class="o">::</span><span class="no">WebDriver</span><span class="o">::</span><span class="no">Remote</span><span class="o">::</span><span class="no">Capabilities</span><span class="o">.</span><span class="n">chrome</span>
+<span class="w">  </span><span class="no">Capybara</span><span class="o">::</span><span class="no">Selenium</span><span class="o">::</span><span class="no">Driver</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">app</span><span class="p">,</span><span class="w"> </span><span class="ss">:browser</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="ss">:remote</span><span class="p">,</span><span class="w"> </span><span class="ss">:url</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">url</span><span class="p">,</span>
+<span class="w">                                </span><span class="ss">:desired_capabilities</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">capabilities</span><span class="p">)</span>
 <span class="k">end</span>
 <span class="o">[</span><span class="err">…</span><span class="o">]</span>
-<span class="no">Capybara</span><span class="o">.</span><span class="n">app_host</span> <span class="o">=</span> <span class="s2">&quot;http://192.168.50.4:4567&quot;</span>
+<span class="no">Capybara</span><span class="o">.</span><span class="n">app_host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;http://192.168.50.4:4567&quot;</span>
 <span class="o">[</span><span class="err">…</span><span class="o">]</span>
 </code></pre></div>
 

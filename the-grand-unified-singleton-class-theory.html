@@ -56,7 +56,7 @@
 
     <div class="entry-content">
       <abbr class="published" title="2012-09-17T00:44:00+02:00">
-              Published: Mo 17 September 2012
+              Published: Mon 17 September 2012
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
@@ -68,58 +68,58 @@ Some (like _why and Yehuda Katz) call it metaclass, <a href="http://www.dyrathro
 <p>The first important step is to leave the mindset of say, a Java programmer. In Java all you can do is define classes wich describe the behaviour and state of objects. In Ruby however, each object can have seperate behaviour. And since classes are objects too, one should not think of classes as 'recipies' for objects, but of classes which are basically objects of modules with three additional methods and as customizable as any other objects. You interact with objects by sending them messages. This applies to modules and classes also, so leave the static world of Java (mentally).</p>
 <h3>Singleton methods</h3>
 <p>The easiest way of define specific behaviour for a object is to define a singleton method on that object.</p>
-<div class="highlight"><pre><span></span><code><span class="n">o</span> <span class="o">=</span> <span class="no">Object</span><span class="o">.</span><span class="n">new</span>
-<span class="n">o2</span> <span class="o">=</span> <span class="no">Object</span><span class="o">.</span><span class="n">new</span>
-<span class="k">def</span> <span class="nc">o</span><span class="o">.</span><span class="nf">talk</span>
-  <span class="nb">puts</span> <span class="s1">&#39;hello!&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="n">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Object</span><span class="o">.</span><span class="n">new</span>
+<span class="n">o2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Object</span><span class="o">.</span><span class="n">new</span>
+<span class="k">def</span><span class="w"> </span><span class="nc">o</span><span class="o">.</span><span class="nf">talk</span>
+<span class="w">  </span><span class="nb">puts</span><span class="w"> </span><span class="s1">&#39;hello!&#39;</span>
 <span class="k">end</span>
-<span class="n">o</span><span class="o">.</span><span class="n">talk</span> <span class="c1"># works</span>
-<span class="n">o2</span><span class="o">.</span><span class="n">talk</span> <span class="c1"># does not work</span>
+<span class="n">o</span><span class="o">.</span><span class="n">talk</span><span class="w"> </span><span class="c1"># works</span>
+<span class="n">o2</span><span class="o">.</span><span class="n">talk</span><span class="w"> </span><span class="c1"># does not work</span>
 </code></pre></div>
 
 <p>If I wanted all of my objects to be able to talk, I would have defined the talk method in the class <code>Object</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Object</span>
-  <span class="k">def</span> <span class="nf">talk</span>
-    <span class="nb">puts</span> <span class="s1">&#39;hello&#39;</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Object</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">talk</span>
+<span class="w">    </span><span class="nb">puts</span><span class="w"> </span><span class="s1">&#39;hello&#39;</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div>
 
 <p>This is called an instance Method, because it is shared by all instances of the class <code>Object</code>.</p>
 <h3>Classes as objects</h3>
 <p>Since classes are objects too they can be instantiated. Every class is an instance of a class called <code>Class</code>. The keyword for that is the "<code>class</code>" keyword. This is just a nice looking way. You could also write <code>my_class = Class.new</code> (and some other fancy things with the optional block for new, see below). What's confusing here is that this is basically the same as <code>my_object = Object.new</code>. It's confusing because we are used to class objects be referenced by constants, not variables. The main difference between the 'class object' and the 'object object' is that the class object is able to spawn other objects via the <code>new</code> method.</p>
-<div class="highlight"><pre><span></span><code><span class="n">my_class</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">size</span> <span class="c1">#=&gt; 98 Including new, and others.</span>
-<span class="n">my_object</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">size</span> <span class="c1">#=&gt; 57</span>
+<div class="highlight"><pre><span></span><code><span class="n">my_class</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">size</span><span class="w"> </span><span class="c1">#=&gt; 98 Including new, and others.</span>
+<span class="n">my_object</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">size</span><span class="w"> </span><span class="c1">#=&gt; 57</span>
 </code></pre></div>
 
 <p>95 of the 98 methods are inherited from Module. Class adds just three more: <code>[:allocate, :new, :superclass]</code>.</p>
 <h3>Singleton methods on class objects</h3>
 <p>Just like above, singleton methods can be defined on classes instead of class instances (aka objects). But first, instance methods:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Car</span>
-  <span class="k">def</span> <span class="nf">set_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
-    <span class="vi">@color</span> <span class="o">=</span> <span class="n">color</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Car</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">set_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+<span class="w">    </span><span class="vi">@color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">color</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
-<span class="n">c</span> <span class="o">=</span> <span class="no">Car</span><span class="o">.</span><span class="n">new</span>
+<span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Car</span><span class="o">.</span><span class="n">new</span>
 <span class="n">c</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 <p>The "Car" class has now a instance method wich sets the color of a car object.</p>
-<div class="highlight"><pre><span></span><code><span class="no">Car</span><span class="o">.</span><span class="n">instance_methods</span> <span class="c1">#=&gt; :set_color is in here</span>
-<span class="no">Car</span><span class="o">.</span><span class="n">methods</span> <span class="c1">#=&gt; no :set_color in sight</span>
-<span class="n">c</span><span class="o">.</span><span class="n">methods</span> <span class="c1">#=&gt; :set_color is here again</span>
+<div class="highlight"><pre><span></span><code><span class="no">Car</span><span class="o">.</span><span class="n">instance_methods</span><span class="w"> </span><span class="c1">#=&gt; :set_color is in here</span>
+<span class="no">Car</span><span class="o">.</span><span class="n">methods</span><span class="w"> </span><span class="c1">#=&gt; no :set_color in sight</span>
+<span class="n">c</span><span class="o">.</span><span class="n">methods</span><span class="w"> </span><span class="c1">#=&gt; :set_color is here again</span>
 </code></pre></div>
 
 <p>We can now do (assuming there are only cars with 4 wheels):</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nc">Car</span><span class="o">.</span><span class="nf">wheels</span>
-  <span class="k">return</span> <span class="mi">4</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nc">Car</span><span class="o">.</span><span class="nf">wheels</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">4</span>
 <span class="k">end</span>
 </code></pre></div>
 
 <p>Compare that with the notation for a singleton method on an object above: It's exactly the same, we're just using a constant instead of a variable. c won't have the method "wheels", despite it's an instance of that class.</p>
-<div class="highlight"><pre><span></span><code><span class="no">Car</span><span class="o">.</span><span class="n">instance_methods</span> <span class="c1">#=&gt; no :wheels in sight</span>
-<span class="no">Car</span><span class="o">.</span><span class="n">methods</span> <span class="c1">#=&gt; :wheels, the last method</span>
-<span class="n">c</span><span class="o">.</span><span class="n">methods</span> <span class="c1">#=&gt; no :wheels in sight</span>
+<div class="highlight"><pre><span></span><code><span class="no">Car</span><span class="o">.</span><span class="n">instance_methods</span><span class="w"> </span><span class="c1">#=&gt; no :wheels in sight</span>
+<span class="no">Car</span><span class="o">.</span><span class="n">methods</span><span class="w"> </span><span class="c1">#=&gt; :wheels, the last method</span>
+<span class="n">c</span><span class="o">.</span><span class="n">methods</span><span class="w"> </span><span class="c1">#=&gt; no :wheels in sight</span>
 </code></pre></div>
 
 <p>It is to remember that the class object does not share it's methods or state with instances of itself. What is this good for? The example which is used most is Java's math methods like Math.sin() etc. It's used for modeling behaviour which is a feature belonging to the class as concept itself rather to its instances.</p>
@@ -133,26 +133,26 @@ Some (like _why and Yehuda Katz) call it metaclass, <a href="http://www.dyrathro
 <li>And so on to Object, Kernel and BasicObject</li>
 </ul>
 <p>This raises questions like: Where is the method actually defined when we write</p>
-<div class="highlight"><pre><span></span><code><span class="n">o</span> <span class="o">=</span> <span class="no">Object</span><span class="o">.</span><span class="n">new</span>
-<span class="k">def</span> <span class="nc">o</span><span class="o">.</span><span class="nf">talk</span>
-  <span class="nb">puts</span> <span class="s1">&#39;hi&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="n">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Object</span><span class="o">.</span><span class="n">new</span>
+<span class="k">def</span><span class="w"> </span><span class="nc">o</span><span class="o">.</span><span class="nf">talk</span>
+<span class="w">  </span><span class="nb">puts</span><span class="w"> </span><span class="s1">&#39;hi&#39;</span>
 <span class="k">end</span>
 </code></pre></div>
 
 <p>Because the object itself doesn't appear in the method lookup path, niether does the method appear in the instance methods of <code>Object</code> or <code>Class</code>. The method is exclusive to that object and none other. The same goes for singleton methods on class objects:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Car</span>
-  <span class="c1"># other syntax, same result</span>
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">wheels</span>
-    <span class="k">return</span> <span class="mi">4</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Car</span>
+<span class="w">  </span><span class="c1"># other syntax, same result</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nc">self</span><span class="o">.</span><span class="nf">wheels</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div>
 
 <p>The following syntax gives you an error because we used "Car" before, but it shows one more time that classes are just objects and after tinkering a while the only remaining confusing thing is the constant:</p>
-<div class="highlight"><pre><span></span><code><span class="no">Car</span> <span class="o">=</span> <span class="no">Class</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">steering_wheel</span>
-    <span class="k">return</span> <span class="mi">1</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="no">Car</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Class</span><span class="o">.</span><span class="n">new</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nc">self</span><span class="o">.</span><span class="nf">steering_wheel</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div>
 
@@ -161,81 +161,81 @@ Some (like _why and Yehuda Katz) call it metaclass, <a href="http://www.dyrathro
 <p>Instance methods live inside a class or module. But singleton methods live inside the singleton class of each object. So every object has two classes: The class of which it's an instance, and its singleton class. To add stuff to that singleton class, the special syntax "<code>class &lt;&lt;</code>" is used. Another confusing thing at this point is that you can use this syntax with self, variable and constant names and so forth. But when you keep in mind that "<code>class &lt;&lt;</code>" targets always the singleton class of the object on the right hand side of "<code>class &lt;&lt;</code>" it's quite easy to remember. This leads us to...</p>
 <h3>Singleton class syntax</h3>
 <p>The main purpose of the singleton class so far is to add singleton methods to objects (we haven't talked about modules yet). Knowing that the value of self changes in class definitions, we can use the "<code>class &lt;&lt;</code>"-syntax to do things like this:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Car</span>
-  <span class="c1"># self evaluates to Car</span>
-  <span class="c1"># self.class evaluates to Class</span>
-  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
-    <span class="k">def</span> <span class="nf">wheels</span>
-      <span class="k">return</span> <span class="mi">4</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Car</span>
+<span class="w">  </span><span class="c1"># self evaluates to Car</span>
+<span class="w">  </span><span class="c1"># self.class evaluates to Class</span>
+<span class="w">  </span><span class="k">class</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="nb">self</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">wheels</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="c1"># works because class opens a block in which self is Car like above</span>
-<span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="no">Car</span>
-  <span class="k">def</span> <span class="nf">wheels</span>
-    <span class="k">return</span> <span class="mi">4</span>
-  <span class="k">end</span>
+<span class="k">class</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="no">Car</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">wheels</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div>
 
 <p>These examples work on classes (referenced through constants in these examples). What confused me at first is that it works on objects in general, but since classes are objects the difference just vanished:</p>
-<div class="highlight"><pre><span></span><code><span class="n">str</span> <span class="o">=</span> <span class="s1">&#39;Hi!&#39;</span>
-<span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="n">str</span>
+<div class="highlight"><pre><span></span><code><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Hi!&#39;</span>
+<span class="k">class</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">str</span>
 <span class="c1"># we are now accessing the singleton class of &#39;str&#39;</span>
 <span class="c1"># which is the anonymous class behind this particular string.</span>
-  <span class="k">def</span> <span class="nf">twice</span>
-    <span class="nb">puts</span> <span class="nb">self</span> <span class="o">*</span> <span class="mi">2</span>
-  <span class="k">end</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">twice</span>
+<span class="w">    </span><span class="nb">puts</span><span class="w"> </span><span class="nb">self</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div>
 
 <p>The irb interpreter even has a special output for representing that we are not operating on a regular object or class:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Car</span>
-  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
-    <span class="nb">puts</span> <span class="nb">self</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Car</span>
+<span class="w">  </span><span class="k">class</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="nb">self</span>
+<span class="w">    </span><span class="nb">puts</span><span class="w"> </span><span class="nb">self</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
 <span class="c1">#&lt;Class:Car&gt;</span>
 
-<span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="n">str</span>
-  <span class="nb">puts</span> <span class="nb">self</span>
+<span class="k">class</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">str</span>
+<span class="w">  </span><span class="nb">puts</span><span class="w"> </span><span class="nb">self</span>
 <span class="k">end</span>
 <span class="c1">#&lt;Class:#&lt;String:0x0000000136ead8&gt;&gt;</span>
 </code></pre></div>
 
 <p>You can see that before the constant respectively the object there is this <code>&lt;Class:&gt;</code> thingy, indicating that self is pointing to something 'above' the <code>Car</code>, so to speak. Instead of using the "<code>class &lt;&lt; object</code>"-syntax I could have used the syntax like in the first examples:</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nc">str</span><span class="o">.</span><span class="nf">twice</span>
-  <span class="n">etc</span><span class="o">..</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nc">str</span><span class="o">.</span><span class="nf">twice</span>
+<span class="w">  </span><span class="n">etc</span><span class="o">..</span>
 </code></pre></div>
 
 <p>There is one difference, though. It has to do with the way constants are resolved, which I won't explain here. It's far more better explained in David A. Black's superb book "The well-grounded Rubyist", the one Ruby book I should have read before all other books about Ruby programming. One thing I really don't like about Ruby is that I'm showing here 2 ways to define singleton methods on a class, but there are at least 10, maybe more ways to do that (by using techniques like send). And when you aren't 100% familiar with all the stuff above and stumble upon code like this:</p>
 <div class="highlight"><pre><span></span><code><span class="kp">private</span>
-  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
-    <span class="k">def</span> <span class="nf">define_singleton_method</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">content</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span><span class="p">)</span>
-      <span class="p">(</span><span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span><span class="p">;</span> <span class="nb">self</span><span class="p">;</span> <span class="k">end</span><span class="p">)</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
-        <span class="n">undef_method</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span> <span class="k">if</span> <span class="nb">method_defined?</span> <span class="nb">name</span>
-        <span class="nb">String</span> <span class="o">===</span> <span class="n">content</span> <span class="p">?</span> <span class="nb">class_eval</span><span class="p">(</span><span class="s2">&quot;def </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">() </span><span class="si">#{</span><span class="n">content</span><span class="si">}</span><span class="s2">; end&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="n">define_method</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">content</span><span class="p">)</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-    <span class="n">etc</span><span class="o">...</span>
+<span class="w">  </span><span class="k">class</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="nb">self</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">define_singleton_method</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="w"> </span><span class="n">content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Proc</span><span class="o">.</span><span class="n">new</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="k">class</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span><span class="w"> </span><span class="k">end</span><span class="p">)</span><span class="o">.</span><span class="n">class_eval</span><span class="w"> </span><span class="k">do</span>
+<span class="w">        </span><span class="n">undef_method</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">method_defined?</span><span class="w"> </span><span class="nb">name</span>
+<span class="w">        </span><span class="nb">String</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="n">content</span><span class="w"> </span><span class="p">?</span><span class="w"> </span><span class="nb">class_eval</span><span class="p">(</span><span class="s2">&quot;def </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">() </span><span class="si">#{</span><span class="n">content</span><span class="si">}</span><span class="s2">; end&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">define_method</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">content</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="n">etc</span><span class="o">...</span>
 </code></pre></div>
 
 <p>well.. good luck. (This snippet is taken from the sinatra.rb source code, I'll say something about class_eval and instance_eval later.) Just for the record: you could do</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="no">Object</span>
-  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
-    <span class="nb">self</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="no">Object</span>
+<span class="w">  </span><span class="k">class</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="nb">self</span>
+<span class="w">    </span><span class="nb">self</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
 <span class="c1">#&lt;Class:#&lt;Class:Object&gt;&gt;</span>
 </code></pre></div>
 
 <p>which is the singleton class of the singleton class of object. But who would wanna do that?  </p>
 <p>Two more things about syntax: Since Ruby has all those cool introspection features like <code>Object#methods</code> and <code>Class#instance_methods</code>, it doesn't have <code>Object#singleton_class</code> like <code>Object#class</code>. But you can create that method by yourself:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Object</span>
-  <span class="k">def</span> <span class="nf">singleton_class</span>
-    <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
-      <span class="nb">self</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Object</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">singleton_class</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="nb">self</span>
+<span class="w">      </span><span class="nb">self</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div>
 
@@ -255,16 +255,16 @@ Some (like _why and Yehuda Katz) call it metaclass, <a href="http://www.dyrathro
 <p><a href="http://ilikestuffblog.com/2009/01/09/fun-with-rubys-instance_eval-and-class_eval/">This blogpost</a> covers right about everything. The connection one could make that it is another way of defining class methods, but it is capable of much more, especially with the eval functionalitiy. More details are covered in the excellent book "Metaprogramming Ruby" where the Author reveals more details how <code>instance_eval</code> and <code>class_eval</code> work.</p>
 <h3>Inheritance and singleton classes</h3>
 <p>As we have seen above, you can define a method in a singleton class and it is found also in classes which are ascendants from that particular class. For example:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">C</span>
-  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
-    <span class="k">def</span> <span class="nf">a_class_method</span>
-      <span class="nb">puts</span> <span class="s1">&#39;greetings from C!&#39;</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">C</span>
+<span class="w">  </span><span class="k">class</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="nb">self</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">a_class_method</span>
+<span class="w">      </span><span class="nb">puts</span><span class="w"> </span><span class="s1">&#39;greetings from C!&#39;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
-<span class="k">class</span> <span class="nc">D</span> <span class="o">&lt;</span> <span class="n">C</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">D</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">C</span>
 <span class="k">end</span>
-<span class="n">D</span><span class="o">.</span><span class="n">a_class_method</span> <span class="c1">#=&gt; &#39;greetings from C!&#39;</span>
+<span class="n">D</span><span class="o">.</span><span class="n">a_class_method</span><span class="w"> </span><span class="c1">#=&gt; &#39;greetings from C!&#39;</span>
 </code></pre></div>
 
 <p>Why does this work? It seems our model about the method lookup is still flawed. Let's add that.</p>

@@ -56,7 +56,7 @@
 
     <div class="entry-content">
       <abbr class="published" title="2010-04-30T20:08:00+02:00">
-              Published: Fr 30 April 2010
+              Published: Fri 30 April 2010
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
@@ -68,20 +68,20 @@ Leider sind die Anleitungen zum Einrichten eines Editors in den Factor-Docs wide
 Hier nun die Anleitung, wie man Factor beibringt, den GVim als Standardeditor gleich beim Start zu kennen und vor allem das Syntax-Highlighting auch unter Windows zu aktivieren:</p>
 <p><strong>Unixähnliche:</strong><br>
 Die Datei <code>.factor-rc</code> im <code>/home/username/</code>-Verzeichnis erstellen und folgendes einfügen:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">USING:</span><span class="w"> </span><span class="nn">namespaces</span><span class="w"> </span><span class="nn">editors.gvim</span><span class="w"> </span><span class="k">;</span><span class="w"></span>
-<span class="s">&quot;/usr/bin/gvim&quot;</span><span class="w"> </span><span class="no">\ gvim-path</span><span class="w"> </span><span class="nb">set-global</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="kn">USING:</span><span class="w"> </span><span class="nn">namespaces</span><span class="w"> </span><span class="nn">editors.gvim</span><span class="w"> </span><span class="k">;</span>
+<span class="s">&quot;/usr/bin/gvim&quot;</span><span class="w"> </span><span class="no">\ gvim-path</span><span class="w"> </span><span class="nb">set-global</span>
 </code></pre></div>
 
 <p>Nun sollte, wenn man im Listener</p>
-<div class="highlight"><pre><span></span><code>wordname<span class="w"> </span>edit<span class="w"></span>
+<div class="highlight"><pre><span></span><code>wordname<span class="w"> </span>edit
 </code></pre></div>
 
 <p>eingibt automatisch der GVim erscheinen und die entsprechende Datei in der sich das Word befindet schon geladen haben.<br>
 Syntax-Highlighting bekommt man, indem man die Ordner <code>ftdetect</code>, <code>ftplugin</code>, <code>plugin</code> und <code>syntax</code>, welche sich im Factor-Ordner unter <code>/misc/vim</code> befinden in das Verzeichnis <code>/home/username/.vim/</code> kopiert (das Verzeichnis war bei mir bis auf den Ordner "tags" leer).</p>
 <p><strong>WindowsXP:</strong><br>
 Die Datei <code>factor-rc</code> im Verzeichnis <code>C:\Dokumente und Einstellungen\username</code> erstellen und folgendes einfügen:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">USING:</span><span class="w"> </span><span class="nn">namespaces</span><span class="w"> </span><span class="nn">editors.gvim</span><span class="w"> </span><span class="k">;</span><span class="w"></span>
-<span class="s">&quot;C:\\Programme\\Vim\\vim72\\gvim.exe&quot;</span><span class="w"> </span><span class="no">\ gvim-path</span><span class="w"> </span><span class="nb">set-global</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="kn">USING:</span><span class="w"> </span><span class="nn">namespaces</span><span class="w"> </span><span class="nn">editors.gvim</span><span class="w"> </span><span class="k">;</span>
+<span class="s">&quot;C:\\Programme\\Vim\\vim72\\gvim.exe&quot;</span><span class="w"> </span><span class="no">\ gvim-path</span><span class="w"> </span><span class="nb">set-global</span>
 </code></pre></div>
 
 <p>Die Ordner für die Vim-Dateien sind im Factor-Ordner an derselben Stelle.<br>

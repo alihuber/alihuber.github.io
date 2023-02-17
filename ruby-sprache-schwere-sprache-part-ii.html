@@ -56,7 +56,7 @@
 
     <div class="entry-content">
       <abbr class="published" title="2012-07-07T13:06:00+02:00">
-              Published: Sa 07 Juli 2012
+              Published: Sat 07 July 2012
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
@@ -64,32 +64,32 @@
       </address>
       <p>"The well-grounded Rubyist" hat auch eine sehr gute Einführung in Blocks und Procs. Ich bin zwar selbst noch gefühlt meilenweit davon entfernt, Situationen zu erkennen in denen selbst definierte Methoden die Blocks aufnehmen nützlich sein könnten; vielleicht bin ich zu sehr in der Java-Denke drinnen und werde es wohl nie erkennen.<br>
 Ob eine Methode einen Block bekommen kann, hängt davon ab ob sie "yield" enthält.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">y_meth</span>
-  <span class="k">yield</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">y_meth</span>
+<span class="w">  </span><span class="k">yield</span>
 <span class="k">end</span>
-<span class="n">y_meth</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s1">&#39;gabba&#39;</span> <span class="p">}</span>
+<span class="n">y_meth</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nb">puts</span><span class="w"> </span><span class="s1">&#39;gabba&#39;</span><span class="w"> </span><span class="p">}</span>
 <span class="c1">#=&gt; gabba</span>
 </code></pre></div>
 
 <p>"yield" kann auch Parameter haben, diese werden in den aufnehmenden Block zwischen Pipe-Characters geschrieben. Alle Regeln für Methodenargumente (Vorbelegung, Sponge-Stern usw.) gelten auch für Blockparameter.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_all</span>
-  <span class="k">yield</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_all</span>
+<span class="w">  </span><span class="k">yield</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span>
 <span class="k">end</span>
-<span class="n">add_all</span> <span class="k">do</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="o">|</span>
-  <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span>
+<span class="n">add_all</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="o">|</span>
+<span class="w">  </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span>
 <span class="k">end</span>
 <span class="c1">#=&gt; 6</span>
 </code></pre></div>
 
 <p>Der Interpreter springt regelrecht hin und her: Zuerst wird a an add_all übergeben, da dort nur yield steht und a das erste Argument ist, bekommt add_all eine "1" zurück. Was damit gemacht werden soll steht im Block von add_all. Das ist sehr kontraintuitiv, da man es von vielen anderen Programmiersprachen gewohnt ist nur einen Ausführungspfad innerhalb einer Methode zu haben ("man steckt was rein und es kommt was raus"). add_all mit den Parametern für yield kann ja sonstwo definiert sein oder selbst Methodenaufrufe beinhalten, die selbst wieder einen Block benutzen. Oder einen Block in dem yield vorkommt, welcher das geyieldete Element wieder an die ursprüngliche Methode zurückgibt.</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Array</span>
-  <span class="k">def</span> <span class="nf">give_back</span>
-    <span class="n">acc</span> <span class="o">=</span> <span class="o">[]</span> <span class="c1"># Das erste e kommt von each bzw. give_back, # das zweite wird an den Block von give_back gegeben.</span>
-    <span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="n">acc</span> <span class="o">&lt;&lt;</span> <span class="k">yield</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">}</span>
-    <span class="n">acc</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Array</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">give_back</span>
+<span class="w">    </span><span class="n">acc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[]</span><span class="w"> </span><span class="c1"># Das erste e kommt von each bzw. give_back, # das zweite wird an den Block von give_back gegeben.</span>
+<span class="w">    </span><span class="n">each</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">e</span><span class="o">|</span><span class="w"> </span><span class="n">acc</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="k">yield</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="n">acc</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
-<span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">].</span><span class="n">give_back</span> <span class="p">{</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="n">e</span><span class="p">\</span><span class="o">*</span><span class="p">\</span><span class="o">*</span><span class="mi">2</span> <span class="p">}</span>
+<span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">].</span><span class="n">give_back</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">e</span><span class="o">|</span><span class="w"> </span><span class="n">e</span><span class="p">\</span><span class="o">*</span><span class="p">\</span><span class="o">*</span><span class="mi">2</span><span class="w"> </span><span class="p">}</span>
 <span class="c1">#=&gt; [1, 4, 9]</span>
 </code></pre></div>
 

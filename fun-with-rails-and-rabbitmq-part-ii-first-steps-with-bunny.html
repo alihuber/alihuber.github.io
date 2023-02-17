@@ -56,7 +56,7 @@
 
     <div class="entry-content">
       <abbr class="published" title="2015-04-13T00:00:00+02:00">
-              Published: Mo 13 April 2015
+              Published: Mon 13 April 2015
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
@@ -85,24 +85,24 @@
 </ul>
 <h3>Magic sample code</h3>
 <p>If you follwed through the code in the above linked RabbitMQ tutorials, you'll see that after setting up the connection and channel objects using the "Bunny" gem there is a queue declared (named 'hello'), and a message published to it:</p>
-<div class="highlight"><pre><span></span><code><span class="n">queue</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">queue</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
-<span class="n">queue</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">,</span> <span class="ss">routing_key</span><span class="p">:</span> <span class="n">queue</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">channel</span><span class="o">.</span><span class="n">queue</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+<span class="n">queue</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">routing_key</span><span class="p">:</span><span class="w"> </span><span class="n">queue</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </code></pre></div>
 
 <p>And on the consumer side after the same setup again all it takes to recieve and display the messages are the following lines:</p>
-<div class="highlight"><pre><span></span><code><span class="n">queue</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="ss">block</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">delivery_info</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">body</span><span class="o">|</span>
-  <span class="c1"># ...</span>
+<div class="highlight"><pre><span></span><code><span class="n">queue</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="ss">block</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">delivery_info</span><span class="p">,</span><span class="w"> </span><span class="n">properties</span><span class="p">,</span><span class="w"> </span><span class="n">body</span><span class="o">|</span>
+<span class="w">  </span><span class="c1"># ...</span>
 <span class="k">end</span>
 </code></pre></div>
 
 <p>That's interesting! There are no consumers or explicit exchanges to be seen! How does this work?  </p>
 <p>What makes the first few code examples hard to grasp is that the methods defined by Bunny do a few things implicitly, and RabbitMQ has default settings which make the code above just work. To be precise:<br>
 RabbitMQ does set up a bunch of default exchanges. One of them is the nameless (empty string <code>""</code>) default exchange, and every queue is automatically bound to it. The default exchange will pass through all messages if their routing key is the same string as the name of the queue. So this</p>
-<div class="highlight"><pre><span></span><code><span class="n">queue</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">,</span> <span class="ss">routing_key</span><span class="p">:</span> <span class="n">queue</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">queue</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">routing_key</span><span class="p">:</span><span class="w"> </span><span class="n">queue</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </code></pre></div>
 
 <p>is the same as</p>
-<div class="highlight"><pre><span></span><code><span class="n">channel</span><span class="o">.</span><span class="n">default_echange</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">,</span> <span class="ss">routing_key</span><span class="p">:</span> <span class="n">queue</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">channel</span><span class="o">.</span><span class="n">default_echange</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">routing_key</span><span class="p">:</span><span class="w"> </span><span class="n">queue</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </code></pre></div>
 
 <p>If you want to have a look at the the default exchange, you can fire up your web browser, log into the RabbitMQ managment UI and click the "Exchanges"-tab.</p>
@@ -125,29 +125,29 @@ It's time to bring our newly gained knowledge to use.</p>
 
 <h3>Receiving messages</h3>
 <p>The Rails app is using the "Bunny" gem for connecting to the broker, and the basic setup of the app follows the one from the <a href="http://rubybunny.info/articles/connecting.html">Bunny docs</a>. The Bunny connections use some of the bits we've learned so far, plus some stuff regarding Unicorn's worker threads. I put all Bunny connection settings in the <code>config/unicorn.rb</code> file, and they vary only slightly. First things first, here are the basic connection settings for the smoke test functionality:</p>
-<div class="highlight"><pre><span></span><code><span class="n">after_fork</span> <span class="k">do</span> <span class="o">|</span><span class="n">server</span><span class="p">,</span> <span class="n">worker</span><span class="o">|</span>
-  <span class="c1"># ...</span>
-  <span class="no">Thread</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
-    <span class="k">begin</span>
-      <span class="n">rabbitmq_connection</span> <span class="o">=</span> <span class="no">Bunny</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">CONN_SETTINGS</span><span class="p">)</span>
-      <span class="n">rabbitmq_connection</span><span class="o">.</span><span class="n">start</span>
-    <span class="k">rescue</span> <span class="no">Bunny</span><span class="o">::</span><span class="no">TCPConnectionFailed</span> <span class="o">=&gt;</span> <span class="n">e</span>
-      <span class="nb">puts</span> <span class="s2">&quot;Connection failed&quot;</span>
-    <span class="k">end</span>
-    <span class="k">begin</span>
-      <span class="n">rabbitmq_channel</span> <span class="o">=</span> <span class="n">rabbitmq_connection</span><span class="o">.</span><span class="n">create_channel</span>
-      <span class="n">default_queue</span>    <span class="o">=</span> <span class="n">rabbitmq_channel</span><span class="o">.</span><span class="n">queue</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
-      <span class="n">default_queue</span><span class="o">.</span><span class="n">subscribe</span> <span class="k">do</span> <span class="o">|</span><span class="n">delivery_info</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">body</span><span class="o">|</span>
-        <span class="no">SmokeTestReceiver</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">delivery_info</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
-      <span class="k">end</span>
-    <span class="k">rescue</span> <span class="no">Bunny</span><span class="o">::</span><span class="no">PreconditionFailed</span> <span class="o">=&gt;</span> <span class="n">e</span>
-      <span class="nb">puts</span> <span class="s2">&quot;Channel-level exception! Code: </span><span class="si">#{</span><span class="n">e</span><span class="o">.</span><span class="n">channel_close</span><span class="o">.</span><span class="n">reply_code</span><span class="si">}</span><span class="s2">,</span>
+<div class="highlight"><pre><span></span><code><span class="n">after_fork</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">server</span><span class="p">,</span><span class="w"> </span><span class="n">worker</span><span class="o">|</span>
+<span class="w">  </span><span class="c1"># ...</span>
+<span class="w">  </span><span class="no">Thread</span><span class="o">.</span><span class="n">new</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="k">begin</span>
+<span class="w">      </span><span class="n">rabbitmq_connection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Bunny</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">CONN_SETTINGS</span><span class="p">)</span>
+<span class="w">      </span><span class="n">rabbitmq_connection</span><span class="o">.</span><span class="n">start</span>
+<span class="w">    </span><span class="k">rescue</span><span class="w"> </span><span class="no">Bunny</span><span class="o">::</span><span class="no">TCPConnectionFailed</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">e</span>
+<span class="w">      </span><span class="nb">puts</span><span class="w"> </span><span class="s2">&quot;Connection failed&quot;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">begin</span>
+<span class="w">      </span><span class="n">rabbitmq_channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rabbitmq_connection</span><span class="o">.</span><span class="n">create_channel</span>
+<span class="w">      </span><span class="n">default_queue</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">rabbitmq_channel</span><span class="o">.</span><span class="n">queue</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+<span class="w">      </span><span class="n">default_queue</span><span class="o">.</span><span class="n">subscribe</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">delivery_info</span><span class="p">,</span><span class="w"> </span><span class="n">properties</span><span class="p">,</span><span class="w"> </span><span class="n">body</span><span class="o">|</span>
+<span class="w">        </span><span class="no">SmokeTestReceiver</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">delivery_info</span><span class="p">,</span><span class="w"> </span><span class="n">properties</span><span class="p">,</span><span class="w"> </span><span class="n">body</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end</span>
+<span class="w">    </span><span class="k">rescue</span><span class="w"> </span><span class="no">Bunny</span><span class="o">::</span><span class="no">PreconditionFailed</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">e</span>
+<span class="w">      </span><span class="nb">puts</span><span class="w"> </span><span class="s2">&quot;Channel-level exception! Code: </span><span class="si">#{</span><span class="n">e</span><span class="o">.</span><span class="n">channel_close</span><span class="o">.</span><span class="n">reply_code</span><span class="si">}</span><span class="s2">,</span>
 <span class="s2">      message: </span><span class="si">#{</span><span class="n">e</span><span class="o">.</span><span class="n">channel_close</span><span class="o">.</span><span class="n">reply_text</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">squish</span>
-    <span class="k">ensure</span>
-      <span class="n">rabbitmq_connection</span><span class="o">.</span><span class="n">create_channel</span><span class="o">.</span><span class="n">queue_delete</span><span class="p">(</span><span class="n">default_queue</span><span class="p">)</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-  <span class="c1"># ...</span>
+<span class="w">    </span><span class="k">ensure</span>
+<span class="w">      </span><span class="n">rabbitmq_connection</span><span class="o">.</span><span class="n">create_channel</span><span class="o">.</span><span class="n">queue_delete</span><span class="p">(</span><span class="n">default_queue</span><span class="p">)</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="w">  </span><span class="c1"># ...</span>
 <span class="k">end</span>
 </code></pre></div>
 
@@ -157,21 +157,21 @@ More implicit behaviour of RabbitMQ/Bunny includes that without further configur
 Now that we know how to set up waiting connections and queues inside an Rails app, how do messages get actually into the system?</p>
 <h3>Sending messages</h3>
 <p>Of course, the Java application that will send the messages has to do similar things as the Ruby code above, just a little bit more... wordy. A <code>ConnectionFactory</code> will give us a <code>Connection</code> instance, we call <code>createChannel()</code> on it, and on that <code>channel</code> object we can declare a queue:</p>
-<div class="highlight"><pre><span></span><code><span class="c1">// (java.lang.String queue, boolean durable, boolean exclusive,</span><span class="w"></span>
-<span class="c1">// boolean autoDelete,</span><span class="w"></span>
-<span class="c1">// java.util.Map&lt;java.lang.String,java.lang.Object&gt; arguments)</span><span class="w"></span>
-<span class="n">channel</span><span class="p">.</span><span class="na">queueDeclare</span><span class="p">(</span><span class="n">queueName</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">);</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="c1">// (java.lang.String queue, boolean durable, boolean exclusive,</span>
+<span class="c1">// boolean autoDelete,</span>
+<span class="c1">// java.util.Map&lt;java.lang.String,java.lang.Object&gt; arguments)</span>
+<span class="n">channel</span><span class="p">.</span><span class="na">queueDeclare</span><span class="p">(</span><span class="n">queueName</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">);</span>
 </code></pre></div>
 
 <p>This method signature should make sense by now. (Except for the <code>arguments</code> portion. More about that in a following blog post). As in its Ruby counterpart, we use the <code>channel</code> object to publish messages:</p>
-<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">sendSingleSmokeTestMessage</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">queueName</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="c1">// ...</span><span class="w"></span>
-<span class="w">    </span><span class="c1">// (java.lang.String exchange, java.lang.String routingKey,</span><span class="w"></span>
-<span class="w">    </span><span class="c1">// AMQP.BasicProperties props, byte[] body)</span><span class="w"></span>
-<span class="w">    </span><span class="n">channel</span><span class="p">.</span><span class="na">basicPublish</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">queueName</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">.</span><span class="na">getBytes</span><span class="p">());</span><span class="w"></span>
-<span class="w">    </span><span class="c1">// ..</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">sendSingleSmokeTestMessage</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">queueName</span><span class="p">,</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="w">    </span><span class="c1">// (java.lang.String exchange, java.lang.String routingKey,</span>
+<span class="w">    </span><span class="c1">// AMQP.BasicProperties props, byte[] body)</span>
+<span class="w">    </span><span class="n">channel</span><span class="p">.</span><span class="na">basicPublish</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">queueName</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">.</span><span class="na">getBytes</span><span class="p">());</span>
+<span class="w">    </span><span class="c1">// ..</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>Again, this method signature should make sense by now (and for the <code>BasicProperties</code> argument: I will get into that in a later blog post). As you can see, we take the shortcut mentioned above and use the implicit nameless exchange and the queue name itself as routing key. Since we only subscribed the Rails app to the 'default' queue (and as you can see in the hints on the screenshots above), this way only messages sent to the 'default' queue will be consumed by the Rails app. Other messages will automatically declare a new queue (because the nameless exchange is used), but there are no consumers so the messages will just pile up unprocessed.</p>
@@ -186,11 +186,11 @@ Here comes a trick I learned from my workmate <a href="http://github.com/tilod">
   <code>render partial: "partial_to_update"</code> or whatever you named the partial</li>
 <li>Now you can just use a little JavaScript in <code>application.js</code> that polls every two seconds for new content and replaces the HTML element of the given CSS class:</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">$</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;/ajax_progress&quot;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#working-queue&quot;</span><span class="p">).</span><span class="nx">replaceWith</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span><span class="w"></span>
-<span class="w">  </span><span class="p">});</span><span class="w"></span>
-<span class="p">},</span><span class="w"> </span><span class="mf">2000</span><span class="p">)</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">$</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;/ajax_progress&quot;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#working-queue&quot;</span><span class="p">).</span><span class="nx">replaceWith</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">},</span><span class="w"> </span><span class="mf">2000</span><span class="p">)</span>
 </code></pre></div>
 
 <p>Et voilà: A simple "live view" of mass inserted messages.  </p>

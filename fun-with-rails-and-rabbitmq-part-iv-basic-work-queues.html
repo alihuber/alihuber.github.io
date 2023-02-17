@@ -56,7 +56,7 @@
 
     <div class="entry-content">
       <abbr class="published" title="2015-04-18T00:00:00+02:00">
-              Published: Sa 18 April 2015
+              Published: Sat 18 April 2015
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
@@ -76,34 +76,34 @@
 <p>Making the Rails application wait for some time is a no-brainer, we'll just use the classic <code>Kernel#sleep</code> method. But how to control how long it should sleep? From what we know up until now, we could transmit the duration as part of the message body itself, and then somehow parse the incoming message body string. This is kinda cumbersome, and RabbitMQ provides a much better way to send arbitrary data along with the message.</p>
 <h3>Message properties</h3>
 <p>The <code>basicPublish</code> method we were using beforehand had one ununsed argument... until now:  </p>
-<div class="highlight"><pre><span></span><code><span class="n">channel</span><span class="o">.</span><span class="n">basicPublish</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">queueName</span><span class="p">,</span> <span class="n">null</span><span class="p">,</span> <span class="n">message</span><span class="o">.</span><span class="n">getBytes</span><span class="p">());</span>
+<div class="highlight"><pre><span></span><code><span class="n">channel</span><span class="o">.</span><span class="n">basicPublish</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">queueName</span><span class="p">,</span><span class="w"> </span><span class="n">null</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="o">.</span><span class="n">getBytes</span><span class="p">());</span>
 </code></pre></div>
 
 <p>Instead of <code>null</code>, we could have sent an <code>AMQP.BasicProperties</code> object (in Java land), in Ruby it's just a <code>Hash</code>-like object. To be honest: We did this implicitly all along. If you look at the three block arguments for processing messages: <code>|delivery_info, properties, body|</code> you'll notice the <code>delivery_info</code> and <code>properties</code> arguments. The <a href="http://rubybunny.info/articles/queues.html#accessing_message_properties_metadata">Bunny documentation about messages</a> includes detailed lists what information and properties are implicitly submitted. For example, some data (including the routing key) is always accessible (for example via <code>delivery_info.routing_key</code>), other arbitrary properties can just be defined as a Hash (or whatever your programming language API arrogates) in the 'headers' property.<br>
 What's really interesting here is that you can use the properties in any way you want. RabbitMQ even builds concepts like RPC around those properties (for example, RPC uses the <code>correlation_id</code>-, <code>message_id</code>- and <code>reply_to</code>-properties, but RPC won't be covered here). To get our little worker scenario running, we could have put the extra 'duration' parameter in the 'headers' property, which is just a Hash with user-defined keys. Or we could use one of the already defined properties (a.k.a 'well-known properties'). I decided to use the <code>type</code> property. There are no constraints on how to use any property for anything, so in my case I just want it to hold the string containing the entered duration from aboe shown Java GUI. Here it is, the new <code>basicPublish</code> method to send a message to the worker queue:</p>
-<div class="highlight"><pre><span></span><code><span class="c1">// Insert workTime-info as message &quot;type&quot; property.</span><span class="w"></span>
-<span class="c1">// deliveryMode(2) = persistent</span><span class="w"></span>
-<span class="c1">// (java.lang.String exchange, java.lang.String routingKey,</span><span class="w"></span>
-<span class="c1">// AMQP.BasicProperties props, byte[] body)</span><span class="w"></span>
-<span class="n">channel</span><span class="p">.</span><span class="na">basicPublish</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;task_queue&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">AMQP</span><span class="p">.</span><span class="na">BasicProperties</span><span class="p">.</span><span class="na">Builder</span><span class="p">()</span><span class="w"></span>
-<span class="w">        </span><span class="p">.</span><span class="na">contentType</span><span class="p">(</span><span class="s">&quot;text/plain&quot;</span><span class="p">).</span><span class="na">deliveryMode</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="p">.</span><span class="na">type</span><span class="p">(</span><span class="n">workTime</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="p">.</span><span class="na">build</span><span class="p">(),</span><span class="w"></span>
-<span class="w">        </span><span class="n">message</span><span class="p">.</span><span class="na">getBytes</span><span class="p">());</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="c1">// Insert workTime-info as message &quot;type&quot; property.</span>
+<span class="c1">// deliveryMode(2) = persistent</span>
+<span class="c1">// (java.lang.String exchange, java.lang.String routingKey,</span>
+<span class="c1">// AMQP.BasicProperties props, byte[] body)</span>
+<span class="n">channel</span><span class="p">.</span><span class="na">basicPublish</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;task_queue&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">AMQP</span><span class="p">.</span><span class="na">BasicProperties</span><span class="p">.</span><span class="na">Builder</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="na">contentType</span><span class="p">(</span><span class="s">&quot;text/plain&quot;</span><span class="p">).</span><span class="na">deliveryMode</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">type</span><span class="p">(</span><span class="n">workTime</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">build</span><span class="p">(),</span>
+<span class="w">        </span><span class="n">message</span><span class="p">.</span><span class="na">getBytes</span><span class="p">());</span>
 </code></pre></div>
 
 <p>In Java, you use the <code>AMQPBasicProperties.Builder</code> class to return a configured object. We'll publish the message directly using the direct exchange 'task_queue', which will just insert it into the queue of the same name.<br>
 Looking at above code, you'll notice that there is one other property defined: <code>deliveryMode(2)</code>, and as the comment reveals it, it tells the message to be persistent. This is the next topic we'll have to tackle, so let's continue with durability.</p>
 <h3>RabbitMQ and durability</h3>
 <p>RabbitMQ can cover just about any messaging scenario. But in our case, fire-and-forget-messages are not excatly what we want. We want to be able to persist and re-enqueue messages if something goes wrong, and we don't want to declare anonymous, short-lived queues. For that reason we'll streamline the configuration in our little programs. In <code>config/unicorn.rb</code> we declare the two queues for worker messages like this:</p>
-<div class="highlight"><pre><span></span><code><span class="n">worker_queue_1</span> <span class="o">=</span> <span class="n">rabbitmq_channel</span><span class="o">.</span><span class="n">queue</span><span class="p">(</span><span class="s2">&quot;task_queue&quot;</span><span class="p">,</span> <span class="ss">durable</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">worker_queue_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rabbitmq_channel</span><span class="o">.</span><span class="n">queue</span><span class="p">(</span><span class="s2">&quot;task_queue&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">durable</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span><span class="p">)</span>
 <span class="n">rabbitmq_channel</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">worker_queue_1</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="ss">manual_ack</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">info</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">body</span><span class="o">|</span>
-  <span class="c1"># simulate work with data from &#39;type&#39; property (number string)</span>
-  <span class="nb">sleep</span> <span class="n">prop</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">to_i</span>
-  <span class="no">WorkerReceiver</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
-  <span class="n">rabbitmq_channel</span><span class="o">.</span><span class="n">ack</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">delivery_tag</span><span class="p">)</span>
+<span class="n">worker_queue_1</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="ss">manual_ack</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">info</span><span class="p">,</span><span class="w"> </span><span class="n">prop</span><span class="p">,</span><span class="w"> </span><span class="n">body</span><span class="o">|</span>
+<span class="w">  </span><span class="c1"># simulate work with data from &#39;type&#39; property (number string)</span>
+<span class="w">  </span><span class="nb">sleep</span><span class="w"> </span><span class="n">prop</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">to_i</span>
+<span class="w">  </span><span class="no">WorkerReceiver</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">info</span><span class="p">,</span><span class="w"> </span><span class="n">prop</span><span class="p">,</span><span class="w"> </span><span class="n">body</span><span class="p">)</span>
+<span class="w">  </span><span class="n">rabbitmq_channel</span><span class="o">.</span><span class="n">ack</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">delivery_tag</span><span class="p">)</span>
 <span class="k">end</span>
 </code></pre></div>
 

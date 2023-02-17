@@ -56,7 +56,7 @@
 
     <div class="entry-content">
       <abbr class="published" title="2013-02-12T17:06:00+01:00">
-              Published: Di 12 Februar 2013
+              Published: Tue 12 February 2013
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
@@ -66,62 +66,62 @@
 <h3>ActiveSupport::Concern</h3>
 <p>Es gibt offensichtlich Situationen, in denen Erben von <code>ActiveRecord::Base</code> Instanz- und Klassenmethoden gleichzeitig hinzugefügt werden sollen, etwa wenn man eine Bibliothek schreibt, die allen Models bestimmte Eigenschaften geben soll die sie vorher nicht hatten. Dafür gibt es das <code>ActiveSupport::Concern</code>-Modul. Angenommen, ich habe mir eine Webanwendung zur Verwaltung all meiner Literatur geschrieben. Und jetzt will ich auch Magazine verwalten und die Funktionalität nachziehen, die Magazine nach Themen sortieren zu können. Mit <code>ActiveSupport::Concern</code> kann ich folgendes machen:</p>
 <p>In meinem neuen Modul wird <code>ActiveSupport::Concern</code> extended, und die neuen Klassenmethoden kommen in ein eigenes Modul. Es ist inzwischen deprecated, ein eigenes Untermodul für Instanzmethoden zu schreiben. Stattdessen werden Methoden die einfach im Body deklariert sind automatisch Instanzmethoden.</p>
-<div class="highlight"><pre><span></span><code><span class="k">module</span> <span class="nn">ThemeLibrary</span>
-  <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
-  <span class="k">module</span> <span class="nn">ClassMethods</span>
-    <span class="k">def</span> <span class="nf">find_by_theme</span><span class="p">(</span><span class="n">theme_name</span><span class="p">)</span>
-      <span class="nb">puts</span> <span class="n">theme_name</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-  <span class="k">def</span> <span class="nf">themes</span>
-    <span class="nb">puts</span> <span class="s2">&quot;Android, Windows8&quot;</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="nn">ThemeLibrary</span>
+<span class="w">  </span><span class="kp">extend</span><span class="w"> </span><span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
+<span class="w">  </span><span class="k">module</span><span class="w"> </span><span class="nn">ClassMethods</span>
+<span class="w">    </span><span class="k">def</span><span class="w"> </span><span class="nf">find_by_theme</span><span class="p">(</span><span class="n">theme_name</span><span class="p">)</span>
+<span class="w">      </span><span class="nb">puts</span><span class="w"> </span><span class="n">theme_name</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">themes</span>
+<span class="w">    </span><span class="nb">puts</span><span class="w"> </span><span class="s2">&quot;Android, Windows8&quot;</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div>
 
 <p>Dann wird mein neues Modul in <code>ActiveRecord::Base</code> included, so dass mit etwas Ruby-Magie die Instanz- und Klassenmethoden zu meinen Models hinzugefügt werden:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-  <span class="kp">include</span> <span class="no">ThemeLibrary</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+<span class="w">  </span><span class="kp">include</span><span class="w"> </span><span class="no">ThemeLibrary</span>
 <span class="k">end</span>
 
-<span class="k">class</span> <span class="nc">Magazine</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Magazine</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
 <span class="k">end</span>
 
 <span class="no">Magazine</span><span class="o">.</span><span class="n">find_by_theme</span><span class="p">(</span><span class="s2">&quot;Android&quot;</span><span class="p">)</span>
-<span class="n">m</span> <span class="o">=</span> <span class="no">Magazine</span><span class="o">.</span><span class="n">new</span>
-<span class="n">m</span><span class="o">.</span><span class="n">themes</span> <span class="c1"># =&gt; &quot;Android, Windows8&quot;</span>
+<span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Magazine</span><span class="o">.</span><span class="n">new</span>
+<span class="n">m</span><span class="o">.</span><span class="n">themes</span><span class="w"> </span><span class="c1"># =&gt; &quot;Android, Windows8&quot;</span>
 </code></pre></div>
 
 <p>Durch <code>ActiveSupport::Concern</code> sind Dinge möglich wie:</p>
-<div class="highlight"><pre><span></span><code><span class="k">module</span> <span class="nn">A</span>
-  <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
-  <span class="c1"># definiere Klassen- und Instanzmethoden</span>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="nn">A</span>
+<span class="w">  </span><span class="kp">extend</span><span class="w"> </span><span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
+<span class="w">  </span><span class="c1"># definiere Klassen- und Instanzmethoden</span>
 <span class="k">end</span>
 
-<span class="k">module</span> <span class="nn">B</span>
-  <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
-  <span class="kp">include</span> <span class="n">A</span>
-  <span class="n">included</span> <span class="k">do</span>
-    <span class="c1"># Klassenmethoden aus Modul A</span>
-  <span class="k">end</span>
-  <span class="c1"># definiere Klassen- und Instanzmethoden</span>
+<span class="k">module</span><span class="w"> </span><span class="nn">B</span>
+<span class="w">  </span><span class="kp">extend</span><span class="w"> </span><span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
+<span class="w">  </span><span class="kp">include</span><span class="w"> </span><span class="n">A</span>
+<span class="w">  </span><span class="n">included</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="c1"># Klassenmethoden aus Modul A</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="w">  </span><span class="c1"># definiere Klassen- und Instanzmethoden</span>
 <span class="k">end</span>
 
-<span class="k">class</span> <span class="nc">C</span>
-  <span class="kp">include</span> <span class="n">B</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">C</span>
+<span class="w">  </span><span class="kp">include</span><span class="w"> </span><span class="n">B</span>
 <span class="k">end</span>
 </code></pre></div>
 
 <p>In Klasse <code>C</code> ist jetzt auch Modul <code>A</code> included.</p>
 <h3>Module die sich selbst extenden</h3>
 <p>Der Unterschied zwischen <code>include</code> und <code>extend</code> ist der, dass <code>include</code> die Modulmethden im Body eines Moduls zu Instanzmethoden macht. <code>extend</code> macht die Modulmethoden dagegen zu Klassenmethoden. Außerdem kann <code>extend</code> dazu benutzt werden, Singletonmethoden auf einem Objekt zu definieren. Dabei ist zu beachten, dass jedes Objekt extenden kann, auch self:</p>
-<div class="highlight"><pre><span></span><code><span class="k">module</span> <span class="nn">Greeter</span>
-  <span class="kp">extend</span> <span class="nb">self</span>
-  <span class="k">def</span> <span class="nf">hello</span>
-    <span class="s2">&quot;hi&quot;</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="nn">Greeter</span>
+<span class="w">  </span><span class="kp">extend</span><span class="w"> </span><span class="nb">self</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">hello</span>
+<span class="w">    </span><span class="s2">&quot;hi&quot;</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
-<span class="nb">puts</span> <span class="no">Greeter</span><span class="o">.</span><span class="n">hello</span>
+<span class="nb">puts</span><span class="w"> </span><span class="no">Greeter</span><span class="o">.</span><span class="n">hello</span>
 </code></pre></div>
 
 <p>Dies wird als ein Ersatz für das Singleton-Pattern benutzt, mit dem zusätzlichen Vorteil, dass <code>hello</code> immer noch von einer Klasse eingemixt werden kann.</p>

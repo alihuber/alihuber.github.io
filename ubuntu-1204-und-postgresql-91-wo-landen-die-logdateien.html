@@ -56,7 +56,7 @@
 
     <div class="entry-content">
       <abbr class="published" title="2013-10-24T14:39:00+02:00">
-              Published: Do 24 Oktober 2013
+              Published: Thu 24 October 2013
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
@@ -69,9 +69,9 @@
 (4) <code>/usr/lib/postgresql</code></p>
 <p>In (1) landen Konfigurationsdateien wie <code>pg_hba.conf</code> und die <code>postgresql.conf</code>. In (2) landen die Konfigurationsdateien wie sie sowieso schon in (1) angelegt wurden als Samples, außerdem liegen hier die .sql-Dateien der Extensions, die man-pages der Onlinehilfe des Interpreters und Zeitzonendaten. In (3) ist das Verzeichnis, in der <code>postgresql.conf</code> als <code>data_directory</code> angegeben ist und in dem die eigentlichen Datenbanken gespeichert werden. In (4) liegen dann noch die Binaries und Libraries.</p>
 <p>Das Verwirrende ist wie mit Logs umgegangen wird: wenn in der <code>postgresql.conf</code> in (1) die Logs mit</p>
-<div class="highlight"><pre><span></span><code><span class="nv">log_destination</span>   <span class="o">=</span> <span class="s1">&#39;stderr&#39;</span>
-<span class="nv">logging_collector</span> <span class="o">=</span> on
-<span class="nv">log_directory</span>     <span class="o">=</span> <span class="s1">&#39;pg_log&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="nv">log_destination</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;stderr&#39;</span>
+<span class="nv">logging_collector</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>on
+<span class="nv">log_directory</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;pg_log&#39;</span>
 </code></pre></div>
 
 <p>aktiviert werden, wird das Verzeichnis pg_log in (4) erzeugt, und es landen nur die Nachrichten mit dem in der <code>postgresql.conf</code> festgelegten Loglevel in der Datei. Die Logs des Daemons an sich befinden sich wie gehabt in <code>/var/log/postgresql</code>.</p>

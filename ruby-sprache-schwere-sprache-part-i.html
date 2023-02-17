@@ -56,7 +56,7 @@
 
     <div class="entry-content">
       <abbr class="published" title="2012-04-10T11:53:00+02:00">
-              Published: Di 10 April 2012
+              Published: Tue 10 April 2012
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
@@ -65,7 +65,7 @@
       <p>Ruby macht es einem nicht gerade leicht. Selbst Personen wie <a href="http://peterc.org/">Peter Cooper</a>, die seit jahrzehnten professionell Ruby einsetzen geben in z.B. "Ruby Trick Shots" zu, immer noch über Dinge wie mögliche Syntax zu stolpern von denen sie nicht mal eine Ahnung hatten dass es sie gibt. Selbst die einfachsten Dinge wie z.B. Klassenvariablen werden durch den Umstand, dass Klassen an Sich auch Objekte sind zu einem gewaltigen Verwirrspiel aufgeblasen und erzeugen Henne-Ei-Probleme nebst Knoten im Gehirn. Beim Durcharbeiten von "The Well-Grounded Rubyist" (was ich übrigens vor allen anderen Ruby-Büchern hätte beackern sollen) bin ich auf Seite 157 auf das erste große Verständnisproblem mit Klassenvariablen gestoßen, und das obwohl ich seit gut sieben Monaten fast ausschließlich mit Ruby programmiere. Vielleicht ist ja das damit gemeint, wenn es heißt dass sich Ruby "einfach anwenden und produktiv einsetzen" lässt. Einfach schlecht und so produktiv, dass man von der häßlichkeit des eigenen Codes beschämt drei Monate später am liebsten die Festplatte formatieren möchte. Aber ich schweife ab...</p>
 <p>Klassen sind auch Objekte. Ich kann eine Klasse "fragen", welche Variablen es in einer Instanz von ihr geben wird - obwohl es noch kein Objekt zu der Klasse gibt. Das heißt, es gibt ja ein Objekt. Nur ist das eben die Klasse an sich. Hier spannt einen "The Well-Grounded Rubyist" noch etwas auf die Folter und verspricht, dem Problem "was war zuerst da" später auf den Grund zu gehen.</p>
 <p>Ich kann in irb on-the-fly eine Klasse definieren, im einfachsten Fall</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Leer</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Leer</span>
 <span class="k">end</span>
 </code></pre></div>
 
@@ -79,39 +79,39 @@
 
 <p>ergibt <code>Class</code>. Das Objekt "Leer" gehört also zur Klasse "Class". Dass "Leer" wirklich ein Objekt ist zeigt die Nachfrage nach <code>Leer.object_id</code>. Ich kann "Leer" auch nach seinen Instanzmethoden und -variablen fragen. Variablen hat es keine, und die Methoden sind die 56 von oben. Erzeuge ich eine Instanz der Klasse "Leer", kann ich sie nicht nach Instanzmethoden fragen (klar, die sind ja in der Klasse selbst definiert) sondern nach den Methoden direkt, mit <code>.methods</code>. Wie kommen jetzt die Variablen in Spiel?</p>
 <p>In Ruby gibt es zwei Arten von Variablen in einer Klasse. Die einen sind die Klassenvariablen, die anderen sind die Instanzvariablen. Es ist aber auch wichtig, wo diese definiert sind. Anders als in Java, wo sie einfach oben über dem Konstruktor deklariert und später im Konstruktor initialisiert werden, "leben" die Variablen in verschiedenen "Scopes" welche von self zum Zeitpunkt der Deklaration abhängen.</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">NichtLeer</span>
-  <span class="vi">@v</span> <span class="o">=</span> <span class="s1">&#39;v&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">NichtLeer</span>
+<span class="w">  </span><span class="vi">@v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;v&#39;</span>
 <span class="k">end</span>
 </code></pre></div>
 
 <p>Hier ist eine Instanzvariable. Diese gehört, da sie außerhalb von jeder Methode definiert wurde zum "Klassenobjekt" <code>NichtLeer</code>. (Getter/Setter gibt es so ja nicht, und initialize ist nur eine weitere Methode, die beim Aufruf von <code>.new</code> automatisch ausgeführt wird.) Mittels <code>NichtLeer.instance_variable_get :@v</code> wird auch tatsächlich "v" ausgegeben. Erzeuge ich nun eine Instanz <code>l</code> von "NichtLeer" ist @v erstmal so nicht zu erreichen. <code>l.instance_variables</code> gibt ein leeres Array zurück. Dabei ist das doch eine Instanzvariable! Ja schon, aber nur von Objekten der Klasse "Class", aber nicht von Objekten der Klasse "NichtLeer"! Bei der Deklaration von Klassenvariablen (die mit dem '@@' vorne dran) verläuft das ganze eigentlich analog.</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">NichtLeer2</span>
-  <span class="vc">@@v</span> <span class="o">=</span> <span class="s1">&#39;v&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">NichtLeer2</span>
+<span class="w">  </span><span class="vc">@@v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;v&#39;</span>
 <span class="k">end</span>
 </code></pre></div>
 
 <p><code>NichtLeer2.instance_variables</code> ist nun ohne Inhalt, dafür gibt es einen Eintrag in <code>NichtLeer2.class_variables</code>. An den Wert von @@v kommt man mittels <code>NichtLeer2.get_class_variable :@@v</code>. Instanzen von "NichtLeer2" haben immer noch keine Instanzvariablen im Array. Diese Klassenvariablen sind an der ganzen Geschichte noch das Java-mäßigste, obwohl man in Verbindung mit Vererbung <a href="http://blog.codegram.com/2011/4/understanding-class-instance-variables-in-ruby">vorsichtig sein sollte</a>. Machen wir das ganze etwas spannender: Jetzt fügen wir eine Methode ein.</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Voll</span>
-  <span class="vi">@v</span> <span class="o">=</span> <span class="s1">&#39;v&#39;</span>
-  <span class="k">def</span> <span class="nf">zeige_var</span>
-    <span class="vi">@v</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Voll</span>
+<span class="w">  </span><span class="vi">@v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;v&#39;</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">zeige_var</span>
+<span class="w">    </span><span class="vi">@v</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div>
 
 <p>Wird jetzt <code>v = V.new</code> und <code>v.zeige_var</code> ausgeführt, kommt ein <code>nil</code> angeflogen. "Aber ich habe doch meine Variable deklariert!" wird jeder Java-Programmierer jetzt ausrufen. Das stimmt zwar, aber die dynamische Natur von Ruby bezieht sich nicht nur auf die Typisierung. Genau wie oben gehört die erste Variable @v zum Klassenobjekt und nicht zu einem Instanzobjekt. Die Methode zeige_var hat keine Kenntnis über die Instanzvariablen - Die hat nicht mal das instantiiere Objekt der Klasse "Voll" selbst! Es wird zwar ein Objekt mit <code>.new</code> erzeugt, da aber nichts initialisiert wurde, existiert für das Objekt der Klasse "Voll" die Variable noch gar nicht. Der erste gravierende Unterschied zu Java: Variablen existieren erst ab dem Zeitpunkt, zu dem der Interpreter vorbeischaut und sie zuweist.</p>
 <p>Ein zweites Beispiel macht dies deutlicher:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">NochVoller</span>
-  <span class="vi">@v</span> <span class="o">=</span> <span class="s1">&#39;v&#39;</span>
-  <span class="k">def</span> <span class="nf">mache_var</span>
-    <span class="vi">@v</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span>
-  <span class="k">end</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">NochVoller</span>
+<span class="w">  </span><span class="vi">@v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;v&#39;</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">mache_var</span>
+<span class="w">    </span><span class="vi">@v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;foo&#39;</span>
+<span class="w">  </span><span class="k">end</span>
 
-  <span class="k">def</span> <span class="nf">zeige_var</span>
-    <span class="vi">@v</span>
-  <span class="k">end</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">zeige_var</span>
+<span class="w">    </span><span class="vi">@v</span>
+<span class="w">  </span><span class="k">end</span>
 <span class="k">end</span>
-<span class="n">v</span> <span class="o">=</span> <span class="no">NochVoller</span><span class="o">.</span><span class="n">new</span>
+<span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">NochVoller</span><span class="o">.</span><span class="n">new</span>
 <span class="n">v</span><span class="o">.</span><span class="n">mache_var</span>
 <span class="n">v</span><span class="o">.</span><span class="n">zeige_var</span>
 </code></pre></div>

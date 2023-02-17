@@ -49,26 +49,26 @@
             <aside id="featured" class="body">
                 <article>
                     <h1 class="entry-title"><a href="/factor-und-gvim.html">Factor und GVim</a></h1>
-                    Fr 30 April 2010<p>Da ich im Rahmen der Vorlesung "Software Engineering komplexer Systeme" in den Genuß des Erlernens einer konkatenativen, stackbasierten Programmiersprache namens <a href="http://www.factorcode.org">Factor</a> komme, stellte sich für mich die Frage wie ich mir das Programmieren in Factor erleichtern kann. Ich hatte die Sprache in den letzten Semesterferien schon einmal kurz ausprobiert, ohne jedoch den genauen Kontext zu kennen. Abgesehen davon, das alles, aber auch alles erstmal ungewohnt war fand ich am schlimmsten, dass es so schwer war die Quelldateien zu editieren.<br>
+                    Fri 30 April 2010<p>Da ich im Rahmen der Vorlesung "Software Engineering komplexer Systeme" in den Genuß des Erlernens einer konkatenativen, stackbasierten Programmiersprache namens <a href="http://www.factorcode.org">Factor</a> komme, stellte sich für mich die Frage wie ich mir das Programmieren in Factor erleichtern kann. Ich hatte die Sprache in den letzten Semesterferien schon einmal kurz ausprobiert, ohne jedoch den genauen Kontext zu kennen. Abgesehen davon, das alles, aber auch alles erstmal ungewohnt war fand ich am schlimmsten, dass es so schwer war die Quelldateien zu editieren.<br>
 Da es jetzt richtig mit Factor losgeht und ich schon seit fast einem Jahr auf der ach-so-steilen Lernkurve des Vim-Editors herumschliddere und nicht mal einen Bruchteil der coolen Funktionen richtig intelligent benutze dachte ich mir dass es wohl am besten wäre, den GVim für das editieren der Factor-Sourcefiles zu verwenden, um auch mit dem GVim besser umgehen zu können.<br>
 Leider sind die Anleitungen zum Einrichten eines Editors in den Factor-Docs widersprüchlich, was mich wieder mal fast zwei Stunden des Herumprobierens gekostet hat.<br>
 Hier nun die Anleitung, wie man Factor beibringt, den GVim als Standardeditor gleich beim Start zu kennen und vor allem das Syntax-Highlighting auch unter Windows zu aktivieren:</p>
 <p><strong>Unixähnliche:</strong><br>
 Die Datei <code>.factor-rc</code> im <code>/home/username/</code>-Verzeichnis erstellen und folgendes einfügen:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">USING:</span><span class="w"> </span><span class="nn">namespaces</span><span class="w"> </span><span class="nn">editors.gvim</span><span class="w"> </span><span class="k">;</span><span class="w"></span>
-<span class="s">&quot;/usr/bin/gvim&quot;</span><span class="w"> </span><span class="no">\ gvim-path</span><span class="w"> </span><span class="nb">set-global</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="kn">USING:</span><span class="w"> </span><span class="nn">namespaces</span><span class="w"> </span><span class="nn">editors.gvim</span><span class="w"> </span><span class="k">;</span>
+<span class="s">&quot;/usr/bin/gvim&quot;</span><span class="w"> </span><span class="no">\ gvim-path</span><span class="w"> </span><span class="nb">set-global</span>
 </code></pre></div>
 
 <p>Nun sollte, wenn man im Listener</p>
-<div class="highlight"><pre><span></span><code>wordname<span class="w"> </span>edit<span class="w"></span>
+<div class="highlight"><pre><span></span><code>wordname<span class="w"> </span>edit
 </code></pre></div>
 
 <p>eingibt automatisch der GVim erscheinen und die entsprechende Datei in der sich das Word befindet schon geladen haben.<br>
 Syntax-Highlighting bekommt man, indem man die Ordner <code>ftdetect</code>, <code>ftplugin</code>, <code>plugin</code> und <code>syntax</code>, welche sich im Factor-Ordner unter <code>/misc/vim</code> befinden in das Verzeichnis <code>/home/username/.vim/</code> kopiert (das Verzeichnis war bei mir bis auf den Ordner "tags" leer).</p>
 <p><strong>WindowsXP:</strong><br>
 Die Datei <code>factor-rc</code> im Verzeichnis <code>C:\Dokumente und Einstellungen\username</code> erstellen und folgendes einfügen:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">USING:</span><span class="w"> </span><span class="nn">namespaces</span><span class="w"> </span><span class="nn">editors.gvim</span><span class="w"> </span><span class="k">;</span><span class="w"></span>
-<span class="s">&quot;C:\\Programme\\Vim\\vim72\\gvim.exe&quot;</span><span class="w"> </span><span class="no">\ gvim-path</span><span class="w"> </span><span class="nb">set-global</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="kn">USING:</span><span class="w"> </span><span class="nn">namespaces</span><span class="w"> </span><span class="nn">editors.gvim</span><span class="w"> </span><span class="k">;</span>
+<span class="s">&quot;C:\\Programme\\Vim\\vim72\\gvim.exe&quot;</span><span class="w"> </span><span class="no">\ gvim-path</span><span class="w"> </span><span class="nb">set-global</span>
 </code></pre></div>
 
 <p>Die Ordner für die Vim-Dateien sind im Factor-Ordner an derselben Stelle.<br>

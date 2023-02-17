@@ -56,7 +56,7 @@
 
     <div class="entry-content">
       <abbr class="published" title="2015-04-16T00:00:00+02:00">
-              Published: Do 16 April 2015
+              Published: Thu 16 April 2015
       </abbr>
       <address class="vcard author">
               By                       <a class="url fn" href="/author/ali.html">ali</a>
@@ -109,16 +109,16 @@ will receive messages with routing keys<br>
 <p>And here is how they are implemented:</p>
 <h3>Explicit consumer classes</h3>
 <p>In the <code>config/unicorn.rb</code> file we configure more Bunny connections, again each in its own <code>Thread</code> block. Instead of using the nameless exchange we declare one "topic" exchange and three queues, one for each of the routing keys above:</p>
-<div class="highlight"><pre><span></span><code><span class="n">rabbitmq_channel</span> <span class="o">=</span> <span class="n">rabbitmq_connection</span><span class="o">.</span><span class="n">create_channel</span>
-<span class="n">topic</span>            <span class="o">=</span> <span class="n">rabbitmq_channel</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>  <span class="c1"># returns exchange of type topic named &quot;log&quot;</span>
-<span class="n">info_queue</span>       <span class="o">=</span> <span class="n">rabbitmq_channel</span><span class="o">.</span><span class="n">queue</span><span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">)</span> <span class="c1"># declare queue named &quot;info&quot;</span>
-<span class="n">info_queue</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="ss">routing_key</span><span class="p">:</span> <span class="s2">&quot;*.info&quot;</span><span class="p">)</span>     <span class="c1"># bind the queue to the topic exchange</span>
+<div class="highlight"><pre><span></span><code><span class="n">rabbitmq_channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rabbitmq_connection</span><span class="o">.</span><span class="n">create_channel</span>
+<span class="n">topic</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">rabbitmq_channel</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span><span class="w">  </span><span class="c1"># returns exchange of type topic named &quot;log&quot;</span>
+<span class="n">info_queue</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">rabbitmq_channel</span><span class="o">.</span><span class="n">queue</span><span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1"># declare queue named &quot;info&quot;</span>
+<span class="n">info_queue</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span><span class="w"> </span><span class="ss">routing_key</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*.info&quot;</span><span class="p">)</span><span class="w">     </span><span class="c1"># bind the queue to the topic exchange</span>
 </code></pre></div>
 
 <p>For demonstration puroposes and to make things more explicit, this time the queues subscribe with an explicit consumer:</p>
-<div class="highlight"><pre><span></span><code><span class="n">info_consumer</span> <span class="o">=</span> <span class="no">TopicConsumer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">rabbitmq_channel</span><span class="p">,</span> <span class="n">info_queue</span><span class="p">)</span>
-<span class="n">info_consumer</span><span class="o">.</span><span class="n">on_delivery</span><span class="p">()</span> <span class="k">do</span> <span class="o">|</span><span class="n">delivery_info</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">body</span><span class="o">|</span>
-  <span class="no">TopicReceiver</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">delivery_info</span><span class="o">.</span><span class="n">routing_key</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">info_consumer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">TopicConsumer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">rabbitmq_channel</span><span class="p">,</span><span class="w"> </span><span class="n">info_queue</span><span class="p">)</span>
+<span class="n">info_consumer</span><span class="o">.</span><span class="n">on_delivery</span><span class="p">()</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">delivery_info</span><span class="p">,</span><span class="w"> </span><span class="n">properties</span><span class="p">,</span><span class="w"> </span><span class="n">body</span><span class="o">|</span>
+<span class="w">  </span><span class="no">TopicReceiver</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">delivery_info</span><span class="o">.</span><span class="n">routing_key</span><span class="p">,</span><span class="w"> </span><span class="n">body</span><span class="p">)</span>
 <span class="k">end</span>
 <span class="n">info_queue</span><span class="o">.</span><span class="n">subscribe_with</span><span class="p">(</span><span class="n">info_consumer</span><span class="p">)</span>
 </code></pre></div>
@@ -127,8 +127,8 @@ will receive messages with routing keys<br>
 <a href="http://rubybunny.info/articles/queues.html#consumer_instances">The docs on consumer classes</a> are pretty straightforward, and I'm only scratching the surface here of what's possible.</p>
 <h3>Sending topic messages</h3>
 <p>Once again, the Java code in the sample application has to do the same things as the Ruby code above: Declare an exchange named "log" of type "topic" on a channel object:</p>
-<div class="highlight"><pre><span></span><code><span class="c1">// (java.lang.String exchange, java.lang.String type)</span><span class="w"></span>
-<span class="n">channel</span><span class="p">.</span><span class="na">exchangeDeclare</span><span class="p">(</span><span class="s">&quot;log&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;topic&quot;</span><span class="p">);</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="c1">// (java.lang.String exchange, java.lang.String type)</span>
+<span class="n">channel</span><span class="p">.</span><span class="na">exchangeDeclare</span><span class="p">(</span><span class="s">&quot;log&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;topic&quot;</span><span class="p">);</span>
 </code></pre></div>
 
 <p>The way messages are sent is the same as usual, we just use the trustful <code>basicPublish()</code> method and publish into the "log" exchange with the entered routing key from the Java GUI.  </p>
